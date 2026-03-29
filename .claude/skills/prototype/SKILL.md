@@ -1,99 +1,87 @@
 ---
 name: prototype
-description: "Rapid prototyping workflow. Skips normal standards to quickly validate a game concept or mechanic. Produces throwaway code and a structured prototype report."
-argument-hint: "[concept-description]"
+description: "快速原型工作流。跳过正常标准以快速验证游戏概念或机制。产出可丢弃的代码和结构化的原型报告。"
+argument-hint: "[概念描述]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-1. **Read the concept description** from the argument. Identify the core
-   question this prototype must answer. If the concept is vague, state the
-   question explicitly before proceeding.
+1. **读取概念描述**来自参数。识别此原型必须回答的核心问题。如果概念模糊，在继续之前明确陈述问题。
 
-2. **Read CLAUDE.md** for project context and the current tech stack. Understand
-   what engine, language, and frameworks are in use so the prototype is built
-   with compatible tooling.
+2. **读取 CLAUDE.md** 获取项目上下文和当前技术栈。了解所使用的引擎、语言和框架，以便原型使用兼容的工具构建。
 
-3. **Create a prototype plan**: Define in 3-5 bullet points what the minimum
-   viable prototype looks like. What is the core question? What is the absolute
-   minimum code needed to answer it? What can be skipped?
+3. **创建原型计划**：用 3-5 个要点定义最小可行原型的样子。核心问题是什么？回答它所需的最少代码量是多少？什么可以跳过？
 
-4. **Create the prototype directory**: `prototypes/[concept-name]/` where
-   `[concept-name]` is a short, kebab-case identifier derived from the concept.
+4. **创建原型目录**：`prototypes/[concept-name]/`，其中
+   `[concept-name]` 是从概念派生的短 kebab-case 标识符。
 
-5. **Implement the prototype** in the isolated directory. Every file must begin
-   with:
+5. **在隔离目录中实现原型**。每个文件必须以以下内容开头：
    ```
    // PROTOTYPE - NOT FOR PRODUCTION
-   // Question: [Core question being tested]
-   // Date: [Current date]
+   // 问题：[正在测试的核心问题]
+   // 日期：[当前日期]
    ```
-   Standards are intentionally relaxed:
-   - Hardcode values freely
-   - Use placeholder assets
-   - Skip error handling
-   - Use the simplest approach that works
-   - Copy code rather than importing from production
+   标准有意放宽：
+   - 可以随意硬编码值
+   - 使用占位资源
+   - 跳过错误处理
+   - 使用最简单可行的方案
+   - 复制代码而非从正式代码导入
 
-6. **Test the concept**: Run the prototype. Observe behavior. Collect any
-   measurable data (frame times, interaction counts, feel assessments).
+6. **测试概念**：运行原型。观察行为。收集可测量的数据（帧时间、交互次数、手感评估）。
 
-7. **Generate the Prototype Report** and save it to
-   `prototypes/[concept-name]/REPORT.md`:
+7. **生成原型报告**并保存到
+   `prototypes/[concept-name]/REPORT.md`：
 
 ```markdown
-## Prototype Report: [Concept Name]
+## 原型报告：[概念名称]
 
-### Hypothesis
-[What we expected to be true -- the question we set out to answer]
+### 假设
+[我们预期为真的内容 — 我们要回答的问题]
 
-### Approach
-[What we built, how long it took, what shortcuts we took]
+### 方法
+[我们构建了什么、花了多长时间、走了哪些捷径]
 
-### Result
-[What actually happened -- specific observations, not opinions]
+### 结果
+[实际发生了什么 — 具体观察，而非意见]
 
-### Metrics
-[Any measurable data collected during testing]
-- Frame time: [if relevant]
-- Feel assessment: [subjective but specific -- "response felt sluggish at
-  200ms delay" not "felt bad"]
-- Player action counts: [if relevant]
-- Iteration count: [how many attempts to get it working]
+### 指标
+[测试期间收集的任何可测量数据]
+- 帧时间：[如相关]
+- 手感评估：[主观但具体 — "200ms 延迟时响应感觉迟钝"而非"感觉不好"]
+- 玩家操作次数：[如相关]
+- 迭代次数：[尝试了多少次才成功]
 
-### Recommendation: [PROCEED / PIVOT / KILL]
+### 建议：[推进 / 转向 / 放弃]
 
-[One paragraph explaining the recommendation with evidence]
+[用证据解释建议的一段话]
 
-### If Proceeding
-[What needs to change for a production-quality implementation]
-- Architecture requirements
-- Performance targets
-- Scope adjustments from the original design
-- Estimated production effort
+### 如果推进
+[从原型到正式实现需要改变什么]
+- 架构要求
+- 性能目标
+- 与原设计的范围调整
+- 预估正式开发工作量
 
-### If Pivoting
-[What alternative direction the results suggest]
+### 如果转向
+[结果建议的替代方向]
 
-### If Killing
-[Why this concept does not work and what we should do instead]
+### 如果放弃
+[为什么此概念不可行以及我们应该怎么做]
 
-### Lessons Learned
-[Discoveries that affect other systems or future work]
+### 经验教训
+[影响其他系统或未来工作的发现]
 ```
 
-8. **Output a summary** to the user with: the core question, the result, and
-   the recommendation. Link to the full report at
-   `prototypes/[concept-name]/REPORT.md`.
+8. **输出摘要**给用户：核心问题、结果和建议。附上完整报告的链接
+   `prototypes/[concept-name]/REPORT.md`。
 
-### Important Constraints
+### 重要约束
 
-- Prototype code must NEVER import from production source files
-- Production code must NEVER import from prototype directories
-- If the recommendation is PROCEED, the production implementation must be
-  written from scratch -- prototype code is not refactored into production
-- Total prototype effort should be timeboxed to 1-3 days equivalent of work
-- If the prototype scope starts growing, stop and reassess whether the
-  question can be simplified
+- 原型代码**绝不能**从正式源文件导入
+- 正式代码**绝不能**从原型目录导入
+- 如果建议是推进，正式实现必须从头编写 — 原型代码不会被重构为正式代码
+- 原型总工作量应控制在相当于 1-3 天的工作量内
+- 如果原型范围开始膨胀，停下来重新评估问题是否可以简化

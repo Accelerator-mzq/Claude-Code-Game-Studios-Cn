@@ -1,199 +1,206 @@
-# Collaborative Session Examples
+# 协作会话示例
 
-This directory contains realistic, end-to-end session transcripts showing how the Game Studio Agent Architecture works in practice. Each example demonstrates the **collaborative workflow** where agents ask questions, present options, and wait for user approval rather than autonomously generating content.
-
----
-
-## 📚 **Available Examples**
-
-### [Session: Designing the Crafting System](session-design-crafting-system.md)
-**Type:** Design
-**Agent:** game-designer
-**Duration:** ~45 minutes (12 turns)
-**Complexity:** Medium
-
-**Scenario:**
-Solo dev needs to design a crafting system that serves Pillar 2 ("Emergent Discovery Through Experimentation"). The agent guides them through question/answer, presents 3 design options with game theory analysis, incorporates user modifications, and iteratively drafts the GDD with approval at each step.
-
-**Key Collaborative Moments:**
-- Agent asks 5 clarifying questions upfront
-- Presents 3 distinct options with pros/cons + MDA alignment
-- User modifies recommended option, agent incorporates immediately
-- Edge case flagged proactively ("what if non-recipe combo?")
-- Each GDD section shown for approval before moving to next
-- Explicit "May I write to [file]?" before creating file
-
-**Learn:**
-- How design agents ask about goals, constraints, references
-- How to present options using game design theory (MDA, SDT, Bartle)
-- How to iterate on drafts section-by-section
-- When to delegate to specialists (systems-designer, economy-designer)
+本目录包含真实的、端到端的会话记录，展示游戏工作室代理(Agent)架构在实践中
+如何运作。每个示例演示了**协作工作流**，代理在其中提问、展示选项并等待
+用户批准，而非自主生成内容。
 
 ---
 
-### [Session: Implementing Combat Damage Calculation](session-implement-combat-damage.md)
-**Type:** Implementation
-**Agent:** gameplay-programmer
-**Duration:** ~30 minutes (10 turns)
-**Complexity:** Low-Medium
+## 📚 **可用示例**
 
-**Scenario:**
-User has a complete design doc and wants the damage calculation implemented. Agent reads the spec, identifies 7 ambiguities/gaps, asks clarifying questions, proposes architecture for approval, implements with rule enforcement, and proactively writes tests.
+### [会话：设计制作系统](session-design-crafting-system.md)
+**类型：** 设计
+**代理：** game-designer
+**时长：** ~45 分钟（12 轮）
+**复杂度：** 中等
 
-**Key Collaborative Moments:**
-- Agent reads design doc first, identifies 7 spec ambiguities
-- Architecture proposed with code samples BEFORE implementation
-- User requests type safety, agent refines and re-proposes
-- Rules catch issues (hardcoded values), agent fixes transparently
-- Tests written proactively following verification-driven development
-- Agent offers options for next steps rather than assuming
+**场景：**
+独立开发者需要设计一个服务于支柱 2（"通过实验的涌现发现"）的制作系统。
+代理通过问答引导他们，展示 3 种设计方案并附游戏理论分析，纳入用户修改，
+并逐节迭代起草 GDD，每步都获得批准。
 
-**Learn:**
-- How implementation agents clarify specs before coding
-- How to propose architecture with code samples for approval
-- How rules enforce standards automatically
-- How to handle spec gaps (ask, don't assume)
-- Verification-driven development (tests prove it works)
+**关键协作时刻：**
+- 代理预先提出 5 个澄清问题
+- 展示 3 种不同方案及优缺点 + MDA 对齐分析
+- 用户修改了推荐方案，代理立即纳入
+- 主动标记边缘情况（"如果组合不是配方怎么办？"）
+- 每个 GDD 章节在进入下一步前展示审批
+- 创建文件前明确的"我可以写入 [文件路径] 吗？"
 
----
-
-### [Session: Scope Crisis - Strategic Decision Making](session-scope-crisis-decision.md)
-**Type:** Strategic Decision
-**Agent:** creative-director
-**Duration:** ~25 minutes (8 turns)
-**Complexity:** High
-
-**Scenario:**
-Solo dev faces crisis: Alpha milestone in 2 weeks, crafting system needs 3 weeks, investor demo is make-or-break. Creative director gathers context, frames the decision, presents 3 strategic options with honest trade-off analysis, makes recommendation but defers to user, then documents decision with ADR and demo script.
-
-**Key Collaborative Moments:**
-- Agent reads context docs before proposing solutions
-- Asks 5 questions to understand decision constraints
-- Frames decision properly (what's at stake, evaluation criteria)
-- Presents 3 options with risk analysis and historical precedent
-- Makes strong recommendation but explicitly: "this is your call"
-- Documents decision + provides demo script to support user
-
-**Learn:**
-- How leadership agents frame strategic decisions
-- How to present options with trade-off analysis
-- How to use game dev precedent and theory in recommendations
-- How to document decisions (ADRs)
-- How to cascade decisions to affected departments
+**可学习：**
+- 设计代理如何询问目标、约束、参考
+- 如何使用游戏设计理论（MDA、SDT、Bartle）展示选项
+- 如何逐节迭代草稿
+- 何时委托给专家（systems-designer、economy-designer）
 
 ---
 
-## 🎯 **What These Examples Demonstrate**
+### [会话：实现战斗伤害计算](session-implement-combat-damage.md)
+**类型：** 实现
+**代理：** gameplay-programmer
+**时长：** ~30 分钟（10 轮）
+**复杂度：** 低-中等
 
-All examples follow the **collaborative workflow pattern:**
+**场景：**
+用户有完整的设计文档，想要实现伤害计算。代理读取规格，识别 7 个模糊/缺失处，
+提出澄清问题，为批准提出架构，在规则执行下实现，并主动编写测试。
+
+**关键协作时刻：**
+- 代理先读取设计文档，识别 7 个规格模糊处
+- 实现前展示架构及代码示例
+- 用户要求类型安全，代理完善后重新提出
+- 规则捕获问题（硬编码值），代理透明地修复
+- 遵循验证驱动开发主动编写测试
+- 代理提供后续步骤选项而非自行假设
+
+**可学习：**
+- 实现代理如何在编码前澄清规格
+- 如何使用代码示例提出架构供批准
+- 规则如何自动执行标准
+- 如何处理规格缺口（提问，而非假设）
+- 验证驱动开发（测试证明功能正常）
+
+---
+
+### [会话：范围危机 - 战略决策](session-scope-crisis-decision.md)
+**类型：** 战略决策
+**代理：** creative-director
+**时长：** ~25 分钟（8 轮）
+**复杂度：** 高
+
+**场景：**
+独立开发者面临危机：Alpha 里程碑在 2 周后，制作系统需要 3 周，投资人演示是
+成败关键。创意总监收集上下文、框定决策，展示 3 种战略方案并附诚实的权衡分析，
+做出推荐但交由用户决定，然后用 ADR 和演示脚本记录决策。
+
+**关键协作时刻：**
+- 代理在提出解决方案前先读取上下文文档
+- 提出 5 个问题以理解决策约束
+- 正确框定决策（利害关系、评估标准）
+- 展示 3 种方案及风险分析和历史先例
+- 做出强烈推荐但明确表示"这是你的决定"
+- 记录决策 + 提供演示脚本支持用户
+
+**可学习：**
+- 领导代理如何框定战略决策
+- 如何展示带权衡分析的选项
+- 如何在推荐中使用游戏开发先例和理论
+- 如何记录决策（ADR）
+- 如何将决策传达给受影响的部门
+
+---
+
+## 🎯 **这些示例展示了什么**
+
+所有示例都遵循**协作工作流模式**：
 
 ```
-Question → Options → Decision → Draft → Approval
+提问 → 选项 → 决策 → 草稿 → 批准
 ```
 
-> **Note:** These examples show the collaborative pattern as conversational text.
-> In practice, agents now use the `AskUserQuestion` tool at decision points to
-> present structured option pickers (with labels, descriptions, and multi-select).
-> The pattern is **Explain → Capture**: agents explain their analysis in
-> conversation first, then present a structured UI picker for the user's decision.
+> **注意：** 这些示例以对话文本形式展示协作模式。
+> 在实践中，代理现在在决策点使用 `AskUserQuestion` 工具来
+> 呈现结构化的选项选择器（带标签、描述和多选）。
+> 模式是**解释 → 捕获**：代理先在对话中解释其分析，
+> 然后为用户的决策呈现结构化的 UI 选择器。
 
-### ✅ **Collaborative Behaviors Shown:**
+### ✅ **展示的协作行为：**
 
-1. **Agents Ask Before Assuming**
-   - Design agents ask about goals, constraints, references
-   - Implementation agents clarify spec ambiguities
-   - Leadership agents gather full context before recommending
+1. **代理先提问而非假设**
+   - 设计代理询问目标、约束、参考
+   - 实现代理澄清规格模糊处
+   - 领导代理在推荐前先收集完整上下文
 
-2. **Agents Present Options, Not Dictates**
-   - 2-4 options with pros/cons
-   - Reasoning based on theory, precedent, project pillars
-   - Recommendation made, but user decides
+2. **代理展示选项而非独断**
+   - 2-4 个选项及优缺点
+   - 基于理论、先例、项目支柱的推理
+   - 做出推荐，但用户做决定
 
-3. **Agents Show Work Before Finalizing**
-   - Design drafts shown section-by-section
-   - Architecture proposals shown before implementation
-   - Strategic analysis presented before decisions
+3. **代理在定稿前展示工作**
+   - 设计草稿逐节展示
+   - 架构方案在实现前展示
+   - 战略分析在决策前展示
 
-4. **Agents Get Approval Before Writing Files**
-   - Explicit "May I write to [file]?" before using Write/Edit tools
-   - Multi-file changes list all affected files first
-   - User says "Yes" before any file is created
+4. **代理在写入文件前获得批准**
+   - 使用 Write/Edit 工具前明确的"我可以写入 [文件路径] 吗？"
+   - 多文件变更先列出所有受影响的文件
+   - 用户说"可以"后才开始创建文件
 
-5. **Agents Iterate on Feedback**
-   - User modifications incorporated immediately
-   - No defensiveness when user changes recommendations
-   - Celebrate when user improves agent's suggestion
-
----
-
-## 📖 **How to Use These Examples**
-
-### For New Users:
-Read these examples BEFORE your first session. They show realistic expectations for how agents work:
-- Agents are consultants, not autonomous executors
-- You make all creative/strategic decisions
-- Agents provide expert guidance and options
-
-### For Understanding Specific Workflows:
-- **Designing a system?** → Read session-design-crafting-system.md
-- **Implementing code?** → Read session-implement-combat-damage.md
-- **Making strategic decisions?** → Read session-scope-crisis-decision.md
-
-### For Training:
-If you're teaching someone to use this system, walk through one example turn-by-turn to show:
-- What good questions look like
-- How to evaluate presented options
-- When to approve vs. request changes
-- How to maintain creative control while leveraging AI expertise
+5. **代理基于反馈迭代**
+   - 用户的修改立即纳入
+   - 用户更改推荐时代理不 defensiveness
+   - 当用户改进代理的建议时表示认可
 
 ---
 
-## 🔍 **Common Patterns Across All Examples**
+## 📖 **如何使用这些示例**
 
-### Turn 1-2: **Understand Before Acting**
-- Agent reads context (design docs, specs, constraints)
-- Agent asks clarifying questions
-- No assumptions or guesses
+### 给新用户：
+在第一次会话之前阅读这些示例。它们展示了代理工作的实际预期：
+- 代理是顾问，不是自主执行者
+- 你做出所有创意/战略决策
+- 代理提供专家指导和选项
 
-### Turn 3-5: **Present Options with Reasoning**
-- 2-4 distinct approaches
-- Pros/cons for each
-- Theory/precedent supporting the analysis
-- Recommendation made, decision deferred to user
+### 用于理解特定工作流：
+- **设计一个系统？** → 阅读 session-design-crafting-system.md
+- **实现代码？** → 阅读 session-implement-combat-damage.md
+- **做出战略决策？** → 阅读 session-scope-crisis-decision.md
 
-### Turn 6-8: **Iterate on Drafts**
-- Show work incrementally
-- Incorporate feedback immediately
-- Flag edge cases or ambiguities proactively
-
-### Turn 9-10: **Approval and Completion**
-- "May I write to [file]?"
-- User: "Yes"
-- Agent writes files
-- Agent offers next steps (tests, review, integration)
+### 用于培训：
+如果你在教某人使用此系统，逐轮走读一个示例来展示：
+- 好的问题是什么样的
+- 如何评估展示的选项
+- 何时批准 vs 请求修改
+- 如何在利用 AI 专业能力的同时保持创意控制
 
 ---
 
-## 🚀 **Try It Yourself**
+## 🔍 **所有示例中的共同模式**
 
-After reading these examples, try this exercise:
+### 第 1-2 轮：**先理解再行动**
+- 代理读取上下文（设计文档、规格、约束）
+- 代理提出澄清问题
+- 不做假设或猜测
 
-1. Pick one of your game systems (combat, inventory, progression, etc.)
-2. Ask the relevant agent to design or implement it
-3. Notice if the agent:
-   - ✅ Asks clarifying questions upfront
-   - ✅ Presents options with reasoning
-   - ✅ Shows drafts before finalizing
-   - ✅ Requests approval before writing files
+### 第 3-5 轮：**展示带推理的选项**
+- 2-4 种不同方案
+- 每种的优缺点
+- 支持分析的理论/先例
+- 做出推荐，决策权交给用户
 
-If the agent skips any of these, remind it:
-> "Please follow the collaborative protocol from docs/COLLABORATIVE-DESIGN-PRINCIPLE.md"
+### 第 6-8 轮：**迭代草稿**
+- 逐步展示工作
+- 立即纳入反馈
+- 主动标记边缘情况或模糊处
+
+### 第 9-10 轮：**批准与完成**
+- "我可以写入 [文件路径] 吗？"
+- 用户："可以"
+- 代理写入文件
+- 代理提供后续步骤（测试、审查、集成）
 
 ---
 
-## 📝 **Additional Resources**
+## 🚀 **自己试试**
 
-- **Full Principle Documentation:** [docs/COLLABORATIVE-DESIGN-PRINCIPLE.md](../COLLABORATIVE-DESIGN-PRINCIPLE.md)
-- **Workflow Guide:** [docs/WORKFLOW-GUIDE.md](../WORKFLOW-GUIDE.md)
-- **Agent Roster:** [.claude/docs/agent-roster.md](../../.claude/docs/agent-roster.md)
-- **CLAUDE.md (Collaboration Protocol):** [CLAUDE.md](../../CLAUDE.md#collaboration-protocol)
+阅读这些示例后，试试这个练习：
+
+1. 选择你的一个游戏系统（战斗、背包、进阶等）
+2. 让相关代理设计或实现它
+3. 注意代理是否：
+   - ✅ 预先提出澄清问题
+   - ✅ 展示带推理的选项
+   - ✅ 在定稿前展示草稿
+   - ✅ 在写入文件前请求批准
+
+如果代理跳过了其中任何一项，提醒它：
+> "请遵循 docs/COLLABORATIVE-DESIGN-PRINCIPLE.md 中的协作协议"
+
+---
+
+## 📝 **其他资源**
+
+- **完整原则文档：** [docs/COLLABORATIVE-DESIGN-PRINCIPLE.md](../COLLABORATIVE-DESIGN-PRINCIPLE.md)
+- **工作流指南：** [docs/WORKFLOW-GUIDE.md](../WORKFLOW-GUIDE.md)
+- **代理花名册：** [.claude/docs/agent-roster.md](../../.claude/docs/agent-roster.md)
+- **CLAUDE.md（协作协议）：** [CLAUDE.md](../../CLAUDE.md#collaboration-protocol)

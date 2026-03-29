@@ -1,266 +1,265 @@
-# ADR: [Decision Name]
+# ADR: [决策名称]
 
 ---
-**Status**: Reverse-Documented
-**Source**: `[path to implementation code]`
-**Date**: [YYYY-MM-DD]
-**Decision Makers**: [User name or "inferred from code"]
-**Implementation Status**: [Deployed | Partial | Planned]
+**状态**: 逆向文档化
+**来源**: `[实现代码路径]`
+**日期**: [YYYY-MM-DD]
+**决策者**: [用户名或"从代码推断"]
+**实现状态**: [已部署 | 部分实现 | 计划中]
 ---
 
-> **⚠️ Reverse-Documentation Notice**
+> **⚠️ 逆向文档化说明**
 >
-> This Architecture Decision Record was created **after** the implementation already
-> existed. It captures the current implementation approach and clarified rationale
-> based on code analysis and user consultation. Some context may be reconstructed
-> rather than contemporaneously documented.
+> 此架构决策记录(ADR)是在实现代码**已经存在之后**创建的。
+> 它捕获了当前的实现方式和经过澄清的理由，
+> 基于代码分析和用户咨询。部分上下文可能是重构而非当时记录的。
 
 ---
 
-## Context
+## 背景
 
-**Problem Statement**: [What problem did this implementation solve?]
+**问题陈述**: [此实现解决了什么问题？]
 
-**Background** (inferred from code):
-- [Context 1 — why this problem needed solving]
-- [Context 2 — constraints at the time]
-- [Context 3 — alternatives that were likely considered]
+**背景** (从代码推断):
+- [上下文 1 — 为什么需要解决这个问题]
+- [上下文 2 — 当时的约束条件]
+- [上下文 3 — 可能考虑过的替代方案]
 
-**System Scope**: [What parts of the codebase does this affect?]
+**系统范围**: [此决策影响代码库的哪些部分？]
 
-**Stakeholders**:
-- [Role 1]: [Their concern or requirement]
-- [Role 2]: [Their concern or requirement]
-
----
-
-## Decision
-
-**Approach Taken** (as implemented):
-
-[Describe the architectural approach found in the code]
-
-**Key Implementation Details**:
-- [Detail 1]: [How it works]
-- [Detail 2]: [Pattern or structure used]
-- [Detail 3]: [Notable design choice]
-
-**Clarified Rationale** (from user):
-- [Reason 1 — why this approach was chosen]
-- [Reason 2 — what problem it solves]
-- [Reason 3 — what benefit it provides]
-
-**Code Locations**:
-- `[file/path 1]`: [What's there]
-- `[file/path 2]`: [What's there]
+**利益相关者**:
+- [角色 1]: [他们的关注点或需求]
+- [角色 2]: [他们的关注点或需求]
 
 ---
 
-## Alternatives Considered
+## 决策
 
-*(These may be inferred or clarified with user)*
+**采用的方法** (按实现):
 
-### Alternative 1: [Approach Name]
+[描述代码中发现的架构方法]
 
-**Description**: [What this alternative would have been]
+**关键实现细节**:
+- [细节 1]: [工作原理]
+- [细节 2]: [使用的模式或结构]
+- [细节 3]: [值得注意的设计选择]
 
-**Pros**:
-- ✅ [Advantage 1]
-- ✅ [Advantage 2]
+**澄清的理由** (来自用户):
+- [原因 1 — 为什么选择此方法]
+- [原因 2 — 解决了什么问题]
+- [原因 3 — 提供了什么好处]
 
-**Cons**:
-- ❌ [Disadvantage 1]
-- ❌ [Disadvantage 2]
-
-**Why Not Chosen**: [Reason — from user clarification or inference]
-
-### Alternative 2: [Approach Name]
-
-**Description**: [What this alternative would have been]
-
-**Pros**:
-- ✅ [Advantage 1]
-- ✅ [Advantage 2]
-
-**Cons**:
-- ❌ [Disadvantage 1]
-- ❌ [Disadvantage 2]
-
-**Why Not Chosen**: [Reason]
-
-### Alternative 3: [Status Quo / No Change]
-
-**Description**: [What "doing nothing" would mean]
-
-**Why Not Acceptable**: [Why the problem needed solving]
+**代码位置**:
+- `[文件/路径 1]`: [那里有什么]
+- `[文件/路径 2]`: [那里有什么]
 
 ---
 
-## Consequences
+## 考虑的替代方案
 
-### Positive Consequences (Benefits Realized)
+*(这些可能是推断的或与用户澄清的)*
 
-✅ **[Benefit 1]**: [How the implementation provides this]
+### 替代方案 1: [方法名称]
 
-✅ **[Benefit 2]**: [Impact]
+**描述**: [此替代方案会是什么样]
 
-✅ **[Benefit 3]**: [Impact]
+**优点**:
+- ✅ [优势 1]
+- ✅ [优势 2]
 
-### Negative Consequences (Trade-offs Accepted)
+**缺点**:
+- ❌ [劣势 1]
+- ❌ [劣势 2]
 
-⚠️ **[Trade-off 1]**: [What was sacrificed or made harder]
+**未选择原因**: [原因 — 来自用户澄清或推断]
 
-⚠️ **[Trade-off 2]**: [Limitation or cost]
+### 替代方案 2: [方法名称]
 
-⚠️ **[Trade-off 3]**: [Complexity or maintenance burden]
+**描述**: [此替代方案会是什么样]
 
-### Neutral Consequences (Observations)
+**优点**:
+- ✅ [优势 1]
+- ✅ [优势 2]
 
-ℹ️ **[Observation 1]**: [Emergent property or side effect]
+**缺点**:
+- ❌ [劣势 1]
+- ❌ [劣势 2]
 
-ℹ️ **[Observation 2]**: [Unexpected outcome]
+**未选择原因**: [原因]
 
----
+### 替代方案 3: 维持现状 / 不做更改
 
-## Implementation Notes
+**描述**: ["不做任何改变"意味着什么]
 
-**Patterns Used**:
-- [Pattern 1]: [Where and why]
-- [Pattern 2]: [Where and why]
-
-**Dependencies Introduced**:
-- [Dependency 1]: [Why needed]
-- [Dependency 2]: [Why needed]
-
-**Performance Characteristics**:
-- Time complexity: [O(n), etc.]
-- Space complexity: [Memory usage]
-- Bottlenecks: [Known performance concerns]
-
-**Thread Safety**:
-- [Thread safety approach — single-threaded, mutex-protected, lock-free, etc.]
-
-**Testing Strategy**:
-- [How this is tested — unit tests, integration tests, etc.]
-- Coverage: [Estimated or measured]
+**为什么不可接受**: [为什么必须解决这个问题]
 
 ---
 
-## Validation
+## 后果
 
-**How We Know This Works**:
-- ✅ [Evidence 1 — e.g., "6 months in production without issues"]
-- ✅ [Evidence 2 — e.g., "handles 10k entities at 60 FPS"]
-- ⚠️ [Evidence 3 — e.g., "works but needs monitoring"]
+### 正面后果 (已获得的收益)
 
-**Known Issues** (discovered during analysis):
-- ⚠️ [Issue 1]: [Problem and potential fix]
-- ⚠️ [Issue 2]: [Problem and potential fix]
+✅ **[收益 1]**: [实现如何提供此收益]
 
-**Risks**:
-- [Risk 1]: [Potential problem if X happens]
-- [Risk 2]: [Scalability concern]
+✅ **[收益 2]**: [影响]
 
----
+✅ **[收益 3]**: [影响]
 
-## Open Questions
+### 负面后果 (接受的权衡)
 
-**Unresolved During Reverse-Documentation**:
-1. **[Question 1]**: [What's unclear about the decision or implementation?]
-   - Needs clarification from: [Who]
-   - Impact if unresolved: [Consequence]
+⚠️ **[权衡 1]**: [牺牲了什么或使什么变得更困难]
 
-2. **[Question 2]**: [What needs to be decided for future work?]
+⚠️ **[权衡 2]**: [限制或代价]
+
+⚠️ **[权衡 3]**: [复杂性或维护负担]
+
+### 中性后果 (观察结果)
+
+ℹ️ **[观察 1]**: [附带产生的影响或副作用]
+
+ℹ️ **[观察 2]**: [意外的结果]
 
 ---
 
-## Follow-Up Work
+## 实现说明
 
-**Immediate**:
-- [ ] [Task 1 — e.g., "Add missing unit tests"]
-- [ ] [Task 2 — e.g., "Document edge case handling"]
+**使用的模式**:
+- [模式 1]: [在哪里以及为什么]
+- [模式 2]: [在哪里以及为什么]
 
-**Short-Term**:
-- [ ] [Task 3 — e.g., "Refactor X for clarity"]
-- [ ] [Task 4 — e.g., "Add performance monitoring"]
+**引入的依赖**:
+- [依赖 1]: [为什么需要]
+- [依赖 2]: [为什么需要]
 
-**Long-Term**:
-- [ ] [Task 5 — e.g., "Revisit decision when Y is available"]
+**性能特征**:
+- 时间复杂度: [O(n) 等]
+- 空间复杂度: [内存使用]
+- 瓶颈: [已知的性能问题]
 
----
+**线程安全**:
+- [线程安全方法 — 单线程、互斥锁保护、无锁 等]
 
-## Related Decisions
-
-**Depends On** (ADRs this builds upon):
-- [ADR-XXX]: [Related decision]
-
-**Influences** (ADRs affected by this):
-- [ADR-YYY]: [How this impacts it]
-
-**Supersedes**:
-- [ADR-ZZZ]: [Old decision this replaces, if any]
-
-**Superseded By**:
-- [None yet | ADR-WWW if this decision is later replaced]
+**测试策略**:
+- [如何测试 — 单元测试、集成测试等]
+- 覆盖率: [估算或实测]
 
 ---
 
-## References
+## 验证
 
-**Code Locations**:
-- `[path/file 1]`: [Primary implementation]
-- `[path/file 2]`: [Related code]
+**如何知道此方案有效**:
+- ✅ [证据 1 — 例如 "在生产环境中运行 6 个月无问题"]
+- ✅ [证据 2 — 例如 "以 60 FPS 处理 10k 实体"]
+- ⚠️ [证据 3 — 例如 "可以工作但需要监控"]
 
-**External Resources**:
-- [Article/Book]: [Relevant pattern or technique reference]
-- [Documentation]: [Engine or library docs consulted]
+**已知问题** (分析中发现):
+- ⚠️ [问题 1]: [问题和可能的修复方案]
+- ⚠️ [问题 2]: [问题和可能的修复方案]
 
-**Design Documents**:
-- [GDD Section]: [If this implements a design]
-
----
-
-## Version History
-
-| Date | Author | Changes |
-|------|--------|---------|
-| [Date] | Claude (reverse-doc) | Initial reverse-documentation from `[source path]` |
-| [Date] | [User] | Clarified rationale for [X] |
+**风险**:
+- [风险 1]: [如果 X 发生可能产生的问题]
+- [风险 2]: [可扩展性问题]
 
 ---
 
-## Status Legend
+## 未解决的问题
 
-- **Proposed**: Under discussion, not implemented
-- **Accepted**: Decided, implementation in progress
-- **Deprecated**: No longer recommended, but may exist in code
-- **Superseded**: Replaced by another decision
-- **Reverse-Documented**: Created after implementation (this document)
+**逆向文档化过程中未解决的**:
+1. **[问题 1]**: [决策或实现中有什么是尚不清楚的？]
+   - 需要以下人员澄清: [谁]
+   - 如果不解决的后果: [影响]
 
----
-
-**Current Status**: **Reverse-Documented**
+2. **[问题 2]**: [未来工作需要决定什么？]
 
 ---
 
-*This ADR was generated by `/reverse-document architecture [path]`*
+## 后续工作
+
+**立即**:
+- [ ] [任务 1 — 例如 "添加缺失的单元测试"]
+- [ ] [任务 2 — 例如 "记录边界情况处理"]
+
+**短期**:
+- [ ] [任务 3 — 例如 "重构 X 以提高清晰度"]
+- [ ] [任务 4 — 例如 "添加性能监控"]
+
+**长期**:
+- [ ] [任务 5 — 例如 "当 Y 可用时重新评估此决策"]
 
 ---
 
-## Appendix: Code Snippets
+## 相关决策
 
-**Key Implementation Pattern**:
+**依赖于** (此决策所基于的 ADR):
+- [ADR-XXX]: [相关决策]
 
-```[language]
-[Code snippet showing the core pattern or decision]
+**影响** (受此决策影响的 ADR):
+- [ADR-YYY]: [此决策如何影响它]
+
+**取代**:
+- [ADR-ZZZ]: [此决策替换的旧决策，如果有的话]
+
+**被...取代**:
+- [尚无 | ADR-WWW 如果此决策后来被替换]
+
+---
+
+## 参考资料
+
+**代码位置**:
+- `[路径/文件 1]`: [主要实现]
+- `[路径/文件 2]`: [相关代码]
+
+**外部资源**:
+- [文章/书籍]: [相关模式或技术参考]
+- [文档]: [参考的引擎或库文档]
+
+**设计文档**:
+- [GDD 章节]: [如果实现了某个设计]
+
+---
+
+## 版本历史
+
+| 日期 | 作者 | 变更 |
+|------|------|------|
+| [日期] | Claude (逆向文档化) | 从 `[源路径]` 初始逆向文档化 |
+| [日期] | [用户] | 澄清了 [X] 的理由 |
+
+---
+
+## 状态说明
+
+- **已提议**: 正在讨论中，尚未实现
+- **已接受**: 已决定，实现进行中
+- **已废弃**: 不再推荐，但可能仍存在于代码中
+- **已取代**: 被另一个决策替换
+- **逆向文档化**: 在实现后创建 (本文档)
+
+---
+
+**当前状态**: **逆向文档化**
+
+---
+
+*此 ADR 由 `/reverse-document architecture [路径]` 生成*
+
+---
+
+## 附录: 代码片段
+
+**关键实现模式**:
+
+```[语言]
+[展示核心模式或决策的代码片段]
 ```
 
-**Rationale**: [Why this code structure embodies the decision]
+**理由**: [为什么此代码结构体现了该决策]
 
-**Alternative Approach** (not chosen):
+**替代方法** (未选择):
 
-```[language]
-[Code snippet showing what the alternative would look like]
+```[语言]
+[展示替代方案会是什么样子的代码片段]
 ```
 
-**Why Not**: [Why the implemented approach was preferred]
+**为什么不选**: [为什么更倾向于已实现的方法]

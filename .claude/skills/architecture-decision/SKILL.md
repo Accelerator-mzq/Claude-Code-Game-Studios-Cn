@@ -1,100 +1,97 @@
 ---
 name: architecture-decision
-description: "Creates an Architecture Decision Record (ADR) documenting a significant technical decision, its context, alternatives considered, and consequences. Every major technical choice should have an ADR."
-argument-hint: "[title]"
+description: "创建架构决策记录（Architecture Decision Record, ADR），记录重大技术决策及其背景、备选方案和影响后果。每个重大技术选择都应有对应的 ADR。"
+argument-hint: "[标题]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-1. **Determine the next ADR number** by scanning `docs/architecture/` for
-   existing ADRs.
+1. **确定下一个 ADR 编号**，通过扫描 `docs/architecture/` 目录中已有的 ADR 文件。
 
-2. **Gather context** by reading related code and existing ADRs.
+2. **收集上下文**，阅读相关代码和已有 ADR。
 
-3. **Guide the user through the decision** by asking clarifying questions if
-   the title alone is not sufficient.
+3. **引导用户完成决策**，如果仅凭标题不足以明确决策内容，则提出澄清问题。
 
-4. **Generate the ADR** following this format:
+4. **生成 ADR**，遵循以下格式：
 
 ```markdown
-# ADR-[NNNN]: [Title]
+# ADR-[NNNN]: [标题]
 
-## Status
-[Proposed | Accepted | Deprecated | Superseded by ADR-XXXX]
+## 状态
+[拟议 | 已采纳 | 已弃用 | 被 ADR-XXXX 取代]
 
-## Date
-[Date of decision]
+## 日期
+[决策日期]
 
-## Context
+## 背景
 
-### Problem Statement
-[What problem are we solving? Why does this decision need to be made now?]
+### 问题描述
+[我们要解决什么问题？为什么现在需要做出这个决策？]
 
-### Constraints
-- [Technical constraints]
-- [Timeline constraints]
-- [Resource constraints]
-- [Compatibility requirements]
+### 约束条件
+- [技术约束]
+- [时间约束]
+- [资源约束]
+- [兼容性要求]
 
-### Requirements
-- [Must support X]
-- [Must perform within Y budget]
-- [Must integrate with Z]
+### 需求
+- [必须支持 X]
+- [必须在 Y 预算内执行]
+- [必须与 Z 集成]
 
-## Decision
+## 决策
 
-[The specific technical decision made, described in enough detail for someone
-to implement it.]
+[具体的技术决策内容，描述足够详细以便他人实施。]
 
-### Architecture Diagram
-[ASCII diagram or description of the system architecture this creates]
+### 架构图
+[此决策所创建的系统架构的 ASCII 图表或描述]
 
-### Key Interfaces
-[API contracts or interface definitions this decision creates]
+### 关键接口
+[此决策创建的 API 契约或接口定义]
 
-## Alternatives Considered
+## 备选方案
 
-### Alternative 1: [Name]
-- **Description**: [How this would work]
-- **Pros**: [Advantages]
-- **Cons**: [Disadvantages]
-- **Rejection Reason**: [Why this was not chosen]
+### 备选方案 1：[名称]
+- **描述**：[工作原理]
+- **优点**：[优势]
+- **缺点**：[劣势]
+- **否决原因**：[为何未被采用]
 
-### Alternative 2: [Name]
-- **Description**: [How this would work]
-- **Pros**: [Advantages]
-- **Cons**: [Disadvantages]
-- **Rejection Reason**: [Why this was not chosen]
+### 备选方案 2：[名称]
+- **描述**：[工作原理]
+- **优点**：[优势]
+- **缺点**：[劣势]
+- **否决原因**：[为何未被采用]
 
-## Consequences
+## 影响
 
-### Positive
-- [Good outcomes of this decision]
+### 正面影响
+- [此决策带来的良好结果]
 
-### Negative
-- [Trade-offs and costs accepted]
+### 负面影响
+- [接受的权衡和代价]
 
-### Risks
-- [Things that could go wrong]
-- [Mitigation for each risk]
+### 风险
+- [可能出现的问题]
+- [各项风险的应对措施]
 
-## Performance Implications
-- **CPU**: [Expected impact]
-- **Memory**: [Expected impact]
-- **Load Time**: [Expected impact]
-- **Network**: [Expected impact, if applicable]
+## 性能影响
+- **CPU**：[预期影响]
+- **内存**：[预期影响]
+- **加载时间**：[预期影响]
+- **网络**：[预期影响（如适用）]
 
-## Migration Plan
-[If this changes existing code, how do we get from here to there?]
+## 迁移计划
+[如果此决策涉及现有代码变更，如何从当前状态过渡到目标状态？]
 
-## Validation Criteria
-[How will we know this decision was correct? What metrics or tests?]
+## 验证标准
+[如何判断此决策是否正确？采用哪些指标或测试？]
 
-## Related Decisions
-- [Links to related ADRs]
-- [Links to related design documents]
+## 相关决策
+- [关联 ADR 链接]
+- [关联设计文档链接]
 ```
 
-5. **Save the ADR** to `docs/architecture/adr-[NNNN]-[slug].md`.
+5. **保存 ADR** 至 `docs/architecture/adr-[NNNN]-[slug].md`。

@@ -1,1586 +1,1550 @@
-# Claude Code Game Studios -- Complete Workflow Guide
+# Claude Code Game Studios -- 完整工作流指南
 
-> **How to go from zero to a shipped game using the Agent Architecture.**
+> **如何从零开始，使用代理(Agent)架构打造并发布一款游戏。**
 >
-> This guide walks you through every phase of game development using the
-> 48-agent system, 37 slash commands, and automated hooks. It assumes you
-> have Claude Code installed and are working from the project root.
+> 本指南将带你使用 48 个代理系统、37 个斜杠命令和自动化钩子，
+> 走过游戏开发的每个阶段。假设你已安装 Claude Code 并在项目根目录工作。
 
 ---
 
-## Table of Contents
+## 目录
 
-1. [Phase 0: Setup & Configuration](#phase-0-setup--configuration)
-2. [Phase 1: Ideation & Concept](#phase-1-ideation--concept)
-3. [Phase 2: Pre-Production & Design](#phase-2-pre-production--design)
-4. [Phase 3: Prototyping & Validation](#phase-3-prototyping--validation)
-5. [Phase 4: Production Sprint Workflow](#phase-4-production-sprint-workflow)
-6. [Phase 5: Implementation Deep-Dive](#phase-5-implementation-deep-dive)
-7. [Phase 6: Testing & Quality Assurance](#phase-6-testing--quality-assurance)
-8. [Phase 7: Polish & Optimization](#phase-7-polish--optimization)
-9. [Phase 8: Localization & Accessibility](#phase-8-localization--accessibility)
-10. [Phase 9: Release & Launch](#phase-9-release--launch)
-11. [Phase 10: Post-Launch & Live Ops](#phase-10-post-launch--live-ops)
-12. [Appendix A: Agent Quick-Reference](#appendix-a-agent-quick-reference)
-13. [Appendix B: Slash Command Quick-Reference](#appendix-b-slash-command-quick-reference)
-14. [Appendix C: Common Workflows](#appendix-c-common-workflows)
+1. [阶段 0：设置与配置](#阶段-0设置与配置)
+2. [阶段 1：创意与概念](#阶段-1创意与概念)
+3. [阶段 2：前期制作与设计](#阶段-2前期制作与设计)
+4. [阶段 3：原型验证](#阶段-3原型验证)
+5. [阶段 4：生产冲刺工作流](#阶段-4生产冲刺工作流)
+6. [阶段 5：实现深入](#阶段-5实现深入)
+7. [阶段 6：测试与质量保证](#阶段-6测试与质量保证)
+8. [阶段 7：打磨与优化](#阶段-7打磨与优化)
+9. [阶段 8：本地化与无障碍](#阶段-8本地化与无障碍)
+10. [阶段 9：发布与上线](#阶段-9发布与上线)
+11. [阶段 10：上线后与在线运营](#阶段-10上线后与在线运营)
+12. [附录 A：代理快速参考](#附录-a代理快速参考)
+13. [附录 B：斜杠命令快速参考](#附录-b斜杠命令快速参考)
+14. [附录 C：常用工作流](#附录-c常用工作流)
 
 ---
 
-## Phase 0: Setup & Configuration
+## 阶段 0：设置与配置
 
-### What You Need
+### 你需要什么
 
-Before you start, make sure you have:
+开始之前，请确保你拥有：
 
-- **Claude Code** installed and working
-- **Git** with Git Bash (Windows) or standard terminal (Mac/Linux)
-- **jq** (optional but recommended -- hooks fall back to `grep` if missing)
-- **Python 3** (optional -- some hooks use it for JSON validation)
+- **Claude Code** 已安装并可正常使用
+- **Git**，搭配 Git Bash（Windows）或标准终端（Mac/Linux）
+- **jq**（可选但推荐 — 缺少时钩子会回退到 `grep`）
+- **Python 3**（可选 — 部分钩子使用它进行 JSON 验证）
 
-### Step 0.1: Clone and Configure
+### 步骤 0.1：克隆并配置
 
-Clone the repository and open it in your editor:
+克隆仓库并在编辑器中打开：
 
 ```bash
 git clone <repo-url> my-game
 cd my-game
 ```
 
-### Step 0.2: Run /start (Recommended for New Users)
+### 步骤 0.2：运行 /start（推荐新用户使用）
 
-If you're new to the project or don't yet know what game you're building:
+如果你是项目新手或还不知道要做什么游戏：
 
 ```
 /start
 ```
 
-This guided onboarding asks where you are (no idea, vague idea, clear concept,
-existing work) and routes you to the right phase. Skip this if you already have
-a game concept and engine decision.
+这个引导式入门流程会询问你目前的状态（没有想法、模糊想法、清晰概念、
+已有作品）并将你引导到正确的阶段。如果你已经有游戏概念和引擎选择，可以跳过。
 
-### Step 0.3: Choose Your Engine
+### 步骤 0.3：选择你的引擎
 
-Run `/setup-engine` in Claude Code. This is the single most important
-configuration step -- it tells every agent what engine, language, and toolchain
-you're using:
+在 Claude Code 中运行 `/setup-engine`。这是最重要的单一
+配置步骤 — 它告诉每个代理你使用的引擎、语言和工具链：
 
 ```bash
 /setup-engine godot 4.6
 ```
 
-Or run `/setup-engine` with no arguments to get an interactive recommendation
-based on your game's needs (2D/3D, platforms, team size, language preferences).
+或者不带参数运行 `/setup-engine`，根据你的游戏需求（2D/3D、平台、团队规模、
+语言偏好）获得交互式推荐。
 
-**What `/setup-engine` does:**
+**`/setup-engine` 的作用：**
 
-- Pins the engine and version in `CLAUDE.md`
-- Populates `.claude/docs/technical-preferences.md` with naming conventions,
-  performance budgets, and engine-specific defaults
-- Detects knowledge gaps (engine version newer than LLM training data) and
-  fetches current docs from the web so agents suggest correct APIs
-- Creates version-pinned reference docs in `docs/engine-reference/`
+- 在 `CLAUDE.md` 中锁定引擎和版本
+- 用命名约定、性能预算和引擎特定默认值填充 `.claude/docs/technical-preferences.md`
+- 检测知识缺口（引擎版本比 LLM 训练数据更新）并从网络获取最新文档，
+  以确保代理推荐正确的 API
+- 在 `docs/engine-reference/` 中创建版本锁定的参考文档
 
-**Why this matters:** Once you set the engine, the system knows which
-engine-specialist agents to use. If you pick Godot, agents like
-`godot-specialist`, `godot-gdscript-specialist`, and `godot-shader-specialist`
-become your go-to experts. The Unity and Unreal specialists remain available
-but won't be primary.
+**为什么这很重要：** 一旦设定了引擎，系统就知道该使用哪些引擎专家代理。
+如果你选择了 Godot，`godot-specialist`、`godot-gdscript-specialist` 和
+`godot-shader-specialist` 等代理将成为你的首选专家。Unity 和 Unreal 专家
+仍然可用，但不会是主要选择。
 
-> **Manual alternative:** You can also edit the Technology Stack section in
-> `CLAUDE.md` directly if you prefer.
+> **手动替代方案：** 如果你愿意，也可以直接编辑 `CLAUDE.md` 中的技术栈部分。
 
-### Step 0.3: Verify Hooks Are Working
+### 步骤 0.3：验证钩子是否工作
 
-Start a new Claude Code session. You should see output from the
-`session-start.sh` hook:
+启动一个新的 Claude Code 会话。你应该看到 `session-start.sh` 钩子的输出：
 
 ```
-=== Claude Code Game Studios -- Session Context ===
-Branch: main
-Recent commits:
-  abc1234 Initial commit
+=== Claude Code Game Studios -- 会话上下文 ===
+分支：main
+最近提交：
+  abc1234 初始提交
 ===================================
 ```
 
-If you see this, hooks are working. If not, check `.claude/settings.json` to
-make sure the hook paths are correct for your OS.
+如果你看到了这个，说明钩子工作正常。如果没有，请检查 `.claude/settings.json`
+确保钩子路径对你的操作系统是正确的。
 
-### Step 0.4: Create Your Directory Structure
+### 步骤 0.4：创建你的目录结构
 
-The directories listed in `CLAUDE.md` don't all exist yet. Create them as
-needed -- the system expects this layout:
+`CLAUDE.md` 中列出的目录并不都存在。按需创建 — 系统期望以下布局：
 
 ```
-src/                  # Game source code
-  core/               # Engine/framework code
-  gameplay/           # Gameplay systems
-  ai/                 # AI systems
-  networking/         # Multiplayer code
-  ui/                 # UI code
-  tools/              # Dev tools
-assets/               # Game assets
-  art/                # Sprites, models, textures
-  audio/              # Music, SFX
-  vfx/                # Particle effects
-  shaders/            # Shader files
-  data/               # JSON config/balance data
-design/               # Design documents
-  gdd/                # Game design documents
-  narrative/          # Story, lore, dialogue
-  levels/             # Level design documents
-  balance/            # Balance spreadsheets and data
-docs/                 # Technical documentation
-  architecture/       # Architecture Decision Records
-  api/                # API documentation
-  postmortems/        # Post-mortems
-tests/                # Test suites
-prototypes/           # Throwaway prototypes
-production/           # Sprint plans, milestones, releases
+src/                  # 游戏源代码
+  core/               # 引擎/框架代码
+  gameplay/           # 游戏系统
+  ai/                 # AI 系统
+  networking/         # 多人游戏代码
+  ui/                 # UI 代码
+  tools/              # 开发工具
+assets/               # 游戏资源
+  art/                # 精灵、模型、贴图
+  audio/              # 音乐、音效
+  vfx/                # 粒子效果
+  shaders/            # 着色器文件
+  data/               # JSON 配置/平衡数据
+design/               # 设计文档
+  gdd/                # 游戏设计文档
+  narrative/          # 故事、背景、对话
+  levels/             # 关卡设计文档
+  balance/            # 平衡表格和数据
+docs/                 # 技术文档
+  architecture/       # 架构决策记录
+  api/                # API 文档
+  postmortems/        # 事后复盘
+tests/                # 测试套件
+prototypes/           # 一次性原型
+production/           # 冲刺计划、里程碑、发布
   sprints/
   milestones/
   releases/
 ```
 
-> **Tip:** You don't need all of these on day one. Create directories as you
-> reach the phase that needs them. The important thing is to follow this
-> structure when you do create them, because the **rules system** enforces
-> standards based on file paths. Code in `src/gameplay/` gets gameplay rules,
-> code in `src/ai/` gets AI rules, and so on.
+> **提示：** 你不需要第一天就创建所有目录。在到达需要它们的阶段时再创建。
+> 重要的是创建时要遵循此结构，因为**规则系统**基于文件路径执行标准。
+> `src/gameplay/` 中的代码遵循游戏系统规则，`src/ai/` 中的代码遵循 AI 规则，
+> 以此类推。
 
 ---
 
-## Phase 1: Ideation & Concept
+## 阶段 1：创意与概念
 
-### What Happens in This Phase
+### 本阶段内容
 
-You go from "no idea" or "vague idea" to a structured game concept document.
-This is where you figure out **what** you're making.
+你从"没有想法"或"模糊想法"转变为一个结构化的游戏概念文档。
+这是确定你要做**什么**的阶段。
 
-> **Tip:** If you ran `/start` in Phase 0 and chose Path A or B, you're already
-> here. `/start` routes you to `/brainstorm` automatically.
+> **提示：** 如果你在阶段 0 运行了 `/start` 并选择了路径 A 或 B，你已经在
+> 这里了。`/start` 会自动将你引导到 `/brainstorm`。
 
-### Step 1.1: Brainstorm With `/brainstorm`
+### 步骤 1.1：使用 `/brainstorm` 头脑风暴
 
-This is your starting point if you skipped `/start`. Run the brainstorm skill:
+如果你跳过了 `/start`，这是你的起点。运行头脑风暴技能：
 
 ```
 /brainstorm
 ```
 
-Or with a genre hint:
+或带上类型提示：
 
 ```
 /brainstorm roguelike deckbuilder
 ```
 
-**What happens:** The brainstorm skill guides you through a collaborative 6-phase
-ideation process using professional studio techniques:
+**过程：** 头脑风暴技能引导你使用专业工作室技术进行协作式 6 阶段创意过程：
 
-Agent: "Let's explore game concepts. What genre or theme interests you? (Optional,
-       or leave blank for open exploration)"
+代理："让我们探索游戏概念。你对什么类型或主题感兴趣？（可选，
+       或留空进行开放探索）"
 
-User: "Roguelike deckbuilder"
+用户："Roguelike 牌组构筑"
 
-Agent: "I've generated 10 concept seeds combining roguelike and deckbuilder mechanics.
-       Here are the top 3:
+代理："我已生成了 10 个结合 roguelike 和牌组构筑机制的概念种子。
+       以下是前 3 个：
 
-       **Concept A: Spell Compiler** - Code-themed deckbuilder where cards are functions
-       **Concept B: Memory Palace** - Psychological thriller where cards are memories
-       **Concept C: Ecosystem Builder** - Nature theme where cards are species
+       **概念 A：咒语编译器** - 以代码为主题的牌组构筑，卡牌即函数
+       **概念 B：记忆宫殿** - 心理惊悚主题，卡牌即记忆
+       **概念 C：生态建造者** - 自然主题，卡牌即物种
 
-       Which concept(s) would you like me to develop with MDA analysis?"
+       你想让我对哪些概念进行 MDA 分析？"
 
-User: "Concept B sounds unique"
+用户："概念 B 很独特"
 
-Agent: [Performs MDA Analysis, Player Motivation mapping, Audience Targeting, Verb-First
-       Design for Concept B, showing work at each stage and asking for feedback]
+代理：[对概念 B 进行 MDA 分析、玩家动机映射、受众定位、动词优先设计，
+       每个阶段展示工作并请求反馈]
 
-       "Here's the complete analysis. Should I formalize this into a structured
-       concept document?"
+       "这是完整分析。我是否将其形式化为结构化概念文档？"
 
-User: "Yes"
+用户："是"
 
-Agent: [Creates structured concept document with top ideas, target audience,
-       core mechanics, and emotional goals]
+代理：[创建包含核心创意、目标受众、核心机制和情感目标的结构化概念文档]
 
-### Step 1.2: Document the Winning Concept
+### 步骤 1.2：记录胜出概念
 
-Take the brainstorm output and formalize it. Use the **game concept template**:
+将头脑风暴的输出形式化。使用**游戏概念模板**：
 
 ```
-Ask Claude to create a game concept document using the template at
-.claude/docs/templates/game-concept.md
+让 Claude 使用 .claude/docs/templates/game-concept.md 模板
+创建游戏概念文档
 ```
 
-This template includes:
-- Elevator pitch (one sentence)
-- Core fantasy (what the player imagines themselves doing)
-- MDA breakdown
-- Target audience (Bartle types, demographics)
-- Core loop diagram
-- Unique selling proposition
-- Comparable titles and differentiation
+此模板包括：
+- 一句话推介
+- 核心幻想（玩家想象自己在做什么）
+- MDA 分析
+- 目标受众（Bartle 类型、人口统计）
+- 核心循环图
+- 独特卖点
+- 可比较的标题和差异化
 
-### Step 1.3: Define Your Game Pillars
+### 步骤 1.3：定义你的游戏支柱
 
-Before you go further, lock in your **game pillars** -- the 3-5 non-negotiable
-design values that guide every decision. Use the template:
+在继续之前，锁定你的**游戏支柱** — 指导每个决策的 3-5 个不可妥协的
+设计价值观。使用模板：
 
 ```
-Ask Claude to create a game pillars document using the template at
-.claude/docs/templates/game-pillars.md
+让 Claude 使用 .claude/docs/templates/game-pillars.md 模板
+创建游戏支柱文档
 ```
 
-Example pillars:
-- **Meaningful Choices**: Every decision changes something permanently
-- **Emergent Storytelling**: Systems create unique narratives, not scripts
-- **Accessible Depth**: Easy to start, deep to master
+示例支柱：
+- **有意义的选择**：每个决策都会永久改变某些东西
+- **涌现叙事**：系统创造独特的叙事，而非脚本
+- **可及的深度**：易入门，深度精通
 
-Also define **anti-pillars** -- things your game intentionally avoids:
-- We do NOT pursue: photorealism, competitive balance, linear narrative
+同时定义**反支柱** — 你的游戏有意避免的东西：
+- 我们**不**追求：照片级写实、竞技平衡、线性叙事
 
-> **When you're happy with your concept and pillars, you're ready for
-> Pre-Production.**
+> **当你对概念和支柱满意时，就可以进入前期制作了。**
 
 ---
 
-## Phase 2: Pre-Production & Design
+## 阶段 2：前期制作与设计
 
-### What Happens in This Phase
+### 本阶段内容
 
-You create all the design documents that define how your game works. Nothing
-gets coded yet -- this is pure design and architecture.
+你创建定义游戏运作方式的所有设计文档。此时还不写代码 —
+纯粹是设计和架构。
 
-### Step 2.1: Decompose Your Concept Into Systems
+### 步骤 2.1：将概念分解为系统
 
-Before writing individual GDDs, enumerate all the systems your game needs:
+在编写单个 GDD 之前，枚举游戏需要的所有系统：
 
 ```
 /map-systems
 ```
 
-This creates `design/gdd/systems-index.md` — a master tracking document that:
+这会创建 `design/gdd/systems-index.md` — 一个主跟踪文档，它：
+- 列出游戏需要的每个系统（战斗、移动、UI 等）
+- 映射系统之间的依赖关系
+- 分配优先级层级（MVP、垂直切片、Alpha、完整愿景）
+- 确定设计顺序（基础 → 核心 → 功能 → 表现 → 打磨）
 
-- Lists every system your game needs (combat, movement, UI, etc.)
-- Maps dependencies between systems
-- Assigns priority tiers (MVP, Vertical Slice, Alpha, Full Vision)
-- Determines design order (Foundation → Core → Feature → Presentation → Polish)
-
-Then design each system in dependency order:
+然后按依赖顺序设计每个系统：
 
 ```
 /map-systems next
 ```
 
-This picks the highest-priority undesigned system and hands off to `/design-system`,
-which guides you through creating its GDD section by section. Each completed GDD
-goes through `/design-review` before the next starts.
+这会选取最高优先级的未设计系统，交给 `/design-system`，
+引导你逐章节创建其 GDD。每个完成的 GDD 在下一个开始前都要经过 `/design-review`。
 
-You can also write a specific system's GDD directly:
+你也可以直接编写特定系统的 GDD：
 
 ```
 /design-system combat-system
 ```
 
-### Step 2.2: Create the Game Design Document (GDD)
+### 步骤 2.2：创建游戏设计文档（GDD）
 
-For each major system in your game, create a design document in `design/gdd/`.
-Use the template:
-
-```
-Ask Claude to create a GDD using the template at
-.claude/docs/templates/game-design-document.md
-```
-
-**The `design-docs` rule** (`.claude/rules/design-docs.md`) requires every GDD
-to have these 8 sections:
-
-| # | Section | What Goes Here |
-|---|---------|---------------|
-| 1 | **Overview** | One-paragraph summary of the system |
-| 2 | **Player Fantasy** | What the player imagines/feels when using this system |
-| 3 | **Detailed Rules** | Unambiguous mechanical rules -- if two designers read this, they'd build the same thing |
-| 4 | **Formulas** | Every calculation, with variable definitions and ranges |
-| 5 | **Edge Cases** | What happens in weird situations? Explicitly resolved. |
-| 6 | **Dependencies** | What other systems this connects to (bidirectional) |
-| 7 | **Tuning Knobs** | Which values designers can safely change, with safe ranges |
-| 8 | **Acceptance Criteria** | How do you test that this works? Specific, measurable. |
-
-**Example GDD files you might create:**
-- `design/gdd/core-loop.md` -- The fundamental play loop
-- `design/gdd/combat-system.md` -- How combat works
-- `design/gdd/progression-system.md` -- How the player advances
-- `design/gdd/inventory-system.md` -- Item management
-- `design/gdd/ability-system.md` -- Player abilities and skills
-
-### Step 2.2: Use the Game Designer Agent for Complex Mechanics
-
-For systems that need deep mechanical thinking, delegate to `game-designer`:
+为游戏中的每个主要系统，在 `design/gdd/` 中创建设计文档。
+使用模板：
 
 ```
-Ask the game-designer agent to design a crafting system that supports
-emergent recipes (players discover combinations) with a skill progression
-tied to experimentation. The system should feel rewarding without being
-grindy. Target audience is Explorers and Achievers.
+让 Claude 使用 .claude/docs/templates/game-design-document.md 模板
+创建 GDD
 ```
 
-**What happens:** The `game-designer` agent collaborates with you to create the design:
+**`design-docs` 规则**（`.claude/rules/design-docs.md`）要求每个 GDD
+具有以下 8 个部分：
 
-Agent: "I'll help design the crafting system. First, some questions:
-       - Should recipes be discovered through experimentation or taught explicitly?
-       - How punishing should failed crafting attempts be?
-       - Target audience - primarily Explorers or Achievers?"
+| # | 章节 | 内容 |
+|---|------|------|
+| 1 | **概述** | 系统的一段式摘要 |
+| 2 | **玩家幻想** | 玩家使用此系统时的想象/感受 |
+| 3 | **详细规则** | 无歧义的机械规则 — 如果两个设计师读这个，他们会构建出同样的东西 |
+| 4 | **公式** | 每个计算，带有变量定义和范围 |
+| 5 | **边缘情况** | 奇怪情况下会发生什么？明确解决。 |
+| 6 | **依赖项** | 连接到哪些其他系统（双向） |
+| 7 | **调节旋钮** | 设计师可以安全更改的值，附带安全范围 |
+| 8 | **验收标准** | 如何测试此功能是否正常？具体、可衡量。 |
 
-User: "Discovered through experimentation. Moderate punishment - waste ingredients
-      but gain partial skill XP. Target Explorers primarily."
+**你可能创建的示例 GDD 文件：**
+- `design/gdd/core-loop.md` — 基本游戏循环
+- `design/gdd/combat-system.md` — 战斗系统运作方式
+- `design/gdd/progression-system.md` — 玩家如何进阶
+- `design/gdd/inventory-system.md` — 物品管理
+- `design/gdd/ability-system.md` — 玩家能力和技能
 
-Agent: "Based on that, here are three mechanical approaches:
+### 步骤 2.2：使用游戏设计师代理处理复杂机制
 
-       **Option A: Pure Discovery** - No hints, full freedom
-       Pros: Maximum exploration reward
-       Cons: High frustration risk, may need wiki
+对于需要深度机械思考的系统，委托给 `game-designer`：
 
-       **Option B: Hint System** - Visual cues when ingredients are compatible
-       Pros: Guided exploration, less frustration
-       Cons: Less satisfying 'eureka' moments
+```
+让 game-designer 代理设计一个制作系统，支持涌现配方
+（玩家发现组合），技能进度与实验挂钩。系统应该有回报感但不会枯燥。
+目标受众是探索者和成就者。
+```
 
-       **Option C: Hybrid** - Free experimentation + optional journal hints unlocked by skill
-       Pros: Supports both playstyles, progressive scaffolding
-       Cons: More complex to implement
+**过程：** `game-designer` 代理与你协作创建设计：
 
-       I recommend Option C because it respects Explorers while providing safety nets,
-       and the journal hints can be gated behind skill progression for Achievers.
-       Which approach fits your vision?"
+代理："我来帮你设计制作系统。首先，几个问题：
+       - 配方应该通过实验发现还是明确教导？
+       - 失败的制作尝试惩罚应该多重？
+       - 目标受众 — 主要是探索者还是成就者？"
 
-User: "Option C sounds perfect"
+用户："通过实验发现。中等惩罚 — 浪费材料但获得部分技能经验。主要面向探索者。"
 
-Agent: [Drafts GDD sections iteratively - Overview, Player Fantasy, Detailed Rules,
-       Formulas, Edge Cases - showing each and incorporating feedback]
+代理："基于此，这里有三种机械方案：
 
-       "I need detailed formula work for success rates and skill progression curves.
-       Let me consult the systems-designer for the math."
+       **方案 A：纯发现** — 无提示，完全自由
+       优点：最大探索奖励
+       缺点：高挫败风险，可能需要 wiki
 
-Agent: [After consultation] "Complete draft ready with formulas validated by
-       systems-designer. The economy-designer flagged that ingredient costs
-       need balancing - I've incorporated their recommendations.
+       **方案 B：提示系统** — 材料兼容时显示视觉提示
+       优点：引导式探索，较少挫败
+       缺点：较少令人满足的"顿悟"时刻
 
-       May I write this to design/gdd/crafting-system.md?"
+       **方案 C：混合** — 自由实验 + 通过技能解锁的可选日志提示
+       优点：支持两种游玩风格，渐进式脚手架
+       缺点：实现更复杂
 
-User: "Yes"
+       我推荐方案 C，因为它尊重探索者同时提供安全网，
+       日志提示可以通过技能进度为成就者设置门槛。
+       哪种方案符合你的愿景？"
 
-Agent: [Writes file]
+用户："方案 C 听起来很完美"
 
-### Step 2.3: Design Review
+代理：[迭代起草 GDD 章节 — 概述、玩家幻想、详细规则、
+       公式、边缘情况 — 逐个展示并纳入反馈]
 
-Before any design doc goes to programmers, run a review:
+       "我需要详细的公式工作来处理成功率和技能进度曲线。
+       让我咨询 systems-designer 获取数学支持。"
+
+代理：[咨询后] "完整草稿已准备就绪，公式已由 systems-designer 验证。
+       economy-designer 标记了材料成本需要平衡 — 我已纳入他们的建议。
+
+       我可以将此写入 design/gdd/crafting-system.md 吗？"
+
+用户："可以"
+
+代理：[写入文件]
+
+### 步骤 2.3：设计评审
+
+在任何设计文档交给程序员之前，运行评审：
 
 ```
 /design-review design/gdd/crafting-system.md
 ```
 
-**What happens:** The skill checks the document against the 8-section
-standard, verifying:
-- Are all sections present and complete?
-- Are formulas unambiguous with defined variables?
-- Are edge cases explicitly resolved (not "TBD")?
-- Do dependencies list both directions?
-- Are acceptance criteria testable?
+**过程：** 技能对照 8 部分标准检查文档，验证：
+- 所有章节是否齐全完整？
+- 公式是否无歧义，变量是否已定义？
+- 边缘情况是否已明确解决（不是"TBD"）？
+- 依赖项是否列出了双向关系？
+- 验收标准是否可测试？
 
-Fix any issues flagged before proceeding.
+修复所有标记的问题后再继续。
 
-### Step 2.4: Create Narrative Design (if applicable)
+### 步骤 2.4：创建叙事设计（如适用）
 
-If your game has story, lore, or dialogue, this is when you build it:
+如果你的游戏有故事、背景或对话，现在是构建的时候：
 
-1. **World-building** -- Use `world-builder` to define factions, history,
-   geography, and rules of your world
-2. **Story structure** -- Use `narrative-director` to design story arcs,
-   character arcs, and narrative beats
-3. **Character sheets** -- Use the `narrative-character-sheet.md` template
-   for each major character
+1. **世界构建** — 使用 `world-builder` 定义派系、历史、
+   地理和世界规则
+2. **故事结构** — 使用 `narrative-director` 设计故事弧、
+   角色弧和叙事节拍
+3. **角色表** — 为每个主要角色使用 `narrative-character-sheet.md` 模板
 
-The `narrative` rule (`.claude/rules/narrative.md`) enforces:
-- Lore consistency across documents
-- Canon levels (Core Canon vs Flavor vs Apocrypha)
-- Character voice profiles
-- World rule documentation
+`narrative` 规则（`.claude/rules/narrative.md`）强制执行：
+- 文档间背景的一致性
+- 正典级别（核心正典 vs. 氛围 vs. 伪典）
+- 角色语音档案
+- 世界规则文档
 
-### Step 2.5: Technical Architecture
+### 步骤 2.5：技术架构
 
-Before coding starts, make key technical decisions:
+在编码开始之前，做出关键技术决策：
 
 ```
-/architecture-decision "State Machine vs Behavior Tree for NPC AI"
+/architecture-decision "状态机 vs 行为树用于 NPC AI"
 ```
 
-**What happens:** The skill guides you through creating an Architecture Decision Record:
+**过程：** 技能引导你创建架构决策记录：
 
-Agent: "I'll help document this architectural decision. First, let me understand
-       the context. What's driving this decision right now?"
+代理："我来帮你记录这个架构决策。首先，让我了解一下上下文。
+       是什么驱动了你现在做这个决策？"
 
-User: "We need to choose between state machine and behavior tree for NPC AI.
-      We have 50+ enemy types planned."
+用户："我们需要在 NPC AI 的状态机和行为树之间做选择。
+      我们计划有 50+ 种敌人类型。"
 
-Agent: "Given 50+ enemy types, here's my analysis:
+代理："考虑到 50+ 种敌人类型，这是我的分析：
 
-       **Option A: Finite State Machine**
-       Pros: Simple, debuggable, less overhead
-       Cons: Becomes unwieldy with complex behaviors, hard to reuse logic
+       **方案 A：有限状态机**
+       优点：简单、可调试、开销低
+       缺点：在复杂行为下变得笨重，难以复用逻辑
 
-       **Option B: Behavior Tree**
-       Pros: Highly reusable, scales well, visual debugging
-       Cons: Steeper learning curve, slightly more overhead
+       **方案 B：行为树**
+       优点：高可复用性、可扩展、可视化调试
+       缺点：学习曲线较陡、开销略高
 
-       **Option C: Utility AI**
-       Pros: Emergent behaviors, dynamic decision-making
-       Cons: Harder to debug, needs careful tuning
+       **方案 C：效用 AI**
+       优点：涌现行为、动态决策
+       缺点：更难调试、需要精心调节
 
-       For 50+ types, I recommend Behavior Trees - the reusability and
-       scalability outweigh the learning curve.
+       对于 50+ 种类型，我推荐行为树 — 可复用性和可扩展性
+       超过了学习曲线的代价。
 
-       Should I create an ADR documenting this decision?"
+       我是否应该创建一个 ADR 来记录这个决策？"
 
-User: "Yes, go with Behavior Trees"
+用户："是的，使用行为树"
 
-Agent: [Creates ADR in docs/architecture/ with context, decision drivers,
-       all options with pros/cons, chosen option with rationale, and consequences]
+代理：[在 docs/architecture/ 中创建 ADR，包含上下文、决策驱动因素、
+       所有选项的优缺点、选择选项的理由和后果]
 
-**For complex architectural decisions, use the `technical-director` agent:**
-
-```
-Ask the technical-director agent to evaluate whether we should use an
-ECS architecture or a traditional component system for our gameplay
-entities, considering our team size (solo) and engine choice (Godot 4).
-```
-
-Agent: "Let me analyze the ECS vs traditional component decision for your context:
-
-       [Performs detailed analysis considering Godot 4's scene system, solo dev
-       workflow, learning curve, debugging tools, performance needs]
-
-       **Recommendation: Traditional Godot node-based components**
-
-       Reasoning: [Detailed rationale]
-
-       Shall I create an ADR documenting this decision with full analysis?"
-
-User: "Yes"
-
-Agent: [Creates comprehensive ADR]
-
-### Step 2.6: Milestone Planning
-
-Define your project milestones using the template:
+**对于复杂的架构决策，使用 `technical-director` 代理：**
 
 ```
-Ask Claude to create a milestone definition using the template at
-.claude/docs/templates/milestone-definition.md
+让 technical-director 代理评估我们应该使用 ECS 架构还是
+传统组件系统来实现游戏实体，考虑我们的团队规模（独立）和引擎选择（Godot 4）。
 ```
 
-Typical indie milestones:
-1. **Vertical Slice** -- One level, fully playable, representative quality
-2. **Alpha** -- All core systems functional, placeholder art OK
-3. **Beta** -- Content complete, all features in, polishing begins
-4. **Release Candidate** -- Bug fixes only, ready for launch
-5. **Gold** -- Ship it
+代理："让我分析你的上下文下的 ECS vs 传统组件决策：
 
-> **When all your design documents are reviewed and your architecture is
-> decided, you're ready to start building.**
+       [进行详细分析，考虑 Godot 4 的场景系统、独立开发工作流、
+       学习曲线、调试工具、性能需求]
+
+       **推荐：传统 Godot 基于节点的组件**
+
+       理由：[详细分析]
+
+       我是否应该创建一个 ADR 来记录这个决策和完整分析？"
+
+用户："是的"
+
+代理：[创建全面的 ADR]
+
+### 步骤 2.6：里程碑规划
+
+使用模板定义你的项目里程碑：
+
+```
+让 Claude 使用 .claude/docs/templates/milestone-definition.md 模板
+创建里程碑定义
+```
+
+典型的独立游戏里程碑：
+1. **垂直切片** — 一个关卡，完全可玩，代表品质
+2. **Alpha** — 所有核心系统可用，占位美术可以
+3. **Beta** — 内容完整，所有功能就位，开始打磨
+4. **发布候选** — 仅修复 bug，准备上线
+5. **正式版** — 发布
+
+> **当你的所有设计文档已评审且架构已决定时，你就可以开始构建了。**
 
 ---
 
-## Phase 3: Prototyping & Validation
+## 阶段 3：原型验证
 
-### What Happens in This Phase
+### 本阶段内容
 
-Before committing to full production, you validate risky or uncertain
-mechanics with throwaway prototypes. This saves weeks of wasted production
-effort.
+在投入完整生产之前，你用一次性原型验证有风险或不确定的机制。
+这能节省数周浪费的生产精力。
 
-### Step 3.1: Identify What Needs Prototyping
+### 步骤 3.1：识别需要原型验证的内容
 
-Not everything needs a prototype. Prototype when:
-- A mechanic is novel and you're not sure it's fun
-- A technical approach is risky and you're not sure it's feasible
-- Two design options both seem viable and you need to feel the difference
+不是所有东西都需要原型。在以下情况下制作原型：
+- 机制新颖，你不确定是否好玩
+- 技术方案有风险，你不确定是否可行
+- 两个设计选项似乎都可行，你需要感受差异
 
-### Step 3.2: Run the Prototype Skill
+### 步骤 3.2：运行原型技能
 
 ```
-/prototype "grappling hook movement with momentum"
+/prototype "带动量的钩爪移动"
 ```
 
-**What happens:** The skill collaborates with you to set up the prototype:
+**过程：** 技能与你协作设置原型：
 
-Agent: "Let's prototype the grappling hook movement. First, let me clarify the
-       hypothesis we're testing:
+代理："让我们为钩爪移动制作原型。首先，让我明确我们要验证的假设：
 
-       - Are we testing if momentum-based grappling feels good?
-       - Or testing technical feasibility of the physics?
-       - Or comparing different control schemes?
+       - 我们在测试带动量的钩爪是否手感好？
+       - 还是测试物理的技术可行性？
+       - 还是比较不同的控制方案？
 
-       What's the core question this prototype needs to answer?"
+       这个原型需要回答的核心问题是什么？"
 
-User: "Testing if momentum transfer feels satisfying and creates skill expression"
+用户："测试动量传递是否令人满足并创造技能表达"
 
-Agent: "Got it. Here's my proposed setup:
+代理："明白了。以下是我提议的设置：
 
-       **Hypothesis**: Grappling hook with momentum transfer will feel satisfying
-       and create emergent movement options through skill-based physics manipulation
+       **假设**：带动量传递的钩爪将令人满足
+       并通过基于技能的物理操控创造涌现的移动选项
 
-       **Success Criteria**:
-       - Player can chain 3+ grapple points fluidly without losing momentum
-       - Momentum feels predictable enough to plan, expressive enough to surprise
-       - Players discover unintended movement tricks within 5 minutes
+       **成功标准**：
+       - 玩家可以流畅地连接 3+ 个钩爪点而不丢失动量
+       - 动量可预测到可以规划，又有足够的表现力带来惊喜
+       - 玩家在 5 分钟内发现意想不到的移动技巧
 
-       **Prototype Scope** (1-2 hours max):
-       - Basic grapple point attachment
-       - Momentum calculation and transfer
-       - Simple test level with various grapple configurations
-       - No art, UI, or sounds - pure mechanics
+       **原型范围**（最多 1-2 小时）：
+       - 基本钩爪点附着
+       - 动量计算和传递
+       - 带有各种钩爪配置的简单测试关卡
+       - 无美术、UI 或音效 — 纯机制
 
-       Does this match what you want to validate?"
+       这符合你想验证的内容吗？"
 
-User: "Perfect, but add one more criteria: can we swing around corners"
+用户："完美，但加一个标准：能否绕角落摆荡"
 
-Agent: "Updated success criteria to include corner swinging. Should I create
-       prototypes/grappling-hook/ and implement this?"
+代理："已将成功标准更新为包含角落摆荡。我是否应该创建
+       prototypes/grappling-hook/ 并实现这个？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Creates directory structure, README with hypothesis/criteria/status,
-       delegates to prototyper agent for minimal implementation]
+代理：[创建目录结构，包含假设/标准/状态的 README，
+       委托给 prototyper 代理进行最小实现]
 
-**Key rule:** The `prototype-code` rule (`.claude/rules/prototype-code.md`)
-intentionally relaxes coding standards for prototypes - hardcoded values OK,
-no tests required, but README with hypothesis and findings is mandatory.
+**关键规则：** `prototype-code` 规则（`.claude/rules/prototype-code.md`）
+故意放宽原型的编码标准 — 硬编码值可以，不需要测试，但必须包含
+带有假设和发现的 README。
 
-### Step 3.3: Evaluate the Prototype
+### 步骤 3.3：评估原型
 
-Play/test the prototype and answer:
-- Does the hypothesis hold? Is it fun / feasible / better?
-- What surprised you?
-- What would change for production?
+游玩/测试原型并回答：
+- 假设成立吗？是否好玩/可行/更好？
+- 什么让你惊讶？
+- 生产版本需要改什么？
 
-Update the prototype README with findings and a **verdict**: Ship It, Rework,
-or Kill It.
+用发现更新原型 README 并给出**结论**：采用、返工或放弃。
 
-### Step 3.4: Run a Playtest Report
+### 步骤 3.4：运行游戏测试报告
 
-If you had others test the prototype:
+如果你让其他人测试了原型：
 
 ```
 /playtest-report
 ```
 
-This generates a structured report template covering:
-- Tester demographics and context
-- Task completion rates
-- Confusion points and friction
-- Moments of delight
-- Quantitative ratings
-- Prioritized takeaways
+这会生成一个结构化的报告模板，涵盖：
+- 测试者人口统计和上下文
+- 任务完成率
+- 困惑点和摩擦
+- 令人愉悦的时刻
+- 量化评分
+- 优先级排序的要点
 
-> **When your prototypes have validated (or invalidated) your riskiest
-> assumptions, you're ready for production.**
+> **当你的原型已验证（或否证）了你的最大风险假设时，你就可以进入生产了。**
 
 ---
 
-## Phase 4: Production Sprint Workflow
+## 阶段 4：生产冲刺工作流
 
-### What Happens in This Phase
+### 本阶段内容
 
-This is the core production loop. You work in sprints (typically 1-2 weeks),
-implementing features, fixing bugs, and tracking progress. This phase repeats
-until your game is content-complete.
+这是核心生产循环。你以冲刺为单位工作（通常 1-2 周），
+实现功能、修复 bug 并跟踪进度。此阶段重复直到游戏内容完整。
 
-### Step 4.1: Create Your First Sprint
+### 步骤 4.1：创建你的第一个冲刺
 
 ```
 /sprint-plan new
 ```
 
-**What happens:** The skill delegates to `producer` to collaborate on sprint planning:
+**过程：** 技能委托给 `producer` 协作进行冲刺规划：
 
-Agent: "Let's plan your sprint. First, what's your primary goal for this sprint?
-       (One sentence that defines success)"
+代理："我们来规划你的冲刺。首先，这个冲刺的主要目标是什么？
+       （一句话定义成功）"
 
-User: "Implement core combat system with basic attacks and health"
+用户："实现包含基本攻击和生命值的核心战斗系统"
 
-Agent: "How much time do you have available this sprint? (hours or days)"
+代理："你这个冲刺有多少可用时间？（小时或天数）"
 
-User: "20 hours over 2 weeks"
+用户："2 周内 20 小时"
 
-Agent: "Based on 'core combat system' I'm breaking this into tasks. Here's my
-       proposed structure:
+代理："基于'核心战斗系统'，我将其分解为任务。以下是我提议的结构：
 
-       **Must Have** (sprint fails without these):
-       - Damage calculation system (design/gdd/combat-system.md formulas)
-       - Health component with damage handling
-       - Basic attack input and execution
-       - Unit tests for damage calculation
+       **必须有**（没有这些冲刺就失败）：
+       - 伤害计算系统（design/gdd/combat-system.md 公式）
+       - 带伤害处理的生命值组件
+       - 基本攻击输入和执行
+       - 伤害计算的单元测试
 
-       **Should Have** (important but can slip):
-       - Hit reactions and feedback VFX
-       - Death state handling
-       - Combat stat data files
+       **应该有**（重要但可以推迟）：
+       - 受击反应和反馈 VFX
+       - 死亡状态处理
+       - 战斗属性数据文件
 
-       **Nice to Have** (if time permits):
-       - Attack combo system
-       - Damage numbers UI
+       **最好有**（如果时间允许）：
+       - 连招系统
+       - 伤害数字 UI
 
-       **Risks I see**:
-       - No combat design doc exists yet (blocker - need to create first)
-       - VFX requires technical-artist involvement
+       **我注意到的风险**：
+       - 还没有战斗设计文档（阻塞 — 需要先创建）
+       - VFX 需要 technical-artist 参与
 
-       Does this task breakdown match your vision? Any tasks to add/remove/reprioritize?"
+       这个任务分解符合你的愿景吗？有任何要添加/删除/重新排序的任务吗？"
 
-User: "Move combo system to Should Have - it's important for feel"
+用户："把连招系统移到应该有 — 它对手感很重要"
 
-Agent: "Updated. Should I create production/sprints/sprint-01.md with this plan?"
+代理："已更新。我是否应该用此计划创建 production/sprints/sprint-01.md？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Creates sprint plan with goal, categorized tasks, 20hr capacity estimate,
-       risk register, and dependencies]
+代理：[创建包含目标、分类任务、20 小时容量估算、
+       风险登记和依赖项的冲刺计划]
 
-### Step 4.2: The Daily Work Loop
+### 步骤 4.2：日常工作循环
 
-Each session follows this pattern:
+每个会话遵循此模式：
 
 ```
-1. Start a Claude Code session
-   (session-start hook shows branch, sprint status, recent commits)
+1. 启动一个 Claude Code 会话
+   （session-start 钩子显示分支、冲刺状态、最近提交）
 
-2. Pick a task from the sprint plan
-   ("I'm working on the combat damage calculation system")
+2. 从冲刺计划中选择一个任务
+   （"我在实现战斗伤害计算系统"）
 
-3. Claude identifies the right agent(s) to help
-   - game-designer if the design needs work
-   - gameplay-programmer for implementation
-   - systems-designer for formula details
+3. Claude 识别合适的代理来帮助
+   - game-designer 如果设计需要完善
+   - gameplay-programmer 用于实现
+   - systems-designer 用于公式细节
 
-4. Implement the feature (see Phase 5 for details)
+4. 实现功能（详见阶段 5）
 
-5. Write tests (verification-driven development)
+5. 编写测试（验证驱动开发）
 
-6. Commit your work
-   (validate-commit hook checks for design doc references,
-    valid JSON data, no hardcoded values)
+6. 提交你的工作
+   （validate-commit 钩子检查设计文档引用、
+    有效的 JSON 数据、无硬编码值）
 
-7. Repeat until the session's context is getting full (~65-70%)
+7. 重复直到会话上下文接近满（约 65-70%）
 
-8. /clear to start fresh, or compact to continue
+8. /clear 重新开始，或 compact 继续
 ```
 
-### Step 4.3: Sprint Tracking
+### 步骤 4.3：冲刺跟踪
 
-Check on sprint progress anytime:
+随时检查冲刺进度：
 
 ```
 /sprint-plan status
 ```
 
-If scope is growing:
+如果范围在增长：
 
 ```
 /scope-check production/sprints/sprint-03.md
 ```
 
-This compares current scope against the original plan and flags:
-- Tasks added since sprint start
-- Scope increase percentage
-- Recommendations for what to cut
+这会对比当前范围与原始计划，标记：
+- 冲刺开始后新增的任务
+- 范围增长百分比
+- 建议砍掉什么
 
-### Step 4.4: Sprint Review & Retrospective
+### 步骤 4.4：冲刺评审与回顾
 
-At the end of a sprint:
+冲刺结束时：
 
 ```
 /retrospective
 ```
 
-This analyzes:
-- What was planned vs. what was completed
-- Velocity (tasks/points completed)
-- What went well
-- What went poorly
-- Blockers encountered
-- Actionable improvements for next sprint
+这会分析：
+- 计划了什么 vs 完成了什么
+- 速度（完成的任务/点数）
+- 什么做得好
+- 什么做得不好
+- 遇到的阻碍
+- 下个冲刺的可执行改进
 
-Then plan the next sprint:
+然后规划下一个冲刺：
 
 ```
 /sprint-plan new
 ```
 
-The new sprint incorporates carry-over tasks, retrospective learnings, and
-updated priorities.
+新冲刺纳入了遗留任务、回顾学习和更新后的优先级。
 
-### Step 4.5: Milestone Reviews
+### 步骤 4.5：里程碑评审
 
-At milestone checkpoints:
+在里程碑检查点：
 
 ```
 /milestone-review "alpha"
 ```
 
-This produces a comprehensive report:
-- Feature completeness percentage
-- Quality metrics (bug counts, test coverage)
-- Risk assessment
-- Go/no-go recommendation
-- Action items to reach the milestone
+这会生成一份综合报告：
+- 功能完成百分比
+- 质量指标（bug 数量、测试覆盖率）
+- 风险评估
+- Go/No-Go 建议
+- 达到里程碑的行动项
 
 ---
 
-## Phase 5: Implementation Deep-Dive
+## 阶段 5：实现深入
 
-### What Happens in This Phase
+### 本阶段内容
 
-This is where code gets written. The agent system ensures code quality through
-path-specific rules, automated hooks, and structured delegation.
+这是编写代码的阶段。代理系统通过路径特定规则、自动化钩子
+和结构化委托来确保代码质量。
 
-### Step 5.1: Single-System Implementation
+### 步骤 5.1：单系统实现
 
-For a single gameplay system (e.g., "implement the damage calculation"):
+对于单个游戏系统（如"实现伤害计算"）：
 
 ```
-Ask the gameplay-programmer agent to implement the damage calculation
-system as specified in design/gdd/combat-system.md. The formulas are in
-section 4. Use the project's data-driven approach with config files in
-assets/data/.
+让 gameplay-programmer 代理按照 design/gdd/combat-system.md 中的
+规范实现伤害计算系统。公式在第 4 节。使用项目的数据驱动方法，
+配置文件放在 assets/data/。
 ```
 
-**What happens:** The `gameplay-programmer` agent collaborates on implementation:
+**过程：** `gameplay-programmer` 代理协作实现：
 
-Agent: "I've read design/gdd/combat-system.md. Before implementing, I need to
-       clarify a few details:
+代理："我已阅读 design/gdd/combat-system.md。在实现之前，我需要
+       澄清一些细节：
 
-       Section 4 shows the damage formula: `base_damage * (1 + attack_stat * 0.1) * type_modifier`
+       第 4 节显示了伤害公式：`base_damage * (1 + attack_stat * 0.1) * type_modifier`
 
-       Questions:
-       - Should attack_stat be clamped to a max value?
-       - Where should type_modifiers live - per weapon or per damage type?
-       - Do you want damage rounding (floor/ceil/round)?
+       问题：
+       - attack_stat 是否应该限制最大值？
+       - type_modifier 应该放在哪里 — 每种武器还是每种伤害类型？
+       - 你希望伤害如何取整（floor/ceil/round）？
 
-       Also, I don't see a design doc for the health component yet. Should I
-       create a minimal one or do you want to design that separately?"
+       另外我没有看到生命值组件的设计文档。我应该创建一个最小的
+       还是希望单独设计？"
 
-User: "Clamp attack_stat to 0-100. Type modifiers per damage type. Round down.
-      Create minimal health doc - just current/max HP and damage handling."
+用户："将 attack_stat 限制在 0-100。type modifier 按伤害类型。
+      向下取整。创建最小生命值文档 — 只要当前/最大 HP 和伤害处理。"
 
-Agent: "Got it. Here's my implementation approach:
+代理："明白了。以下是我的实现方案：
 
-       **Files to create**:
-       - src/gameplay/combat/damage_calculator.gd (core formula logic)
-       - src/gameplay/combat/health_component.gd (HP tracking)
-       - assets/data/combat_damage.json (base damage values, type modifiers)
-       - design/gdd/health-system.md (minimal doc)
+       **要创建的文件**：
+       - src/gameplay/combat/damage_calculator.gd（核心公式逻辑）
+       - src/gameplay/combat/health_component.gd（HP 追踪）
+       - assets/data/combat_damage.json（基础伤害值、类型修饰符）
+       - design/gdd/health-system.md（最小文档）
 
-       **Architecture**:
-       - DamageCalculator as stateless utility (testable)
-       - HealthComponent as node component (signals for damage/death)
-       - All values from config file (gameplay-code rule)
+       **架构**：
+       - DamageCalculator 为无状态工具类（可测试）
+       - HealthComponent 为节点组件（信号用于伤害/死亡）
+       - 所有值来自配置文件（gameplay-code 规则）
 
-       May I proceed with implementation?"
+       我可以开始实现吗？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Implements with automatic rule enforcement - data-driven values, delta time
-       independence, signal-based communication, dependency injection for testing]
+代理：[实现时自动执行规则检查 — 数据驱动值、delta time 独立性、
+       基于信号的通信、依赖注入用于测试]
 
-       "Implementation complete. Files created:
+       "实现完成。已创建文件：
        - src/gameplay/combat/damage_calculator.gd
        - src/gameplay/combat/health_component.gd
-       - assets/data/combat_damage.json (validated JSON structure)
+       - assets/data/combat_damage.json（已验证的 JSON 结构）
        - design/gdd/health-system.md
 
-       Ready for testing. Should I draft unit tests?"
+       准备测试。我是否起草单元测试？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Writes tests]
+代理：[编写测试]
 
-### Step 5.2: Multi-System Feature (Team Orchestration)
+### 步骤 5.2：多系统功能（团队编排）
 
-For features that span multiple domains, use a team skill:
-
-```
-/team-combat "healing ability with HoT (heal-over-time) and cleanse"
-```
-
-**What happens:** The team skill orchestrates collaborative 6-phase development:
-
-**Phase 1 - Design**:
-Agent (game-designer): "I'll design the healing ability. Questions:
-       - Should HoT stack or refresh duration?
-       - What debuffs should cleanse remove - all, or specific categories?
-       - Mana cost scaling with heal amount?"
-
-User: [Answers questions]
-
-Agent: [Creates design doc, shows draft] "Design ready. Approve to proceed to architecture?"
-
-User: "Approved"
-
-**Phase 2 - Architecture**:
-Agent (gameplay-programmer): "Here's my proposed code structure:
-       - HealAbility class extending BaseAbility
-       - HoT as separate buff component (reusable)
-       - Cleanse as utility function (may be used elsewhere)
-
-       This work or want changes?"
-
-User: "Approved"
-
-**Phase 3 - Parallel Implementation**:
-Agent (coordinator): "Starting parallel implementation:
-       - gameplay-programmer: HealAbility + HoT buff code
-       - ai-programmer: AI logic for when NPCs should use heal
-       - technical-artist: HoT VFX particle spec
-       - sound-designer: Heal cast and HoT tick SFX spec
-
-       I'll check back when all are complete."
-
-[Each specialist asks clarifying questions and shows their work before finalizing]
-
-**Phase 4 - Integration**:
-Agent (gameplay-programmer): "All components ready. Integrating now..."
-       [Shows integrated result] "Working in test scene. Ready for validation?"
-
-**Phase 5 - Validation**:
-Agent (qa-tester): "Testing against acceptance criteria from design doc..."
-       [Reports results] "2 edge cases found: [details]. Should we fix or defer?"
-
-User: "Fix the critical one, defer the other"
-
-**Phase 6 - Report**:
-Agent (coordinator): "Feature complete. Status:
-       ✓ Design, architecture, implementation, integration done
-       ✓ Critical bugs fixed
-       - 1 minor edge case deferred to backlog
-       Ready to merge."
-
-Other team skills work similarly:
-- `/team-narrative` -- Story content from structure to written dialogue
-- `/team-ui` -- UI feature from wireframe to polished implementation
-- `/team-level` -- Level from layout to fully dressed with encounters
-- `/team-audio` -- Audio from direction to implemented events
-
-### Step 5.3: AI Systems
-
-For NPC behavior, pathfinding, or decision-making:
+对于跨多个领域的功能，使用团队技能：
 
 ```
-Ask the ai-programmer agent to implement a patrol/investigate/chase
-behavior tree for enemy NPCs as specified in design/gdd/enemy-ai.md.
+/team-combat "带持续治疗(HoT)和净化的治疗能力"
 ```
 
-**What happens:** The `ai-programmer` agent asks clarifying questions before implementing:
+**过程：** 团队技能编排协作式 6 阶段开发：
 
-Agent: "I've read design/gdd/enemy-ai.md. Before building the behavior tree, I need
-       to clarify some behaviors:
+**阶段 1 - 设计**：
+代理 (game-designer)："我来设计治疗能力。问题：
+       - HoT 应该叠加还是刷新持续时间？
+       - 净化应该移除哪些减益 — 所有还是特定类别？
+       - 法力消耗是否随治疗量缩放？"
 
-       - During patrol, should NPCs stop at waypoints or continuous loop?
-       - For investigate state: how long should they search before returning to patrol?
-       - Chase transition: should they chase immediately on sight or require 'confirmation time'?
-       - What happens if player breaks line-of-sight during chase?
+用户：[回答问题]
 
-       Also, I see performance budget is 2ms/frame for all AI. How many NPCs will
-       be active simultaneously (worst case)?"
+代理：[创建设计文档，展示草稿] "设计就绪。批准进入架构阶段？"
 
-User: "Stop at waypoints for 2 seconds. Search for 8 seconds. Immediate chase on sight.
-      Break LOS = return to last known position, search there, then investigate.
-      Max 15 NPCs active."
+用户："批准"
 
-Agent: "Got it. That gives me ~0.13ms per NPC. I'll use a hierarchical behavior tree
-       with shared pathfinding queries to stay under budget.
+**阶段 2 - 架构**：
+代理 (gameplay-programmer)："以下是我提议的代码结构：
+       - HealAbility 类继承 BaseAbility
+       - HoT 作为独立的 buff 组件（可复用）
+       - 净化作为工具函数（可能其他地方也用）
 
-       My approach:
-       - Root selector: Chase > Investigate > Patrol
-       - All timing/ranges from assets/data/enemy_ai.json (data-driven per ai-code rule)
-       - Debug visualization showing current state + detection radius
-       - Telegraph attacks with 0.5s windup (visible to player)
+       可以还是有修改？"
 
-       Approve this approach?"
+用户："批准"
 
-User: "Yes"
+**阶段 3 - 并行实现**：
+代理 (coordinator)："开始并行实现：
+       - gameplay-programmer：HealAbility + HoT buff 代码
+       - ai-programmer：NPC 何时使用治疗的 AI 逻辑
+       - technical-artist：HoT VFX 粒子规格
+       - sound-designer：治疗施放和 HoT 跳动音效规格
 
-Agent: [Implements with rule enforcement: 2ms budget, data-driven params, debug viz,
-       telegraphed intentions]
+       全部完成后我会回来汇报。"
 
-       "Implementation complete. Tested with 20 NPCs - running at 1.8ms/frame.
-       Debug visualization shows state colors (green=patrol, yellow=investigate,
-       red=chase). Ready for review?"
+[每个专家在完成前提出澄清问题并展示工作]
 
-The `ai-code` rule automatically enforces performance budgets, data-driven parameters,
-debug visualization, and player-fair behavior.
+**阶段 4 - 集成**：
+代理 (gameplay-programmer)："所有组件就绪。正在集成..."
+       [展示集成结果] "在测试场景中工作。准备验证？"
 
-### Step 5.4: Engine-Specific Work
+**阶段 5 - 验证**：
+代理 (qa-tester)："对照设计文档的验收标准进行测试..."
+       [报告结果] "发现 2 个边缘情况：[详情]。我们应该修复还是推迟？"
 
-When you need engine-specific expertise:
+用户："修复关键的，推迟另一个"
 
-```
-# For Godot:
-Ask the godot-specialist agent to review our scene tree architecture
-and suggest improvements for performance and maintainability.
+**阶段 6 - 报告**：
+代理 (coordinator)："功能完成。状态：
+       ✓ 设计、架构、实现、集成完成
+       ✓ 关键 bug 已修复
+       - 1 个次要边缘情况推迟到待办
+       准备合并。"
 
-# For a specific subsystem:
-Ask the godot-gdscript-specialist to refactor our signal architecture
-to reduce coupling between the combat and UI systems.
-```
+其他团队技能工作方式类似：
+- `/team-narrative` — 从结构到编写对话的故事内容
+- `/team-ui` — 从线框到打磨实现的 UI 功能
+- `/team-level` — 从布局到完全装饰的关卡
+- `/team-audio` — 从方向到实现事件的音频
 
-Engine specialists know:
-- Engine-specific patterns and anti-patterns
-- Performance optimization techniques for that engine
-- Proper use of engine subsystems (Godot signals, Unity Addressables, UE GAS)
-- When to use native extensions vs scripting
+### 步骤 5.3：AI 系统
 
-### Step 5.5: Architecture Decision Records
-
-When you face a significant technical choice during implementation:
+对于 NPC 行为、寻路或决策：
 
 ```
-/architecture-decision "Event Bus vs Direct Signals for System Communication"
+让 ai-programmer 代理按照 design/gdd/enemy-ai.md 的规范
+实现巡逻/调查/追击行为树。
 ```
 
-This documents the decision so future-you (or future contributors) understand
-*why* things were built this way.
+**过程：** `ai-programmer` 代理在实现前提出澄清问题：
 
-### Step 5.6: Code Review
+代理："我已阅读 design/gdd/enemy-ai.md。在构建行为树之前，我需要
+       澄清一些行为：
 
-After implementing a feature:
+       - 巡逻时，NPC 应该在路点停留还是连续循环？
+       - 调查状态：他们应该搜索多久后返回巡逻？
+       - 追击转换：看到目标后立即追击还是需要'确认时间'？
+       - 追击时如果玩家脱离视线怎么办？
+
+       另外我看到性能预算是所有 AI 2ms/帧。同时有多少 NPC 会活跃（最坏情况）？"
+
+用户："路点停留 2 秒。搜索 8 秒。看到后立即追击。
+      脱离视线 = 返回最后已知位置，在那里搜索，然后进入调查。
+      最多 15 个 NPC 活跃。"
+
+代理："明白了。这给我每个 NPC 约 0.13ms。我将使用分层行为树
+       和共享寻路查询来保持在预算内。
+
+       我的方案：
+       - 根选择器：追击 > 调查 > 巡逻
+       - 所有时间/范围来自 assets/data/enemy_ai.json（按 ai-code 规则数据驱动）
+       - 调试可视化显示当前状态 + 检测半径
+       - 攻击前 0.5 秒蓄力预警（玩家可见）
+
+       批准此方案？"
+
+用户："是的"
+
+代理：[实现时执行规则检查：2ms 预算、数据驱动参数、调试可视化、
+       预警意图]
+
+       "实现完成。已用 20 个 NPC 测试 — 运行在 1.8ms/帧。
+       调试可视化显示状态颜色（绿色=巡逻，黄色=调查，红色=追击）。
+       准备审查？"
+
+`ai-code` 规则自动执行性能预算、数据驱动参数、
+调试可视化和玩家公平行为。
+
+### 步骤 5.4：引擎特定工作
+
+当你需要引擎特定专业知识时：
+
+```
+# 对于 Godot：
+让 godot-specialist 代理审查我们的场景树架构，
+提出性能和可维护性的改进建议。
+
+# 对于特定子系统：
+让 godot-gdscript-specialist 重构我们的信号架构，
+减少战斗和 UI 系统之间的耦合。
+```
+
+引擎专家了解：
+- 引擎特定的模式和反模式
+- 该引擎的性能优化技术
+- 引擎子系统的正确使用（Godot 信号、Unity Addressables、UE GAS）
+- 何时使用原生扩展 vs 脚本
+
+### 步骤 5.5：架构决策记录
+
+在实现过程中面临重大技术选择时：
+
+```
+/architecture-decision "事件总线 vs 直接信号用于系统通信"
+```
+
+这会记录决策，以便未来的你（或未来的贡献者）理解
+*为什么*这样构建。
+
+### 步骤 5.6：代码审查
+
+实现功能后：
 
 ```
 /code-review src/gameplay/combat/damage_calculator.gd
 ```
 
-**What happens:** The skill performs collaborative architectural review:
+**过程：** 技能执行协作式架构审查：
 
-Agent: "Reviewing src/gameplay/combat/damage_calculator.gd...
+代理："正在审查 src/gameplay/combat/damage_calculator.gd...
 
-       **Architectural Compliance**:
-       ✓ Matches ADR-003 (stateless utility pattern)
-       ✓ Data-driven values (gameplay-code rule)
-       ✗ Issue: Direct reference to HealthComponent - breaks dependency injection
+       **架构合规性**：
+       ✓ 符合 ADR-003（无状态工具模式）
+       ✓ 数据驱动值（gameplay-code 规则）
+       ✗ 问题：直接引用 HealthComponent — 破坏了依赖注入
 
-       **SOLID Principles**:
-       ✓ Single Responsibility - only calculates damage
-       ✗ Dependency Inversion - tightly coupled to HealthComponent type
+       **SOLID 原则**：
+       ✓ 单一职责 — 只计算伤害
+       ✗ 依赖反转 — 与 HealthComponent 类型紧密耦合
 
-       **Testability**:
-       ✗ Hard to mock HealthComponent dependency
+       **可测试性**：
+       ✗ 难以模拟 HealthComponent 依赖
 
-       **Performance**:
-       ✓ No allocations in hot path
-       ⚠ Warning: Type lookup in dictionary every call - consider caching
+       **性能**：
+       ✓ 热路径中无分配
+       ⚠ 警告：每次调用都在字典中进行类型查找 — 考虑缓存
 
-       **Recommendations**:
-       1. HIGH: Add interface for HealthComponent to enable mocking
-       2. MEDIUM: Cache type modifier lookups
-       3. LOW: Add null checks for edge cases
+       **建议**：
+       1. 高优先级：为 HealthComponent 添加接口以支持模拟
+       2. 中优先级：缓存类型修饰符查找
+       3. 低优先级：为边缘情况添加空值检查
 
-       Should I show you how to fix issue #1 (dependency injection)?"
+       我是否展示如何修复问题 #1（依赖注入）？"
 
-User: "Yes, show me"
+用户："是的，展示给我"
 
-Agent: [Shows refactored code with interface]
+代理：[展示重构后的代码及接口]
 
-       "This change lets you pass any object with take_damage(), making it testable.
-       Approve this refactor?"
+       "这个改动让你可以传递任何具有 take_damage() 方法的对象，使其可测试。
+       批准这个重构？"
 
-User: "Approved"
+用户："批准"
 
-Agent: [Applies changes] "Code review complete. All high-priority issues resolved."
+代理：[应用更改] "代码审查完成。所有高优先级问题已解决。"
 
 ---
 
-## Phase 6: Testing & Quality Assurance
+## 阶段 6：测试与质量保证
 
-### What Happens in This Phase
+### 本阶段内容
 
-Testing runs throughout production, not just at the end. The system supports
-test-driven development with automated enforcement.
+测试贯穿整个生产过程，而不仅仅在最后。系统支持带有自动
+执行的测试驱动开发。
 
-### Step 6.1: Write Tests First (Verification-Driven Development)
+### 步骤 6.1：先写测试（验证驱动开发）
 
-The project enforces **verification-driven development**: write tests before
-or alongside implementation, not after.
+项目强制执行**验证驱动开发**：先写测试或在实现时
+同步编写，而不是之后。
 
-The `test-standards` rule (`.claude/rules/test-standards.md`) enforces:
-- Test naming: `test_[system]_[scenario]_[expected_result]`
-- Structure: Arrange / Act / Assert
-- No external state dependencies
-- Tests clean up after themselves
-- Each test file mirrors the source file it tests
+`test-standards` 规则（`.claude/rules/test-standards.md`）强制执行：
+- 测试命名：`test_[system]_[scenario]_[expected_result]`
+- 结构：Arrange / Act / Assert
+- 无外部状态依赖
+- 测试后自行清理
+- 每个测试文件对应其测试的源文件
 
 ```
-Ask the qa-tester agent to write test cases for the damage calculation
-system based on the acceptance criteria in design/gdd/combat-system.md.
+让 qa-tester 代理基于 design/gdd/combat-system.md 的验收标准
+为伤害计算系统编写测试用例。
 ```
 
-**What happens:** The `qa-tester` agent collaborates on test case creation:
+**过程：** `qa-tester` 代理协作创建测试用例：
 
-Agent: "I've read the acceptance criteria from design/gdd/combat-system.md. Before
-       writing tests, let me confirm the test scope:
+代理："我已阅读 design/gdd/combat-system.md 的验收标准。在
+       编写测试之前，让我确认测试范围：
 
-       From the acceptance criteria, I see:
-       - Base damage formula must produce expected values
-       - Type modifiers apply correctly
-       - Edge case: attack_stat clamped at 0-100
-       - Edge case: negative damage becomes 0
+       从验收标准中，我看到：
+       - 基础伤害公式必须产生预期值
+       - 类型修饰符正确应用
+       - 边缘情况：attack_stat 限制在 0-100
+       - 边缘情况：负伤害变为 0
 
-       Questions:
-       - Should I include integration tests with HealthComponent or just unit tests?
-       - Do you want performance tests (e.g., 1000 calculations < Xms)?
-       - Any specific edge cases beyond those in the doc?"
+       问题：
+       - 我是否应该包含与 HealthComponent 的集成测试还是只写单元测试？
+       - 你是否需要性能测试（如 1000 次计算 < Xms）？
+       - 除了文档中的之外还有特定边缘情况吗？"
 
-User: "Unit tests only for now. Add performance test - target 10,000 calcs < 1ms.
-      Also test what happens with invalid damage types."
+用户："目前只写单元测试。添加性能测试 — 目标 10,000 次计算 < 1ms。
+      还测试无效伤害类型会发生什么。"
 
-Agent: "Got it. Here's my test plan:
+代理："明白了。以下是我的测试计划：
 
-       **Unit Tests**:
-       - test_damage_basic_calculation (base formula, known values)
-       - test_damage_type_modifiers (each modifier from config)
-       - test_damage_attack_stat_clamping (below 0, above 100)
+       **单元测试**：
+       - test_damage_basic_calculation（基础公式，已知值）
+       - test_damage_type_modifiers（配置中的每种修饰符）
+       - test_damage_attack_stat_clamping（低于 0，高于 100）
        - test_damage_negative_becomes_zero
-       - test_damage_invalid_type (undefined type in config)
-       - test_damage_rounding (verify floor behavior)
+       - test_damage_invalid_type（配置中未定义的类型）
+       - test_damage_rounding（验证 floor 行为）
 
-       **Performance Test**:
+       **性能测试**：
        - test_damage_performance_10k_calculations
 
-       Approve this test suite?"
+       批准此测试套件吗？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Writes tests following test-standards rule: proper naming, Arrange/Act/Assert
-       structure, no external dependencies, cleanup]
+代理：[按 test-standards 规则编写测试：正确的命名、Arrange/Act/Assert
+       结构、无外部依赖、自行清理]
 
-       "Test suite complete. All 7 tests written. Ready to run?"
+       "测试套件完成。已编写 7 个测试。准备运行？"
 
-### Step 6.2: Bug Reporting
+### 步骤 6.2：Bug 报告
 
-When you find a bug:
-
-```
-/bug-report "Healing spell applies damage instead of healing when
-target has a shield buff active"
-```
-
-This creates a structured bug report with:
-- Severity (Critical / Major / Minor / Cosmetic)
-- Priority (P0-P4)
-- Steps to reproduce
-- Expected vs actual behavior
-- System/component affected
-- Related design doc
-
-### Step 6.3: Test Planning
-
-For milestone validation:
+当你发现 bug 时：
 
 ```
-Ask the qa-lead agent to create a test plan for the Alpha milestone,
-covering combat, progression, and UI systems.
+/bug-report "治疗法术在目标有护盾 buff 时造成伤害而非治疗"
 ```
 
-**What happens:** The `qa-lead` agent collaborates on comprehensive test planning:
+这会创建一个结构化的 bug 报告，包含：
+- 严重程度（关键/重要/次要/外观）
+- 优先级（P0-P4）
+- 复现步骤
+- 预期行为 vs 实际行为
+- 受影响的系统/组件
+- 相关设计文档
 
-Agent: "I'll create a test plan for the Alpha milestone. First, let me understand
-       the scope:
+### 步骤 6.3：测试规划
 
-       From the milestone definition, I see these systems are in scope:
-       - Combat system
-       - Progression system
-       - UI systems
+用于里程碑验证：
 
-       Questions:
-       - What platforms are we testing? (Windows, Linux, Mac, mobile?)
-       - What's our target performance? (60fps? 30fps?)
-       - Any known risky areas that need extra test coverage?
-       - Timeline - when does testing need to complete?"
+```
+让 qa-lead 代理为 Alpha 里程碑创建测试计划，
+覆盖战斗、进阶和 UI 系统。
+```
 
-User: "Windows and Linux. Target 60fps. Combat AI is risky - lots of edge cases.
-      Testing deadline is end of next week."
+**过程：** `qa-lead` 代理协作进行全面测试规划：
 
-Agent: "Got it. Here's my proposed test plan structure:
+代理："我来为 Alpha 里程碑创建测试计划。首先，让我了解范围：
 
-       **Functional Tests** (3 days):
-       - Combat: Damage calculation, status effects, death states, AI behavior
-       - Progression: XP gain, level-up, skill unlocks, stat increases
-       - UI: Menus, HUD, inventory, settings
+       从里程碑定义中，我看到这些系统在范围内：
+       - 战斗系统
+       - 进阶系统
+       - UI 系统
 
-       **Edge Case Tests** (1 day):
-       - Combat AI: Line-of-sight breaks, pathfinding failures, stuck states
-       - Boundary conditions: Max level, inventory full, negative damage
+       问题：
+       - 我们在哪些平台上测试？（Windows、Linux、Mac、移动端？）
+       - 我们的目标性能是什么？（60fps？30fps？）
+       - 有没有已知的风险领域需要额外测试覆盖？
+       - 时间线 — 测试需要在什么时候完成？"
 
-       **Regression Suite** (1 day):
-       - Re-run all previous milestone tests
+用户："Windows 和 Linux。目标 60fps。战斗 AI 有风险 — 很多边缘情况。
+      测试截止日期是下周末。"
 
-       **Performance Benchmarks** (1 day):
-       - 60fps with 15 enemies, complex VFX
-       - Memory under 2GB
-       - Load times under 5s
+代理："明白了。以下是我提议的测试计划结构：
 
-       **Platform Tests** (1 day):
+       **功能测试**（3 天）：
+       - 战斗：伤害计算、状态效果、死亡状态、AI 行为
+       - 进阶：经验获取、升级、技能解锁、属性提升
+       - UI：菜单、HUD、背包、设置
+
+       **边缘情况测试**（1 天）：
+       - 战斗 AI：视线中断、寻路失败、卡住状态
+       - 边界条件：满级、背包满、负伤害
+
+       **回归测试套件**（1 天）：
+       - 重新运行之前所有里程碑的测试
+
+       **性能基准**（1 天）：
+       - 60fps，15 个敌人，复杂 VFX
+       - 内存控制在 2GB 以下
+       - 加载时间在 5 秒以内
+
+       **平台测试**（1 天）：
        - Windows 10/11
        - Ubuntu 22.04 LTS
 
-       This fits the timeline. Approve or adjust?"
+       这符合时间线。批准或调整？"
 
-User: "Approved"
+用户："批准"
 
-Agent: [Creates detailed test plan using test-plan.md template]
+代理：[使用 test-plan.md 模板创建详细的测试计划]
 
-### Step 6.4: Balance Testing
+### 步骤 6.4：平衡测试
 
-After implementing economy or progression systems:
+在实现经济或进阶系统后：
 
 ```
 /balance-check assets/data/combat_damage.json
 ```
 
-This analyzes your balance data for:
-- Statistical outliers
-- Broken progression curves
-- Degenerate strategies (one option dominates all others)
-- Economy imbalances (inflation, deflation, exploits)
+这会分析你的平衡数据，检查：
+- 统计异常值
+- 损坏的进度曲线
+- 退化策略（一个选项主导所有其他选项）
+- 经济失衡（通胀、通缩、漏洞）
 
 ---
 
-## Phase 7: Polish & Optimization
+## 阶段 7：打磨与优化
 
-### What Happens in This Phase
+### 本阶段内容
 
-Your game is feature-complete. Now you make it *good*. This phase focuses on
-performance, visual polish, audio, and feel.
+你的游戏功能完整。现在你要让它*好玩*。本阶段专注于
+性能、视觉打磨、音频和手感。
 
-### Step 7.1: Performance Profiling
+### 步骤 7.1：性能分析
 
 ```
 /perf-profile
 ```
 
-**What happens:** The skill guides you through structured performance profiling:
+**过程：** 技能引导你进行结构化的性能分析：
 
-Agent: "Starting performance profiling. First, let's establish your targets:
-       - Target FPS?
-       - Target memory limit?
-       - Target platform(s)?"
+代理："开始性能分析。首先，让我们设定你的目标：
+       - 目标 FPS？
+       - 目标内存限制？
+       - 目标平台？"
 
-User: "60fps on mid-range PC. Under 2GB RAM. Windows/Linux."
+用户："中端 PC 60fps。2GB RAM 以下。Windows/Linux。"
 
-Agent: "Running profiler on current build...
+代理："正在对当前构建进行分析...
 
-       **Current Performance**:
-       - Average FPS: 48
-       - Frame time: 20.8ms (target: 16.6ms for 60fps)
-       - Memory: 2.4GB (400MB over target)
+       **当前性能**：
+       - 平均 FPS：48
+       - 帧时间：20.8ms（目标：60fps 为 16.6ms）
+       - 内存：2.4GB（超出目标 400MB）
 
-       **Bottlenecks Identified** (ranked by impact):
-       1. Combat AI: 8.2ms/frame (49% of frame time) - HIGH PRIORITY
-       2. Particle VFX: 3.1ms/frame (18% of frame time) - MEDIUM
-       3. UI rendering: 2.8ms/frame (17% of frame time) - MEDIUM
-       4. Physics: 1.9ms/frame (11% of frame time) - LOW
+       **已识别的瓶颈**（按影响排序）：
+       1. 战斗 AI：8.2ms/帧（49% 帧时间）- 高优先级
+       2. 粒子 VFX：3.1ms/帧（18% 帧时间）- 中等
+       3. UI 渲染：2.8ms/帧（17% 帧时间）- 中等
+       4. 物理：1.9ms/帧（11% 帧时间）- 低
 
-       **Memory Issues**:
-       1. Texture atlas not compressed: +280MB - HIGH PRIORITY
-       2. Audio buffers not streaming: +120MB - HIGH PRIORITY
+       **内存问题**：
+       1. 纹理图集未压缩：+280MB - 高优先级
+       2. 音频缓冲区未流式加载：+120MB - 高优先级
 
-       **Recommendations**:
-       1. Combat AI: Implement hierarchical behavior tree, reduce per-frame checks
-       2. Textures: Enable GPU compression
-       3. Audio: Stream longer sounds instead of loading all
+       **建议**：
+       1. 战斗 AI：实现分层行为树，减少逐帧检查
+       2. 纹理：启用 GPU 压缩
+       3. 音频：流式加载较长的声音
 
-       Should I generate detailed optimization tasks for the top 3 issues?"
+       我是否应该为前 3 个问题生成详细的优化任务？"
 
-User: "Yes"
+用户："是的"
 
-Agent: [Generates actionable optimization tasks with code locations and expected gains]
+代理：[生成带有代码位置和预期收益的可执行优化任务]
 
-**For deeper analysis, use the `performance-analyst` agent:**
-
-```
-Ask the performance-analyst agent to analyze our combat system for
-frame time spikes. We're seeing hitches when 10+ enemies are active.
-```
-
-Agent: "I'll analyze the combat system performance. Let me profile with varying
-       enemy counts...
-
-       **Analysis Results**:
-       - 5 enemies: 58fps stable
-       - 10 enemies: 52fps with occasional drops to 45fps
-       - 15 enemies: 38fps with spikes down to 22fps
-
-       **Root Cause**: Behavior tree re-evaluates entire tree every frame for
-       every NPC. With 15 NPCs, that's 15 full tree traversals = 8.2ms.
-
-       **Solution Options**:
-       1. Stagger updates: Only update 5 NPCs per frame (rotation)
-       2. Cache tree results: Re-evaluate only on state change
-       3. Simplify tree: Reduce node count from 12 to 6
-
-       I recommend Option 2 + 3: Cache results AND simplify the tree.
-       Expected gain: 8.2ms -> 1.5ms (6.7ms saved = +40fps)
-
-       Should I show you the refactored behavior tree?"
-
-User: "Yes"
-
-Agent: [Shows optimized implementation]
-
-### Step 7.2: Visual Polish
-
-Use the team polish skill for comprehensive polishing:
+**如需更深入的分析，使用 `performance-analyst` 代理：**
 
 ```
-/team-polish "combat system"
+让 performance-analyst 代理分析我们的战斗系统的帧时间尖峰。
+我们看到 10+ 个敌人活跃时会出现卡顿。
 ```
 
-**What happens:** The team polish skill coordinates collaborative polish passes:
+代理："我来分析战斗系统性能。让我用不同的敌人数量进行分析...
 
-Agent (coordinator): "Starting polish pass for combat system. Let me assess
-       current state and identify polish priorities...
+       **分析结果**：
+       - 5 个敌人：58fps 稳定
+       - 10 个敌人：52fps，偶尔降至 45fps
+       - 15 个敌人：38fps，尖峰降至 22fps
 
-       **Current State Analysis**:
-       - Performance: 48fps (needs optimization)
-       - Visual feedback: Hit effects present but underwhelming
-       - Audio: SFX in place but mixing needs work
-       - Feel: Input response good, but impacts lack weight
+       **根本原因**：行为树每帧对每个 NPC 重新评估整棵树。
+       15 个 NPC 意味着 15 次完整树遍历 = 8.2ms。
 
-       I'll coordinate 4 specialists in parallel. First, let me get your polish
-       priorities - rank these:
-       - Performance (hitting 60fps)
-       - Visual impact (VFX, shaders, feedback)
-       - Audio polish (mixing, spatial, punch)
-       - Feel/juice (screen shake, hitstop, particles)"
+       **解决方案选项**：
+       1. 错开更新：每帧只更新 5 个 NPC（轮换）
+       2. 缓存树结果：仅在状态变化时重新评估
+       3. 简化树：将节点数从 12 减少到 6
 
-User: "Performance #1, then visual impact, then feel, then audio"
+       我推荐方案 2 + 3：缓存结果并简化树。
+       预期收益：8.2ms -> 1.5ms（节省 6.7ms = +40fps）
 
-**Phase 1 - Performance** (performance-analyst):
-Agent: "Running combat performance optimization..."
-       [Implements optimizations from previous profiling]
-       "Now at 62fps stable. Performance target met."
+       我是否展示重构后的行为树？"
 
-**Phase 2 - Visual Impact** (technical-artist):
-Agent: "Analyzing visual feedback. I see hit VFX but they're generic. Questions:
-       - Should different damage types have distinct visual feedback?
-       - Do you want critical hits to be visually distinct?
-       - Screen shake on hits - subtle or pronounced?"
+用户："是的"
 
-User: "Distinct per damage type. Crits should pop. Subtle screen shake."
+代理：[展示优化后的实现]
 
-Agent: [Creates polished VFX specifications and shader improvements]
-       "VFX polish complete. Want to see a comparison video?"
+### 步骤 7.2：视觉打磨
 
-**Phase 3 - Feel** (technical-artist + gameplay-programmer):
-Agent: "Adding hitstop (frame freeze) on impacts, particle bursts on crits,
-       subtle camera shake. Testing feel..."
-       "Hitstop feels good at 100ms for normal hits, 200ms for crits. Approve?"
-
-User: "Approved"
-
-**Phase 4 - Validation** (qa-tester):
-Agent: "Running regression tests on all combat polish changes..."
-       "All tests pass. No bugs introduced."
-
-Agent (coordinator): "Polish pass complete:
-       ✓ Performance: 48fps -> 62fps
-       ✓ Visual: Enhanced VFX, type-specific effects, crit feedback
-       ✓ Feel: Hitstop, particles, camera shake
-       ✓ Tests: All passing
-       Ready to merge."
-
-### Step 7.3: Audio Implementation
+使用团队打磨技能进行全面打磨：
 
 ```
-/team-audio "combat audio"
+/team-polish "战斗系统"
 ```
 
-**What happens:** The team audio skill coordinates the full collaborative audio pipeline:
+**过程：** 团队打磨技能协调协作式打磨流程：
 
-**Phase 1 - Audio Direction** (audio-director):
-Agent: "Let's define the audio direction for combat. What's the emotional goal?
-       - Brutal and visceral?
-       - Tactical and precise?
-       - Magical and fantastical?
-       - Fast and arcade-like?"
+代理 (coordinator)："开始战斗系统打磨流程。让我评估当前状态并
+       确定打磨优先级...
 
-User: "Tactical and precise with some weight to impacts"
+       **当前状态分析**：
+       - 性能：48fps（需要优化）
+       - 视觉反馈：受击效果有但不强
+       - 音频：音效已有但混音需要调整
+       - 手感：输入响应良好，但冲击缺乏分量感
 
-Agent: "Got it. Here's my audio direction for combat:
+       我将并行协调 4 位专家。首先，让我获取你的打磨优先级 — 排个序：
+       - 性能（达到 60fps）
+       - 视觉冲击（VFX、着色器、反馈）
+       - 音频打磨（混音、空间感、力度感）
+       - 手感/打击感（屏幕震动、击停、粒子）"
 
-       **Audio Pillars**:
-       - Clarity: Every action has distinct, recognizable sound
-       - Spatial awareness: Enemy positions clear from audio alone
-       - Feedback: Successful actions feel satisfying
-       - Atmosphere: Tension maintained without fatigue
+用户："性能第一，然后视觉冲击，然后手感，然后音频"
 
-       **Priorities**:
-       1. Weapon sounds must be punchy but not fatiguing
-       2. Footsteps critical for spatial awareness
-       3. Enemy attack telegraphs via audio cues
-       4. Hit confirmation with satisfying impact sounds
+**阶段 1 - 性能**（performance-analyst）：
+代理："正在运行战斗性能优化..."
+       [实现之前分析中的优化]
+       "现在稳定在 62fps。性能目标达成。"
 
-       Approve this direction?"
+**阶段 2 - 视觉冲击**（technical-artist）：
+代理："正在分析视觉反馈。我看到有受击 VFX 但太通用。问题：
+       - 不同伤害类型是否应该有不同的视觉反馈？
+       - 暴击是否应该在视觉上有区别？
+       - 受击时的屏幕震动 — 轻微还是强烈？"
 
-User: "Approved"
+用户："每种伤害类型不同。暴击要有突出的效果。轻微屏幕震动。"
 
-**Phase 2 - SFX Specification** (sound-designer):
-Agent: "Based on the audio direction, here's my SFX event list:
+代理：[创建打磨的 VFX 规格和着色器改进]
+       "VFX 打磨完成。想看对比视频吗？"
 
-       **Player Actions**:
-       - weapon_swing_light, weapon_swing_heavy (distinct whoosh)
-       - footstep_walk, footstep_run (material-aware)
+**阶段 3 - 手感**（technical-artist + gameplay-programmer）：
+代理："正在添加冲击时的击停（帧冻结）、暴击时的粒子爆发、
+       轻微的相机震动。测试手感..."
+       "击停在普通攻击 100ms、暴击 200ms 时感觉良好。批准？"
+
+用户："批准"
+
+**阶段 4 - 验证**（qa-tester）：
+代理："正在对所有战斗打磨变更运行回归测试..."
+       "所有测试通过。未引入新 bug。"
+
+代理 (coordinator)："打磨流程完成：
+       ✓ 性能：48fps -> 62fps
+       ✓ 视觉：增强的 VFX、特定类型效果、暴击反馈
+       ✓ 手感：击停、粒子、相机震动
+       ✓ 测试：全部通过
+       准备合并。"
+
+### 步骤 7.3：音频实现
+
+```
+/team-audio "战斗音频"
+```
+
+**过程：** 团队音频技能协调完整的协作式音频管线：
+
+**阶段 1 - 音频方向**（audio-director）：
+代理："让我们定义战斗的音频方向。情感目标是什么？
+       - 残暴和血腥？
+       - 战术和精准？
+       - 魔幻和奇幻？
+       - 快速和街机感？"
+
+用户："战术和精准，冲击感要有分量"
+
+代理："明白了。以下是我对战斗的音频方向：
+
+       **音频支柱**：
+       - 清晰度：每个动作都有独特、可识别的声音
+       - 空间感知：仅凭音频就能判断敌人位置
+       - 反馈：成功动作令人满足
+       - 氛围：保持紧张但不疲劳
+
+       **优先级**：
+       1. 武器声音要有力度但不疲劳
+       2. 脚步声对空间感知至关重要
+       3. 敌人攻击通过音频提示预警
+       4. 用令人满足的冲击声确认命中
+
+       批准此方向？"
+
+用户："批准"
+
+**阶段 2 - 音效规格**（sound-designer）：
+代理："基于音频方向，以下是我的音效事件列表：
+
+       **玩家动作**：
+       - weapon_swing_light, weapon_swing_heavy（不同的呼啸声）
+       - footstep_walk, footstep_run（根据材质变化）
        - ability_cast_start, ability_cast_release
 
-       **Impacts**:
-       - hit_flesh_light, hit_flesh_heavy (with pitch variation)
-       - hit_armor_deflect (metallic ping)
-       - critical_hit (special layered impact)
+       **冲击**：
+       - hit_flesh_light, hit_flesh_heavy（带音调变化）
+       - hit_armor_deflect（金属声）
+       - critical_hit（特殊分层冲击）
 
-       **Enemy Audio**:
-       - enemy_attack_windup (0.5s telegraph)
-       - enemy_footstep (louder than player for spatial awareness)
+       **敌人音频**：
+       - enemy_attack_windup（0.5s 预警）
+       - enemy_footstep（比玩家更响亮以增强空间感知）
 
-       Each sound has variation pool (3-5 variants) to avoid repetition.
-       Missing anything critical?"
+       每个声音都有变化池（3-5 个变体）以避免重复。
+       有遗漏什么关键的吗？"
 
-User: "Add dodge/roll sound"
+用户："添加闪避/翻滚声音"
 
-Agent: "Added dodge_roll event. Complete SFX spec ready."
+代理："已添加 dodge_roll 事件。完整的音效规格就绪。"
 
-**Phase 3 - Audio Implementation** (technical-artist):
-Agent: "Implementing audio system with:
-       - Event-based triggers (no hardcoded audio calls)
-       - 3D spatial audio with distance attenuation
-       - Priority system (critical sounds never cut off)
-       - Dynamic mixing (combat music layer + SFX balance)
+**阶段 3 - 音频实现**（technical-artist）：
+代理："实现音频系统，包含：
+       - 基于事件的触发器（无硬编码音频调用）
+       - 3D 空间音频，带距离衰减
+       - 优先级系统（关键声音永不被截断）
+       - 动态混音（战斗音乐层 + 音效平衡）
 
-       Questions:
-       - Max simultaneous sounds limit? (recommend 32)
-       - Distance attenuation curve - linear or logarithmic?"
+       问题：
+       - 最大同时声音数限制？（建议 32）
+       - 距离衰减曲线 — 线性还是对数？"
 
-User: "32 sounds max. Logarithmic attenuation."
+用户："最多 32 个声音。对数衰减。"
 
-Agent: [Implements audio middleware integration]
+代理：[实现音频中间件集成]
 
-**Phase 4 - Integration** (gameplay-programmer):
-Agent: "Wiring audio events to gameplay code...
-       - Weapon swings: Connected to animation events
-       - Footsteps: Tied to movement speed and surface type
-       - Impacts: Hooked to damage events
-       - Enemy telegraphs: 0.5s before attack execution
+**阶段 4 - 集成**（gameplay-programmer）：
+代理："将音频事件连接到游戏代码...
+       - 武器挥砍：连接到动画事件
+       - 脚步：绑定到移动速度和地面类型
+       - 冲击：挂钩到伤害事件
+       - 敌人预警：攻击执行前 0.5s
 
-       Ready for audio playtest."
+       准备音频游戏测试。"
 
-Agent (coordinator): "Combat audio pipeline complete. Test in-game and provide feedback
-       on balance, clarity, and feel."
+代理 (coordinator)："战斗音频管线完成。在游戏中测试并提供
+       关于平衡、清晰度和手感的反馈。"
 
-### Step 7.4: Technical Debt
+### 步骤 7.4：技术债务
 
-Before release, assess your tech debt:
+在发布前，评估你的技术债务：
 
 ```
 /tech-debt
 ```
 
-This scans the codebase for:
-- TODO/FIXME/HACK comments
-- Code duplication
-- Overly complex functions
-- Missing tests
-- Outdated dependencies
+这会扫描代码库查找：
+- TODO/FIXME/HACK 注释
+- 代码重复
+- 过于复杂的函数
+- 缺失的测试
+- 过时的依赖
 
-Each debt item gets categorized and prioritized. You decide what to fix
-before release vs. what to defer.
+每个债务项会被分类和排序优先级。你来决定在发布前修复什么
+以及推迟什么。
 
 ---
 
-## Phase 8: Localization & Accessibility
+## 阶段 8：本地化与无障碍
 
-### Step 8.1: Localization Scan
+### 步骤 8.1：本地化扫描
 
 ```
 /localize src/
 ```
 
-This scans for:
-- Hardcoded strings that should be externalized
-- String concatenation that breaks translation
-- Text that doesn't account for expansion (German text is ~30% longer)
-- Missing locale files
+这会扫描：
+- 应该外部化的硬编码字符串
+- 破坏翻译的字符串拼接
+- 不考虑扩展的文本（德语文本长约 30%）
+- 缺失的语言环境文件
 
-### Step 8.2: Accessibility Review
+### 步骤 8.2：无障碍审查
 
 ```
-Ask the accessibility-specialist agent to audit our UI system for
-WCAG compliance, colorblind support, and input remapping.
+让 accessibility-specialist 代理审查我们的 UI 系统的
+WCAG 合规性、色盲支持和输入重映射。
 ```
 
-The `ui-code` rule already enforces some accessibility:
-- Localization-ready strings (no hardcoded text)
-- Keyboard and gamepad input support
-- Text scaling support
-- Colorblind-friendly design
+`ui-code` 规则已经强制执行了一些无障碍要求：
+- 本地化就绪的字符串（无硬编码文本）
+- 键盘和手柄输入支持
+- 文本缩放支持
+- 色盲友好设计
 
-The `accessibility-specialist` goes deeper:
-- Screen reader compatibility
-- Key remapping completeness
-- Subtitle and caption support
-- Motion sensitivity options
-- Difficulty/assist options
+`accessibility-specialist` 会更深入：
+- 屏幕阅读器兼容性
+- 按键重映射完整性
+- 字幕和隐藏式字幕支持
+- 动态敏感度选项
+- 难度/辅助选项
 
 ---
 
-## Phase 9: Release & Launch
+## 阶段 9：发布与上线
 
-### What Happens in This Phase
+### 本阶段内容
 
-Your game is polished, tested, and ready. Now you ship it.
+你的游戏已经打磨、测试完毕并准备就绪。现在发布它。
 
-### Step 9.1: Release Checklist
+### 步骤 9.1：发布检查清单
 
 ```
 /release-checklist v1.0.0
 ```
 
-This generates a comprehensive pre-release checklist covering:
-- Build verification (all platforms compile and run)
-- Certification requirements (platform-specific)
-- Store metadata (descriptions, screenshots, trailers)
-- Legal compliance (EULA, privacy policy, ratings)
-- Save game compatibility
-- Analytics and telemetry verification
+这会生成一份全面的发布前检查清单，涵盖：
+- 构建验证（所有平台编译并运行）
+- 认证要求（平台特定）
+- 商店元数据（描述、截图、预告片）
+- 法律合规（EULA、隐私政策、评级）
+- 存档兼容性
+- 分析和遥测验证
 
-### Step 9.2: Launch Readiness (Full Validation)
+### 步骤 9.2：上线就绪（完整验证）
 
 ```
 /launch-checklist
 ```
 
-This is the nuclear option -- a complete cross-department validation:
+这是终极选项 — 完整的跨部门验证：
 
-| Department | What's Checked |
-|-----------|---------------|
-| **Engineering** | Build stability, crash rates, memory leaks, load times |
-| **Design** | Feature completeness, tutorial flow, difficulty curve |
-| **Art** | Asset quality, missing textures, LOD levels |
-| **Audio** | Missing sounds, mixing levels, spatial audio |
-| **QA** | Open bug count by severity, regression suite pass rate |
-| **Narrative** | Dialogue completeness, lore consistency, typos |
-| **Localization** | All strings translated, no truncation, locale testing |
-| **Accessibility** | Compliance checklist, assistive feature testing |
-| **Store** | Metadata complete, screenshots approved, pricing set |
-| **Marketing** | Press kit ready, launch trailer, social media scheduled |
-| **Community** | Patch notes draft, FAQ prepared, support channels ready |
-| **Infrastructure** | Servers scaled, CDN configured, monitoring active |
-| **Legal** | EULA finalized, privacy policy, COPPA/GDPR compliance |
+| 部门 | 检查内容 |
+|------|----------|
+| **工程** | 构建稳定性、崩溃率、内存泄漏、加载时间 |
+| **设计** | 功能完整性、教程流程、难度曲线 |
+| **美术** | 资源质量、缺失贴图、LOD 级别 |
+| **音频** | 缺失声音、混音级别、空间音频 |
+| **QA** | 按严重程度的开放 bug 数、回归套件通过率 |
+| **叙事** | 对话完整性、背景一致性、错别字 |
+| **本地化** | 所有字符串已翻译、无截断、语言环境测试 |
+| **无障碍** | 合规检查清单、辅助功能测试 |
+| **商店** | 元数据完整、截图已批准、定价已设定 |
+| **市场** | 媒体包就绪、发布预告片、社交媒体已安排 |
+| **社区** | 补丁说明草稿、FAQ 已准备、支持渠道就绪 |
+| **基础设施** | 服务器已扩展、CDN 已配置、监控已激活 |
+| **法律** | EULA 已定稿、隐私政策、COPPA/GDPR 合规 |
 
-Each item gets a **Go / No-Go** status. All must be Go to ship.
+每个项目都有 **Go / No-Go** 状态。全部 Go 才能发布。
 
-### Step 9.3: Generate Player-Facing Content
+### 步骤 9.3：生成面向玩家的内容
 
 ```
 /patch-notes v1.0.0
 ```
 
-Generates player-friendly patch notes from git history and internal data.
-Translates developer language ("refactored state machine") into player
-language ("improved enemy behavior responsiveness").
+从 git 历史和内部数据生成玩家友好的补丁说明。
+将开发者语言（"重构了状态机"）翻译为玩家语言
+（"改善了敌人行为响应速度"）。
 
 ```
 /changelog v1.0.0
 ```
 
-Generates an internal changelog (more technical, for the team).
+生成内部更新日志（更技术化，面向团队）。
 
-### Step 9.4: Coordinate the Release
+### 步骤 9.4：协调发布
 
 ```
 /team-release
 ```
 
-**What happens:** The team release skill coordinates all departments for launch:
+**过程：** 团队发布技能协调所有部门进行上线：
 
-**Phase 1 - Pre-Release Validation** (release-manager):
-Agent: "Starting release coordination for v1.0.0. First, status check across
-       all departments...
+**阶段 1 - 发布前验证**（release-manager）：
+代理："开始 v1.0.0 发布协调。首先，检查所有部门状态...
 
-       Reviewing launch checklist results:
-       ✓ Engineering: All green
-       ✓ QA: 2 minor bugs open (non-blocking)
-       ✓ Art/Audio: Complete
-       ✓ Localization: Complete
-       ⚠ Store: Screenshots pending approval
-       ✗ Marketing: Launch trailer not finalized
+       审查发布检查清单结果：
+       ✓ 工程：全部绿灯
+       ✓ QA：2 个次要 bug 未关闭（不阻塞）
+       ✓ 美术/音频：完成
+       ✓ 本地化：完成
+       ⚠ 商店：截图待批准
+       ✗ 市场：发布预告片未定稿
 
-       Two blockers identified. Timeline impact?"
+       发现两个阻塞项。对时间线有影响吗？"
 
-User: "Screenshots approved this morning. Trailer done by end of day."
+用户："截图今天早上已批准。预告片今天下班前完成。"
 
-Agent: "Got it. Updated timeline: Release tomorrow pending trailer completion.
-       Should I proceed with build preparation?"
+代理："明白了。更新时间线：明天待预告片完成后发布。
+       我是否继续进行构建准备？"
 
-User: "Yes"
+用户："是的"
 
-**Phase 2 - Build Management** (release-manager):
-Agent: "Creating release build v1.0.0...
-       - Windows build: ✓ Complete, tested, 2.1GB
-       - Linux build: ✓ Complete, tested, 2.3GB
-       - Checksums generated
-       - Version manifest created
-       - Update server configured
+**阶段 2 - 构建管理**（release-manager）：
+代理："正在创建 v1.0.0 发布构建...
+       - Windows 构建：✓ 完成，已测试，2.1GB
+       - Linux 构建：✓ 完成，已测试，2.3GB
+       - 校验和已生成
+       - 版本清单已创建
+       - 更新服务器已配置
 
-       All builds ready for deployment."
+       所有构建已准备好部署。"
 
-**Phase 3 - Final QA Sign-Off** (qa-lead):
-Agent: "Running final regression suite on release builds...
-       - All critical tests: ✓ Pass
-       - All high-priority tests: ✓ Pass
-       - Platform-specific tests: ✓ Pass
+**阶段 3 - 最终 QA 签署**（qa-lead）：
+代理："正在对发布构建运行最终回归套件...
+       - 所有关键测试：✓ 通过
+       - 所有高优先级测试：✓ 通过
+       - 平台特定测试：✓ 通过
 
-       QA signs off for release. No blocking issues."
+       QA 签署发布。没有阻塞问题。"
 
-**Phase 4 - Deployment Preparation** (devops-engineer):
-Agent: "CI/CD pipeline ready. Deployment plan:
-       1. Upload builds to CDN (12:00 UTC)
-       2. Update store listings (12:30 UTC)
-       3. Enable download access (13:00 UTC - launch time)
-       4. Monitor server load and error rates
+**阶段 4 - 部署准备**（devops-engineer）：
+代理："CI/CD 管线就绪。部署计划：
+       1. 上传构建到 CDN（12:00 UTC）
+       2. 更新商店列表（12:30 UTC）
+       3. 启用下载访问（13:00 UTC - 发布时间）
+       4. 监控服务器负载和错误率
 
-       Rollback plan ready if critical issues detected.
-       Approve deployment schedule?"
+       回滚计划已准备好以防发现关键问题。
+       批准部署计划？"
 
-User: "Approved"
+用户："批准"
 
-**Phase 5 - Go/No-Go Decision** (producer):
-Agent: "Final go/no-go check:
-       ✓ All builds validated
-       ✓ QA sign-off complete
-       ✓ Store metadata approved
-       ✓ Launch trailer complete (confirmed)
-       ✓ Marketing materials ready
-       ✓ Support team briefed
-       ✓ Deployment plan approved
+**阶段 5 - Go/No-Go 决策**（producer）：
+代理："最终 Go/No-Go 检查：
+       ✓ 所有构建已验证
+       ✓ QA 签署完成
+       ✓ 商店元数据已批准
+       ✓ 发布预告片完成（已确认）
+       ✓ 市场物料就绪
+       ✓ 支持团队已通知
+       ✓ 部署计划已批准
 
-       All systems GO. Recommend proceeding with launch at 13:00 UTC tomorrow.
-       Final approval?"
+       所有系统 GO。建议明天 13:00 UTC 发布。
+       最终批准？"
 
-User: "GO for launch"
+用户："GO 发布"
 
-Agent: "Launch approved. Deployment begins 12:00 UTC tomorrow. I'll monitor and
-       report status updates."
+代理："发布已批准。部署明天 12:00 UTC 开始。我将监控并
+       报告状态更新。"
 
-### Step 9.5: Ship
+### 步骤 9.5：发布
 
-The `validate-push` hook will warn you when pushing to `main` or `develop`.
-This is intentional -- release pushes should be deliberate:
+`validate-push` 钩子会在你推送到 `main` 或 `develop` 时警告。
+这是有意的 — 发布推送应该是审慎的：
 
 ```
 git tag v1.0.0
@@ -1589,113 +1553,113 @@ git push origin main --tags
 
 ---
 
-## Phase 10: Post-Launch & Live Ops
+## 阶段 10：上线后与在线运营
 
-### Step 10.1: Hotfix Workflow
+### 步骤 10.1：热修复工作流
 
-When a critical bug appears in production:
-
-```
-/hotfix "Players losing save data when inventory exceeds 99 items"
-```
-
-This bypasses normal sprint processes with a full audit trail:
-1. Creates a hotfix branch
-2. Tracks approvals
-3. Implements the fix
-4. Ensures the fix is backported to the development branch
-5. Documents the incident
-
-### Step 10.2: Post-Mortem
-
-After launch dust settles:
+当生产中出现关键 bug 时：
 
 ```
-Ask Claude to create a post-mortem using the template at
-.claude/docs/templates/post-mortem.md
+/hotfix "背包超过 99 个物品时玩家丢失存档数据"
 ```
 
-This covers:
-- What went well
-- What went poorly
-- What was surprising
-- Key metrics (sales, reviews, crash rates)
-- Lessons for the next project
+这会绕过正常冲刺流程并带有完整审计记录：
+1. 创建热修复分支
+2. 跟踪批准
+3. 实现修复
+4. 确保修复被移植到开发分支
+5. 记录事件
 
-### Step 10.3: Live Operations (if applicable)
+### 步骤 10.2：事后复盘
 
-For games with ongoing content:
-
-```
-Ask the live-ops-designer agent to design a seasonal content cadence
-with battle pass, weekly events, and monthly content drops. Target
-retention for the 30-60-90 day cohorts.
-```
-
-The `live-ops-designer` handles:
-- Season/event calendar
-- Battle pass design
-- Content cadence planning
-- Retention mechanics
-- Live economy tuning
-- Engagement analytics
-
-### Step 10.4: Community Management
+发布尘埃落定后：
 
 ```
-Ask the community-manager agent to draft patch notes for v1.0.1,
-respond to the top 5 community complaints from the feedback channel,
-and prepare a "known issues" post.
+让 Claude 使用 .claude/docs/templates/post-mortem.md 模板
+创建事后复盘
+```
+
+这涵盖：
+- 什么做得好
+- 什么做得不好
+- 什么令人惊讶
+- 关键指标（销量、评价、崩溃率）
+- 下个项目的经验教训
+
+### 步骤 10.3：在线运营（如适用）
+
+对于有持续内容的游戏：
+
+```
+让 live-ops-designer 代理设计赛季内容节奏，
+包含战斗通行证、每周活动和每月内容投放。目标为
+30-60-90 天用户群的留存。
+```
+
+`live-ops-designer` 负责：
+- 赛季/活动日历
+- 战斗通行证设计
+- 内容投放节奏规划
+- 留存机制
+- 实时经济调优
+- 参与度分析
+
+### 步骤 10.4：社区管理
+
+```
+让 community-manager 代理起草 v1.0.1 的补丁说明，
+回复反馈频道中的前 5 个社区投诉，
+并准备"已知问题"帖。
 ```
 
 ---
 
-## Appendix A: Agent Quick-Reference
+## 附录 A：代理快速参考
 
-### "I need to do X -- which agent do I use?"
+### "我需要做 X — 应该用哪个代理？"
 
-| I need to... | Agent | Tier |
-|-------------|-------|------|
-| Come up with a game idea | `/brainstorm` skill | -- |
-| Design a game mechanic | `game-designer` | 2 |
-| Design specific formulas/numbers | `systems-designer` | 3 |
-| Design a game level | `level-designer` | 3 |
-| Design loot tables / economy | `economy-designer` | 3 |
-| Build world lore | `world-builder` | 3 |
-| Write dialogue | `writer` | 3 |
-| Plan the story | `narrative-director` | 2 |
-| Plan a sprint | `producer` | 1 |
-| Make a creative decision | `creative-director` | 1 |
-| Make a technical decision | `technical-director` | 1 |
-| Implement gameplay code | `gameplay-programmer` | 3 |
-| Implement core engine systems | `engine-programmer` | 3 |
-| Implement AI behavior | `ai-programmer` | 3 |
-| Implement multiplayer | `network-programmer` | 3 |
-| Implement UI | `ui-programmer` | 3 |
-| Build dev tools | `tools-programmer` | 3 |
-| Review code architecture | `lead-programmer` | 2 |
-| Create shaders / VFX | `technical-artist` | 3 |
-| Define visual style | `art-director` | 2 |
-| Define audio style | `audio-director` | 2 |
-| Design sound effects | `sound-designer` | 3 |
-| Design UX flows | `ux-designer` | 3 |
-| Write test cases | `qa-tester` | 3 |
-| Plan test strategy | `qa-lead` | 2 |
-| Profile performance | `performance-analyst` | 3 |
-| Set up CI/CD | `devops-engineer` | 3 |
-| Design analytics | `analytics-engineer` | 3 |
-| Check accessibility | `accessibility-specialist` | 3 |
-| Plan live operations | `live-ops-designer` | 3 |
-| Manage a release | `release-manager` | 2 |
-| Manage localization | `localization-lead` | 2 |
-| Prototype quickly | `prototyper` | 3 |
-| Audit security | `security-engineer` | 3 |
-| Communicate with players | `community-manager` | 3 |
-| Godot-specific help | `godot-specialist` | 3 |
-| Unity-specific help | `unity-specialist` | 3 |
-| Unreal-specific help | `unreal-specialist` | 3 |
+| 我需要... | 代理 | 层级 |
+|-----------|------|------|
+| 想出游戏创意 | `/brainstorm` 技能 | -- |
+| 设计游戏机制 | `game-designer` | 2 |
+| 设计具体公式/数值 | `systems-designer` | 3 |
+| 设计游戏关卡 | `level-designer` | 3 |
+| 设计战利品表/经济 | `economy-designer` | 3 |
+| 构建世界背景 | `world-builder` | 3 |
+| 编写对话 | `writer` | 3 |
+| 规划故事 | `narrative-director` | 2 |
+| 规划冲刺 | `producer` | 1 |
+| 做创意决策 | `creative-director` | 1 |
+| 做技术决策 | `technical-director` | 1 |
+| 实现游戏代码 | `gameplay-programmer` | 3 |
+| 实现核心引擎系统 | `engine-programmer` | 3 |
+| 实现 AI 行为 | `ai-programmer` | 3 |
+| 实现多人游戏 | `network-programmer` | 3 |
+| 实现 UI | `ui-programmer` | 3 |
+| 构建开发工具 | `tools-programmer` | 3 |
+| 审查代码架构 | `lead-programmer` | 2 |
+| 创建着色器/VFX | `technical-artist` | 3 |
+| 定义视觉风格 | `art-director` | 2 |
+| 定义音频风格 | `audio-director` | 2 |
+| 设计音效 | `sound-designer` | 3 |
+| 设计用户体验流程 | `ux-designer` | 3 |
+| 编写测试用例 | `qa-tester` | 3 |
+| 规划测试策略 | `qa-lead` | 2 |
+| 性能分析 | `performance-analyst` | 3 |
+| 搭建 CI/CD | `devops-engineer` | 3 |
+| 设计数据分析 | `analytics-engineer` | 3 |
+| 检查无障碍 | `accessibility-specialist` | 3 |
+| 规划在线运营 | `live-ops-designer` | 3 |
+| 管理发布 | `release-manager` | 2 |
+| 管理本地化 | `localization-lead` | 2 |
+| 快速原型 | `prototyper` | 3 |
+| 安全审计 | `security-engineer` | 3 |
+| 与玩家沟通 | `community-manager` | 3 |
+| Godot 专项帮助 | `godot-specialist` | 3 |
+| Unity 专项帮助 | `unity-specialist` | 3 |
+| Unreal 专项帮助 | `unreal-specialist` | 3 |
 
-### Agent Hierarchy
+### 代理层级
 
 ```
                     creative-director / technical-director / producer
@@ -1707,156 +1671,153 @@ and prepare a "known issues" post.
      specialists  programmers  tech-art  snd-design  writer   qa-tester  devops
 ```
 
-**Escalation rule:** If two agents disagree, go up. Design conflicts go to
-`creative-director`. Technical conflicts go to `technical-director`. Scope
-conflicts go to `producer`.
+**升级规则：** 如果两个代理意见不一致，向上升级。设计冲突交给
+`creative-director`。技术冲突交给 `technical-director`。范围
+冲突交给 `producer`。
 
 ---
 
-## Appendix B: Slash Command Quick-Reference
+## 附录 B：斜杠命令快速参考
 
-### By Workflow Stage
+### 按工作流阶段
 
-| Stage | Commands |
-|-------|----------|
-| **Onboarding** | `/start` |
-| **Ideation** | `/brainstorm` |
-| **Design** | `/map-systems`, `/design-system`, `/design-review`, `/architecture-decision` |
-| **Sprint** | `/sprint-plan`, `/estimate`, `/scope-check`, `/retrospective` |
-| **Implementation** | `/code-review`, `/prototype`, `/tech-debt` |
-| **Testing** | `/balance-check`, `/playtest-report`, `/perf-profile` |
-| **Assets** | `/asset-audit`, `/localize` |
-| **Release** | `/release-checklist`, `/launch-checklist`, `/changelog`, `/patch-notes`, `/hotfix` |
-| **Production** | `/milestone-review`, `/onboard` |
-| **Teams** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-release`, `/team-polish`, `/team-audio`, `/team-level` |
-
----
-
-## Appendix C: Common Workflows
-
-### Workflow 1: "I just started and have no game idea"
-
-```
-1. /start (asks where you are, routes you to the right workflow)
-   — or /brainstorm if you prefer to jump straight to ideation
-2. Pick the best concept from the brainstorm output
-3. Create a game concept doc (templates/game-concept.md)
-4. Define game pillars (templates/game-pillars.md)
-5. /design-review on your concept doc
-6. /map-systems to decompose concept into systems with dependencies and priorities
-7. /design-system to author per-system GDDs (guided, section-by-section)
-```
-
-### Workflow 2: "I have a design and want to start coding"
-
-```
-1. /design-review on each GDD to make sure they're solid
-2. /architecture-decision for your first major tech choice
-3. /sprint-plan new to plan your first sprint
-4. Start implementing with gameplay-programmer / engine-programmer
-5. /code-review after each major feature
-6. Write tests alongside code
-7. Commit frequently (hooks validate automatically)
-```
-
-### Workflow 3: "I need to add a complex feature"
-
-```
-1. Create/update the GDD for the feature in design/gdd/
-2. /design-review to validate the design
-3. /estimate to understand effort and risk
-4. Use the appropriate /team-* skill:
-   - /team-combat for combat features
-   - /team-narrative for story content
-   - /team-ui for UI features
-   - /team-level for new levels/areas
-   - /team-audio for audio work
-5. /code-review the implementation
-6. /balance-check if it affects game balance
-```
-
-### Workflow 4: "Something broke in production"
-
-```
-1. /hotfix "description of the issue"
-2. Fix is implemented on hotfix branch
-3. /code-review the fix
-4. Run tests
-5. /release-checklist for hotfix build
-6. Deploy and backport
-```
-
-### Workflow 5: "I'm approaching a milestone"
-
-```
-1. /milestone-review to check progress
-2. /scope-check to see if scope has crept
-3. /tech-debt to assess debt before milestone
-4. /perf-profile to check performance targets
-5. /team-polish for final polish pass
-6. /release-checklist when ready to ship
-```
-
-### Workflow 6: "Starting a new sprint"
-
-```
-1. /retrospective to review the last sprint
-2. /sprint-plan new to create the next sprint
-3. /scope-check to ensure scope is manageable
-4. Start working through sprint tasks
-5. /sprint-plan status to check progress mid-sprint
-```
-
-### Workflow 7: "Shipping the game"
-
-```
-1. /milestone-review for final milestone
-2. /tech-debt to decide what's acceptable at launch
-3. /localize for final localization pass
-4. Accessibility audit via accessibility-specialist
-5. /launch-checklist for full cross-department validation
-6. /team-release to coordinate the release
-7. /patch-notes and /changelog for player communications
-8. Ship!
-9. /hotfix if anything breaks post-launch
-10. Post-mortem after launch stabilizes
-```
+| 阶段 | 命令 |
+|------|------|
+| **入门** | `/start` |
+| **创意** | `/brainstorm` |
+| **设计** | `/map-systems`, `/design-system`, `/design-review`, `/architecture-decision` |
+| **冲刺** | `/sprint-plan`, `/estimate`, `/scope-check`, `/retrospective` |
+| **实现** | `/code-review`, `/prototype`, `/tech-debt` |
+| **测试** | `/balance-check`, `/playtest-report`, `/perf-profile` |
+| **资源** | `/asset-audit`, `/localize` |
+| **发布** | `/release-checklist`, `/launch-checklist`, `/changelog`, `/patch-notes`, `/hotfix` |
+| **生产** | `/milestone-review`, `/onboard` |
+| **团队** | `/team-combat`, `/team-narrative`, `/team-ui`, `/team-release`, `/team-polish`, `/team-audio`, `/team-level` |
 
 ---
 
-## Tips for Getting the Most Out of the System
+## 附录 C：常用工作流
 
-1. **Always start with design, then implement.** The agent system is built
-   around the assumption that a design document exists before code is written.
-   Agents reference GDDs constantly.
+### 工作流 1："我刚起步，没有游戏创意"
 
-2. **Use team skills for cross-cutting features.** Don't try to manually
-   coordinate 4 agents yourself -- let `/team-combat`, `/team-narrative`,
-   etc. handle the orchestration.
+```
+1. /start（询问你目前的状态，引导到正确的工作流）
+   — 或者 /brainstorm 如果你更喜欢直接开始创意
+2. 从头脑风暴输出中选择最佳概念
+3. 创建游戏概念文档（templates/game-concept.md）
+4. 定义游戏支柱（templates/game-pillars.md）
+5. /design-review 审查你的概念文档
+6. /map-systems 将概念分解为带依赖和优先级的系统
+7. /design-system 逐系统编写 GDD（引导式，逐章节）
+```
 
-3. **Trust the rules system.** When a rule flags something in your code, fix
-   it. The rules encode hard-won game development wisdom (data-driven values,
-   delta time, accessibility, etc.).
+### 工作流 2："我有设计，想开始编码"
 
-4. **Compact proactively.** At ~65-70% context usage, compact or `/clear`.
-   The pre-compact hook saves your progress. Don't wait until you're at the
-   limit.
+```
+1. /design-review 审查每个 GDD，确保它们完善
+2. /architecture-decision 做出第一个重大技术选择
+3. /sprint-plan new 规划第一个冲刺
+4. 开始用 gameplay-programmer / engine-programmer 实现
+5. 每个主要功能后 /code-review
+6. 编码的同时编写测试
+7. 频繁提交（钩子自动验证）
+```
 
-5. **Use the right tier of agent.** Don't ask `creative-director` to write a
-   shader. Don't ask `qa-tester` to make design decisions. The hierarchy
-   exists for a reason.
+### 工作流 3："我需要添加一个复杂功能"
 
-6. **Run `/design-review` before handing designs to programmers.** This
-   catches incomplete specs early, saving rework.
+```
+1. 在 design/gdd/ 中创建/更新该功能的 GDD
+2. /design-review 验证设计
+3. /estimate 了解工作量和风险
+4. 使用适当的 /team-* 技能：
+   - /team-combat 用于战斗功能
+   - /team-narrative 用于故事内容
+   - /team-ui 用于 UI 功能
+   - /team-level 用于新关卡/区域
+   - /team-audio 用于音频工作
+5. /code-review 审查实现
+6. /balance-check 如果影响游戏平衡
+```
 
-7. **Run `/code-review` after every major feature.** Catch architectural
-   issues before they propagate.
+### 工作流 4："生产环境出了问题"
 
-8. **Prototype risky mechanics first.** A day of prototyping can save a week
-   of production on a mechanic that doesn't work.
+```
+1. /hotfix "问题描述"
+2. 在热修复分支上实现修复
+3. /code-review 审查修复
+4. 运行测试
+5. /release-checklist 用于热修复构建
+6. 部署并移植
+```
 
-9. **Keep your sprint plans honest.** Use `/scope-check` regularly. Scope
-   creep is the #1 killer of indie games.
+### 工作流 5："我接近一个里程碑"
 
-10. **Document decisions with ADRs.** Future-you will thank present-you for
-    recording *why* things were built the way they were.
+```
+1. /milestone-review 检查进度
+2. /scope-check 检查范围是否膨胀
+3. /tech-debt 评估里程碑前的技术债务
+4. /perf-profile 检查性能目标
+5. /team-polish 最终打磨流程
+6. 准备好发布时 /release-checklist
+```
+
+### 工作流 6："开始新的冲刺"
+
+```
+1. /retrospective 回顾上一个冲刺
+2. /sprint-plan new 创建下一个冲刺
+3. /scope-check 确保范围可控
+4. 开始执行冲刺任务
+5. 冲刺中期 /sprint-plan status 检查进度
+```
+
+### 工作流 7："发布游戏"
+
+```
+1. /milestone-review 最终里程碑
+2. /tech-debt 决定发布时可接受什么
+3. /localize 最终本地化流程
+4. 通过 accessibility-specialist 进行无障碍审计
+5. /launch-checklist 完整跨部门验证
+6. /team-release 协调发布
+7. /patch-notes 和 /changelog 用于玩家沟通
+8. 发布！
+9. 上线后如果出现问题 /hotfix
+10. 上线稳定后进行事后复盘
+```
+
+---
+
+## 充分利用系统的提示
+
+1. **始终先设计再实现。** 代理系统建立在代码编写前
+   已存在设计文档的假设之上。代理会不断引用 GDD。
+
+2. **对跨领域功能使用团队技能。** 不要尝试手动
+   协调 4 个代理 — 让 `/team-combat`、`/team-narrative`
+   等来处理编排。
+
+3. **信任规则系统。** 当规则在你的代码中标记了什么，修复它。
+   规则编码了来之不易的游戏开发经验（数据驱动值、
+   delta time、无障碍等）。
+
+4. **主动压缩。** 在约 65-70% 上下文使用率时，压缩或 `/clear`。
+   压缩前钩子会保存你的进度。不要等到上限。
+
+5. **使用正确层级的代理。** 不要让 `creative-director` 写着色器。
+   不要让 `qa-tester` 做设计决策。层级的存在是有原因的。
+
+6. **在将设计交给程序员之前运行 `/design-review`。** 这能
+   早期捕获不完整的规格，节省返工。
+
+7. **每个主要功能后运行 `/code-review`。** 在架构问题传播前
+   捕获它们。
+
+8. **先原型化有风险的机制。** 一天的原型可以节省一周的
+   生产时间在一个不工作的机制上。
+
+9. **保持冲刺计划的真实性。** 定期使用 `/scope-check`。
+   范围膨胀是独立游戏的头号杀手。
+
+10. **用 ADR 记录决策。** 未来的你会感谢现在的你
+    记录了*为什么*以这种方式构建。

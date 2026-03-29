@@ -1,80 +1,80 @@
+已将 `.claude/skills/design-review/SKILL.md` 翻译为中文：
+
 ---
 name: design-review
-description: "Reviews a game design document for completeness, internal consistency, implementability, and adherence to project design standards. Run this before handing a design document to programmers."
-argument-hint: "[path-to-design-doc]"
+description: "审查游戏设计文档的完整性、内部一致性、可实现性以及对项目设计标准的遵循情况。在将设计文档交付给程序员之前运行此技能。"
+argument-hint: "[设计文档路径]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-1. **Read the target design document** in full.
+1. **完整阅读目标设计文档**。
 
-2. **Read the master CLAUDE.md** to understand project context and standards.
+2. **阅读主配置文件 CLAUDE.md** 以了解项目上下文和标准。
 
-3. **Read related design documents** referenced or implied by the target doc
-   (check `design/gdd/` for related systems).
+3. **阅读目标文档引用或暗示的相关设计文档**
+   （检查 `design/gdd/` 中的关联系统）。
 
-4. **Evaluate against the Design Document Standard checklist**:
-   - [ ] Has Overview section (one-paragraph summary)
-   - [ ] Has Player Fantasy section (intended feeling)
-   - [ ] Has Detailed Rules section (unambiguous mechanics)
-   - [ ] Has Formulas section (all math defined with variables)
-   - [ ] Has Edge Cases section (unusual situations handled)
-   - [ ] Has Dependencies section (other systems listed)
-   - [ ] Has Tuning Knobs section (configurable values identified)
-   - [ ] Has Acceptance Criteria section (testable success conditions)
+4. **按照设计文档标准清单进行评估**：
+   - [ ] 包含概述（Overview）章节（一段式总结）
+   - [ ] 包含玩家幻想（Player Fantasy）章节（期望的感受）
+   - [ ] 包含详细规则（Detailed Rules）章节（无歧义的机制描述）
+   - [ ] 包含公式（Formulas）章节（所有数学定义及变量说明）
+   - [ ] 包含边界情况（Edge Cases）章节（异常情况已处理）
+   - [ ] 包含依赖关系（Dependencies）章节（其他系统已列出）
+   - [ ] 包含调优旋钮（Tuning Knobs）章节（可配置数值已识别）
+   - [ ] 包含验收标准（Acceptance Criteria）章节（可测试的成功条件）
 
-5. **Check for internal consistency**:
-   - Do the formulas produce values that match the described behavior?
-   - Do edge cases contradict the main rules?
-   - Are dependencies bidirectional (does the other system know about this one)?
+5. **检查内部一致性**：
+   - 公式计算出的值是否与描述的行为一致？
+   - 边界情况是否与主要规则矛盾？
+   - 依赖关系是否双向（对方系统是否了解本系统）？
 
-6. **Check for implementability**:
-   - Are the rules precise enough for a programmer to implement without guessing?
-   - Are there any "hand-wave" sections where details are missing?
-   - Are performance implications considered?
+6. **检查可实现性**：
+   - 规则是否足够精确，使程序员无需猜测即可实现？
+   - 是否存在细节缺失的"含糊带过"章节？
+   - 是否考虑了性能影响？
 
-7. **Check for cross-system consistency**:
-   - Does this conflict with any existing mechanic?
-   - Does this create unintended interactions with other systems?
-   - Is this consistent with the game's established tone and pillars?
+7. **检查跨系统一致性**：
+   - 是否与任何现有机制冲突？
+   - 是否与其他系统产生意外的交互？
+   - 是否与游戏已确立的基调和设计支柱（Pillars）一致？
 
-8. **Output the review** in this format:
+8. **按以下格式输出审查结果**：
 
 ```
-## Design Review: [Document Title]
+## 设计审查：[文档标题]
 
-### Completeness: [X/8 sections present]
-[List missing sections]
+### 完整性：[X/8 章节已存在]
+[列出缺失章节]
 
-### Consistency Issues
-[List any internal or cross-system contradictions]
+### 一致性问题
+[列出任何内部或跨系统矛盾]
 
-### Implementability Concerns
-[List any vague or unimplementable sections]
+### 可实现性问题
+[列出任何模糊或不可实现的章节]
 
-### Balance Concerns
-[List any obvious balance risks]
+### 平衡性隐患
+[列出任何明显的平衡风险]
 
-### Recommendations
-[Prioritized list of improvements]
+### 改进建议
+[按优先级排列的改进列表]
 
-### Verdict: [APPROVED / NEEDS REVISION / MAJOR REVISION NEEDED]
+### 裁定：[通过 / 需要修订 / 需要重大修订]
 ```
 
-9. **Contextual next step recommendations**:
-   - If the document being reviewed is `game-concept.md` or `game-pillars.md`:
-     - Check if `design/gdd/systems-index.md` exists
-     - If it does NOT exist, add to Recommendations:
-       > "This concept is ready for systems decomposition. Run `/map-systems`
-       > to break it down into individual systems with dependencies and priorities,
-       > then write per-system GDDs."
-   - If the document is an individual system GDD:
-     - Check if the systems index references this system
-     - If verdict is APPROVED: suggest "Update the systems index status for
-       this system to 'Approved'."
-     - If verdict is NEEDS REVISION or MAJOR REVISION NEEDED: suggest "Update
-       the systems index status for this system to 'In Review'."
-     - Note: This skill is read-only. The user (or `/design-system`) must
-       perform the actual status update in the systems index.
+9. **上下文后续步骤建议**：
+   - 如果被审查的文档是 `game-concept.md` 或 `game-pillars.md`：
+     - 检查 `design/gdd/systems-index.md` 是否存在
+     - 如果不存在，在改进建议中添加：
+       > "此概念已准备好进行系统分解。运行 `/map-systems`
+       > 将其拆解为具有依赖关系和优先级的独立系统，
+       > 然后编写各系统的 GDD。"
+   - 如果文档是单个系统的 GDD：
+     - 检查系统索引（Systems Index）是否引用了此系统
+     - 如果裁定为通过（APPROVED）：建议"将此系统在系统索引中的状态更新为'已批准'。"
+     - 如果裁定为需要修订（NEEDS REVISION）或需要重大修订（MAJOR REVISION NEEDED）：建议"将此系统在系统索引中的状态更新为'审查中'。"
+     - 注意：此技能为只读模式。用户（或 `/design-system`）必须
+       在系统索引中执行实际的状态更新。

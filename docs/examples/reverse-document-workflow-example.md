@@ -1,121 +1,122 @@
-# Reverse Documentation Workflow Example
+# 逆向文档工作流示例
 
-## Scenario
-Developer built a working skill tree system but never wrote a design doc.
-Code exists in `src/gameplay/skills/`, but `design/gdd/` has no skill-system.md.
+## 场景
 
----
-
-## Session Transcript
-
-**User:**
-```
-I have a working skill tree system in src/gameplay/skills/ with about 1200 lines
-of code. I never wrote a design doc. Can we create one from the implementation?
-```
-
-**Game-Designer (reads code, analyzes):**
-```
-I've analyzed your skill tree implementation. Here's what I found:
-
-STRUCTURE:
-- 3 skill trees: Combat, Survival, Tech
-- 5 tiers per tree (unlock via level + prerequisites)
-- Total 45 skills (15 per tree)
-- Cost: skill points (1 per level, can respec for gold)
-
-MECHANICS:
-- Passive skills (stat bonuses)
-- Active skills (abilities with cooldowns)
-- Synergy bonuses (cross-tree unlocks at tier 4+)
-
-IMPLEMENTATION DETAILS:
-- Data-driven (JSON files in assets/data/skills/)
-- Save-compatible (skill state serialized)
-- UI shows locked/unlocked/available states
-
-QUESTIONS before I draft the design doc:
-
-1. **Design Intent:** Was the 3-tree structure meant to represent player archetypes
-   (fighter/survivor/engineer) or playstyle flexibility?
-
-2. **Respec Cost:** Respec costs gold - is this meant to:
-   - Discourage frequent respecs (commitment to builds)?
-   - Create a gold sink (economy balance)?
-   - Or should it be free (experimentation encouraged)?
-
-3. **Synergy System:** Cross-tree synergies appear at tier 4. Was this:
-   - Intentional (reward hybrid builds late-game)?
-   - Or emergent (accidentally creates hybrid meta)?
-
-4. **Balance Philosophy:** I see some skills are clearly better (tier-5 passive
-   is +50% damage). Is this:
-   - Power fantasy (late-game should feel OP)?
-   - Or unbalanced (needs tuning)?
-```
-
-**User:**
-```
-Good questions! Here's the intent:
-
-1. Yes, the 3 trees are archetypes but I want flexibility
-2. Respec should be cheap - I want experimentation
-3. Synergies were intentional - hybrid builds are a feature
-4. Yeah, tier 5 is meant to be powerful, but +50% might be too much
-```
-
-**Game-Designer:**
-```
-Perfect, that clarifies the vision. Let me draft the design doc:
-
-[Shows draft of design/gdd/skill-system.md]
-
-SECTIONS:
-1. Overview (3-tree system, hybrid-friendly, respec-encouraged)
-2. Design Pillars:
-   - Archetype clarity (each tree has identity)
-   - Build flexibility (no lock-in, cheap respec)
-   - Synergy rewards (cross-tree combinations viable)
-3. Detailed Design (tree structure, unlock rules, respec)
-4. Balance Framework (tier power curve, synergy limits)
-5. Edge Cases (respec during combat? max skills? cap?)
-6. Dependencies (UI, save system, tutorial)
-7. Acceptance Criteria (all trees viable, 10+ hybrid builds, clear tooltips)
-8. Open Questions:
-   - Should respec cost scale with level or stay flat?
-   - Tier 5 damage bonus: tune to +30% or keep +50%?
-
-**May I write this to design/gdd/skill-system.md?**
-```
-
-**User:**
-```
-Yes, write it. But let's tune tier 5 to +30% and make respec cost scale.
-```
-
-**Game-Designer:**
-```
-✅ Written to design/gdd/skill-system.md
-✅ Marked as [REVERSE-DOCUMENTED FROM IMPLEMENTATION]
-✅ Added TODO: Update tier-5 passive to +30% in assets/data/skills/combat-tree.json
-✅ Added TODO: Implement scaling respec cost formula
-
-Next steps:
-- Run /balance-check to validate skill tree progression curve?
-- Create ADR documenting why 3 trees instead of 5?
-- Update tutorial to explain hybrid synergies?
-```
+开发者构建了一个可用的技能树系统，但从未编写设计文档。
+代码存在于 `src/gameplay/skills/`，但 `design/gdd/` 中没有 `skill-system.md`。
 
 ---
 
-## Key Observations
+## 会话记录
 
-1. **Agent asked clarifying questions** - didn't just describe code
-2. **Separated intent from implementation** - user corrected "accidental" imbalance
-3. **Design doc captures "why"** - not just "what the code does"
-4. **Identified missing pieces** - edge cases not in code
-5. **Flagged follow-up work** - balance tuning, ADRs, tutorial
+**用户：**
+```
+我在 src/gameplay/skills/ 中有一个可用的技能树系统，大约 1200 行代码。
+我从未编写过设计文档。能否从实现中创建一份？
+```
 
-## Outcome
+**Game-Designer（读取代码，分析）：**
+```
+我已分析了你的技能树实现。以下是我的发现：
 
-The design doc now exists and **matches reality** while also capturing the **intended vision**. Future changes will reference this doc, and new team members understand the *why* behind decisions.
+结构：
+- 3 棵技能树（Skill Tree）：战斗、生存、科技
+- 每棵树 5 个层级（Tier）（通过等级 + 前置条件解锁）
+- 共 45 个技能（每棵树 15 个）
+- 消耗：技能点（每升 1 级获得 1 点，可花费金币重置专精）
+
+机制：
+- 被动技能（Passive Skill）（属性加成）
+- 主动技能（Active Skill）（带冷却时间的技能）
+- 协同加成（Synergy Bonus）（4 层以上的跨树解锁）
+
+实现细节：
+- 数据驱动（JSON 文件位于 `assets/data/skills/`）
+- 存档兼容（技能状态已序列化）
+- UI 显示已锁定/已解锁/可解锁状态
+
+在起草设计文档之前，有几个问题：
+
+1. **设计意图**：3 棵树的结构是否意在代表玩家原型
+   （战士/生存者/工程师）还是玩法风格的灵活性？
+
+2. **重置消耗**：重置需要花费金币——这是否意在：
+   - 阻止频繁重置（鼓励对构建方案的承诺）？
+   - 创造金币回收机制（经济平衡）？
+   - 还是应该免费（鼓励实验）？
+
+3. **协同系统**：跨树协同在 4 层出现。这是：
+   - 刻意为之（奖励后期的混合构建）？
+   - 还是自然涌现（意外创造了混合流派 Meta）？
+
+4. **平衡理念**：我看到某些技能明显更强（5 层被动是 +50% 伤害）。这是：
+   - 力量幻想（后期应该感觉超模 Overpowered）？
+   - 还是未平衡（需要调优）？
+```
+
+**用户：**
+```
+好问题！以下是我的意图：
+
+1. 是的，3 棵树代表原型，但我希望保持灵活性
+2. 重置应该便宜——我希望鼓励实验
+3. 协同是刻意设计的——混合构建是一个特性
+4. 是的，5 层应该很强大，但 +50% 可能太多了
+```
+
+**Game-Designer：**
+```
+很好，这澄清了设计愿景。让我起草设计文档：
+
+[展示 `design/gdd/skill-system.md` 的草稿]
+
+章节：
+1. 概述（3 树系统、混合友好、鼓励重置）
+2. 设计支柱（Design Pillar）：
+   - 原型清晰度（每棵树有独特身份）
+   - 构建灵活性（无锁定，重置便宜）
+   - 协同奖励（跨树组合可行）
+3. 详细设计（树结构、解锁规则、重置）
+4. 平衡框架（层级威力曲线、协同限制）
+5. 边界情况（战斗中重置？最大技能数？上限？）
+6. 依赖关系（UI、存档系统、教程）
+7. 验收标准（所有树可行、10+ 种混合构建、清晰的提示文本 Tooltip）
+8. 待解决问题：
+   - 重置消耗应随等级递增还是保持固定？
+   - 5 层伤害加成：调至 +30% 还是保持 +50%？
+
+**可以将此内容写入 `design/gdd/skill-system.md` 吗？**
+```
+
+**用户：**
+```
+可以，写入吧。但把 5 层调至 +30%，并让重置消耗随等级递增。
+```
+
+**Game-Designer：**
+```
+✅ 已写入 `design/gdd/skill-system.md`
+✅ 标记为 [从实现逆向文档化 REVERSE-DOCUMENTED FROM IMPLEMENTATION]
+✅ 添加待办：在 `assets/data/skills/combat-tree.json` 中将 5 层被动更新为 +30%
+✅ 添加待办：实现递增重置消耗公式
+
+后续步骤：
+- 运行 /balance-check 验证技能树成长曲线？
+- 创建架构决策记录（ADR），记录为什么选择 3 棵树而非 5 棵？
+- 更新教程以解释混合协同？
+```
+
+---
+
+## 关键观察
+
+1. **代理提出了澄清性问题**——不只是描述代码
+2. **区分意图与实现**——用户纠正了"意外"的不平衡
+3. **设计文档捕捉了"为什么"**——不只是"代码做了什么"
+4. **识别了缺失部分**——代码中未处理的边界情况
+5. **标记了后续工作**——平衡调优、架构决策记录、教程
+
+## 结果
+
+设计文档现已存在，且**与现实一致**，同时捕捉了**设计愿景**。
+未来的变更将引用此文档，新团队成员也能理解决策背后的"为什么"。

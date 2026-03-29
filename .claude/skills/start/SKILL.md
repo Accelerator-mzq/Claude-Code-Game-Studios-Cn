@@ -1,180 +1,151 @@
 ---
 name: start
-description: "First-time onboarding — asks where you are, then guides you to the right workflow. No assumptions."
-argument-hint: "[no arguments]"
+description: "首次入门引导 — 询问你当前处于哪个阶段，然后引导你进入正确的工作流。不做任何假设。"
+argument-hint: "[无参数]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, AskUserQuestion
 ---
 
-# Guided Onboarding
+# 引导式入门
 
-This skill is the entry point for new users. It does NOT assume you have a game
-idea, an engine preference, or any prior experience. It asks first, then routes
-you to the right workflow.
+此技能是新用户的入口。它不会假设你已经有了游戏创意、引擎偏好或任何经验。它先询问，然后将你路由到正确的工作流。
 
 ---
 
-## Workflow
+## 工作流
 
-### 1. Detect Project State (Silent)
+### 1. 检测项目状态（静默）
 
-Before asking anything, silently gather context so you can tailor your guidance.
-Do NOT show these results unprompted — they inform your recommendations, not
-the conversation opener.
+在询问任何问题之前，静默收集上下文信息，以便量身定制你的引导建议。不要主动展示这些结果 — 它们用于指导推荐，而非作为对话开场白。
 
-Check:
-- **Engine configured?** Read `.claude/docs/technical-preferences.md`. If the
-  Engine field contains `[TO BE CONFIGURED]`, the engine is not set.
-- **Game concept exists?** Check for `design/gdd/game-concept.md`.
-- **Source code exists?** Glob for source files in `src/` (`*.gd`, `*.cs`,
-  `*.cpp`, `*.h`, `*.rs`, `*.py`, `*.js`, `*.ts`).
-- **Prototypes exist?** Check for subdirectories in `prototypes/`.
-- **Design docs exist?** Count markdown files in `design/gdd/`.
-- **Production artifacts?** Check for files in `production/sprints/` or
-  `production/milestones/`.
+检查：
+- **引擎已配置？** 读取 `.claude/docs/technical-preferences.md`。如果 Engine 字段包含 `[TO BE CONFIGURED]`，说明引擎未设置。
+- **游戏概念是否存在？** 检查 `design/gdd/game-concept.md`。
+- **源代码是否存在？** 使用 Glob 搜索 `src/` 中的源文件（`*.gd`、`*.cs`、`*.cpp`、`*.h`、`*.rs`、`*.py`、`*.js`、`*.ts`）。
+- **原型是否存在？** 检查 `prototypes/` 中的子目录。
+- **设计文档是否存在？** 统计 `design/gdd/` 中的 Markdown 文件数量。
+- **生产工件（Production Artifacts）？** 检查 `production/sprints/` 或 `production/milestones/` 中是否有文件。
 
-Store these findings internally. You will use them to validate the user's
-self-assessment and to tailor follow-up recommendations.
+在内部保存这些发现。你将用它们来验证用户的自评结果并定制后续推荐。
 
 ---
 
-### 2. Ask Where the User Is
+### 2. 询问用户当前阶段
 
-This is the first thing the user sees. Present these 4 options clearly:
+这是用户首先看到的内容。清晰地展示以下 4 个选项：
 
-> **Welcome to Claude Code Game Studios!**
+> **欢迎使用 Claude Code Game Studios！**
 >
-> Before I suggest anything, I'd like to understand where you're starting from.
-> Where are you at with your game idea right now?
+> 在提出建议之前，我想了解你目前的起点。你的游戏创意现在处于哪个阶段？
 >
-> **A) No idea yet** — I don't have a game concept at all. I want to explore
-> and figure out what to make.
+> **A）还没有想法** — 我完全没有任何游戏概念。我想探索并弄清楚要做什么。
 >
-> **B) Vague idea** — I have a rough theme, feeling, or genre in mind
-> (e.g., "something with space" or "a cozy farming game") but nothing concrete.
+> **B）模糊的想法** — 我有一个粗略的主题、感觉或类型方向（例如"跟太空有关的东西"或"一款温馨的农场游戏"），但还没有具体内容。
 >
-> **C) Clear concept** — I know the core idea — genre, basic mechanics, maybe
-> a pitch sentence — but haven't formalized it into documents yet.
+> **C）清晰的概念** — 我知道核心想法 — 类型、基本机制，可能还有一句话的推介 — 但还没有正式形成文档。
 >
-> **D) Existing work** — I already have design docs, prototypes, code, or
-> significant planning done. I want to organize or continue the work.
+> **D）已有成果** — 我已经有了设计文档、原型、代码或重要的规划工作。我想整理或继续这些工作。
 
-Wait for the user's answer. Do not proceed until they respond.
-
----
-
-### 3. Route Based on Answer
-
-#### If A: No idea yet
-
-The user needs creative exploration before anything else. Engine choice,
-technical setup — all of that comes later.
-
-1. Acknowledge that starting from zero is completely fine
-2. Briefly explain what `/brainstorm` does (guided ideation using professional
-   frameworks — MDA, player psychology, verb-first design)
-3. Recommend running `/brainstorm open` as the next step
-4. Show the recommended path:
-   - `/brainstorm` — discover your game concept
-   - `/setup-engine` — configure the engine (brainstorm will recommend one)
-   - `/map-systems` — decompose the concept into systems and plan GDD writing order
-   - `/prototype` — test the core mechanic
-   - `/sprint-plan` — plan the first sprint
-
-#### If B: Vague idea
-
-The user has a seed but needs help growing it into a concept.
-
-1. Ask them to share their vague idea — even a few words is enough
-2. Validate the idea as a starting point (don't judge or redirect)
-3. Recommend running `/brainstorm [their hint]` to develop it
-4. Show the recommended path:
-   - `/brainstorm [hint]` — develop the idea into a full concept
-   - `/setup-engine` — configure the engine
-   - `/map-systems` — decompose the concept into systems and plan GDD writing order
-   - `/prototype` — test the core mechanic
-   - `/sprint-plan` — plan the first sprint
-
-#### If C: Clear concept
-
-The user knows what they want to make but hasn't documented it.
-
-1. Ask 2-3 follow-up questions to understand their concept:
-   - What's the genre and core mechanic? (one sentence)
-   - Do they have an engine preference, or need help choosing?
-   - What's the rough scope? (jam game, small project, large project)
-2. Based on their answers, offer two paths:
-   - **Formalize first**: Run `/brainstorm` to structure the concept into a
-     proper game concept document with pillars, MDA analysis, and scope tiers
-   - **Jump to engine setup**: If they're confident in their concept, go
-     straight to `/setup-engine` and write the GDD manually afterward
-3. Show the recommended path (adapted to their choice):
-   - `/brainstorm` or `/setup-engine` (their pick)
-   - `/design-review` — validate the concept doc
-   - `/map-systems` — decompose the concept into individual systems with dependencies and priorities
-   - `/design-system` — author per-system GDDs (guided, section-by-section)
-   - `/architecture-decision` — make first technical decisions
-   - `/sprint-plan` — plan the first sprint
-
-#### If D: Existing work
-
-The user has artifacts already. Figure out what exists and what's missing.
-
-1. Share what you found in Step 1 (now it's relevant):
-   - "I can see you have [X source files / Y design docs / Z prototypes]..."
-   - "Your engine is [configured as X / not yet configured]..."
-2. Recommend running `/project-stage-detect` for a full analysis
-3. If the engine isn't configured, note that `/setup-engine` should come first
-4. Show the recommended path:
-   - `/project-stage-detect` — full gap analysis
-   - `/setup-engine` — if not configured
-   - `/design-system` — if systems index exists but GDDs are incomplete
-   - `/gate-check` — validate readiness for next phase
-   - `/sprint-plan` — organize the work
+等待用户回答。在用户回复之前不要继续。
 
 ---
 
-### 4. Confirm Before Proceeding
+### 3. 根据回答进行路由
 
-After presenting the recommended path, ask the user which step they'd like
-to take first. Never auto-run the next skill.
+#### 如果选 A：还没有想法
 
-> "Would you like to start with [recommended first step], or would you prefer
-> to do something else first?"
+用户在进入其他任何环节之前需要创意探索。引擎选择、技术配置 — 这些都以后再说。
+
+1. 确认从零开始完全没问题
+2. 简要说明 `/brainstorm` 的作用（使用专业框架的引导式创意发想 — MDA 框架、玩家心理学、动词优先设计）
+3. 建议下一步运行 `/brainstorm open`
+4. 展示推荐路径：
+   - `/brainstorm` — 发现你的游戏概念
+   - `/setup-engine` — 配置引擎（brainstorm 会推荐一个）
+   - `/map-systems` — 将概念拆解为系统并规划 GDD（游戏设计文档）编写顺序
+   - `/prototype` — 测试核心机制
+   - `/sprint-plan` — 规划第一个冲刺（Sprint）
+
+#### 如果选 B：模糊的想法
+
+用户有一个种子想法，但需要帮助将其发展成完整概念。
+
+1. 请他们分享模糊的想法 — 哪怕几个字就够了
+2. 确认这是一个好的起点（不要评判或改变方向）
+3. 建议运行 `/brainstorm [他们的线索]` 来发展它
+4. 展示推荐路径：
+   - `/brainstorm [线索]` — 将想法发展为完整概念
+   - `/setup-engine` — 配置引擎
+   - `/map-systems` — 将概念拆解为系统并规划 GDD 编写顺序
+   - `/prototype` — 测试核心机制
+   - `/sprint-plan` — 规划第一个冲刺
+
+#### 如果选 C：清晰的概念
+
+用户知道自己要做什么，但还没有形成文档。
+
+1. 提出 2-3 个后续问题来了解他们的概念：
+   - 类型和核心机制是什么？（一句话）
+   - 有引擎偏好吗，还是需要帮助选择？
+   - 大致规模如何？（Game Jam 游戏、小型项目、大型项目）
+2. 根据他们的回答，提供两条路径：
+   - **先正式化**：运行 `/brainstorm`，将概念结构化为正式的游戏概念文档，包含游戏支柱（Pillars）、MDA 分析和规模层级
+   - **直接配置引擎**：如果用户对概念很有信心，直接进入 `/setup-engine`，之后手动编写 GDD
+3. 展示推荐路径（根据他们的选择调整）：
+   - `/brainstorm` 或 `/setup-engine`（由用户选择）
+   - `/design-review` — 验证概念文档
+   - `/map-systems` — 将概念拆解为独立系统，标记依赖关系和优先级
+   - `/design-system` — 编写各系统的 GDD（引导式，逐节完成）
+   - `/architecture-decision` — 做出第一批技术决策
+   - `/sprint-plan` — 规划第一个冲刺
+
+#### 如果选 D：已有成果
+
+用户已经有工件了。弄清楚什么存在、什么缺失。
+
+1. 分享你在步骤 1 中的发现（现在它相关了）：
+   - "我看到你有 [X 个源文件 / Y 份设计文档 / Z 个原型]..."
+   - "你的引擎 [已配置为 X / 尚未配置]..."
+2. 建议运行 `/project-stage-detect` 进行全面分析
+3. 如果引擎未配置，指出应先运行 `/setup-engine`
+4. 展示推荐路径：
+   - `/project-stage-detect` — 全面的缺口分析
+   - `/setup-engine` — 如果尚未配置
+   - `/design-system` — 如果系统索引存在但 GDD 不完整
+   - `/gate-check` — 验证是否准备好进入下一阶段
+   - `/sprint-plan` — 整理工作
 
 ---
 
-### 5. Hand Off
+### 4. 继续前确认
 
-When the user chooses their next step, let them invoke the skill themselves
-or offer to run it for them. Either way, the `/start` skill's job is done
-once the user has a clear next action.
+在展示推荐路径后，询问用户想先执行哪一步。永远不要自动运行下一个技能。
 
----
-
-## Edge Cases
-
-- **User picks D but project is empty**: Gently redirect — "It looks like the
-  project is a fresh template with no artifacts yet. Would Path A or B be a
-  better fit?"
-- **User picks A but project has code**: Mention what you found — "I noticed
-  there's already code in `src/`. Did you mean to pick D (existing work)? Or
-  would you like to start fresh with a new concept?"
-- **User is returning (engine configured, concept exists)**: Skip onboarding
-  entirely — "It looks like you're already set up! Your engine is [X] and you
-  have a game concept at `design/gdd/game-concept.md`. Want to pick up where
-  you left off? Try `/sprint-plan` or just tell me what you'd like to work on."
-- **User doesn't fit any option**: Let them describe their situation in their
-  own words and adapt. The 4 options are starting points, not a prison.
+> "你想从 [推荐的第一步] 开始，还是想先做其他事情？"
 
 ---
 
-## Collaborative Protocol
+### 5. 交接
 
-This skill follows the collaborative design principle:
+当用户选择下一步时，让他们自己调用技能，或者主动提出帮他们运行。无论哪种方式，一旦用户有了明确的下一步行动，`/start` 技能的任务就完成了。
 
-1. **Ask first** — never assume the user's state or intent
-2. **Present options** — give clear paths, not mandates
-3. **User decides** — they pick the direction
-4. **No auto-execution** — recommend the next skill, don't run it without asking
-5. **Adapt** — if the user's situation doesn't fit a template, listen and adjust
+---
+
+## 边界情况
+
+- **用户选了 D 但项目为空**：温和地引导 — "看起来项目是一个全新模板，还没有任何工件。路径 A 或 B 可能更合适？"
+- **用户选了 A 但项目中有代码**：提及你的发现 — "我注意到 `src/` 中已有代码。你是想选 D（已有成果）吗？还是想用新概念重新开始？"
+- **用户是回访者（引擎已配置、概念已存在）**：完全跳过入门 — "看起来你已经配置好了！引擎是 [X]，游戏概念在 `design/gdd/game-concept.md`。想从上次停下的地方继续吗？试试 `/sprint-plan`，或者直接告诉我你想做什么。"
+- **用户不属于任何选项**：让他们用自己的话描述情况，然后灵活适配。4 个选项是起点，不是牢笼。
+
+---
+
+## 协作协议
+
+此技能遵循协作设计原则：
+
+1. **先询问** — 永远不要假设用户的状态或意图
+2. **展示选项** — 给出清晰的路径，而非命令
+3. **用户决定** — 由他们选择方向
+4. **不自动执行** — 推荐下一个技能，但不要未经询问就运行
+5. **灵活适配** — 如果用户的情况不符合模板，倾听并调整

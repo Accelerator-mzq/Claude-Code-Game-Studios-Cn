@@ -1,97 +1,97 @@
-# Test Plan: [Feature/System Name]
+# 测试计划：[功能/系统名称]
 
-## Overview
+## 概述
 
-- **Feature**: [Name]
-- **Design Doc**: [Link to design document]
-- **Implementation**: [Link to code or PR]
-- **Author**: [QA owner]
-- **Date**: [Date]
-- **Priority**: [Critical / High / Medium / Low]
+- **功能**：[名称]
+- **设计文档**：[设计文档链接]
+- **实现**：[代码或 PR 链接]
+- **作者**：[QA 负责人]
+- **日期**：[日期]
+- **优先级**：[严重 / 高 / 中 / 低]
 
-## Scope
+## 范围
 
-### In Scope
+### 纳入范围
 
-- [What is being tested]
+- [将被测试的内容]
 
-### Out of Scope
+### 不在范围内
 
-- [What is explicitly NOT being tested and why]
+- [明确不被测试的内容及原因]
 
-### Dependencies
+### 依赖项
 
-- [Other systems that must be working for these tests to be valid]
+- [这些测试有效所需的其他系统]
 
-## Test Environment
+## 测试环境
 
-- **Build**: [Minimum build version]
-- **Platform**: [Target platforms]
-- **Preconditions**: [Required game state, save files, etc.]
+- **构建版本**：[最低构建版本]
+- **平台**：[目标平台]
+- **前置条件**：[所需的游戏状态、存档文件等]
 
-## Test Cases
+## 测试用例
 
-### Functional Tests -- Happy Path
+### 功能测试 —— 正常路径（Happy Path）
 
-| ID | Test Case | Steps | Expected Result | Status |
-|----|-----------|-------|----------------|--------|
-| TC-001 | [Description] | 1. [Step] 2. [Step] | [Expected] | [ ] |
-| TC-002 | [Description] | 1. [Step] 2. [Step] | [Expected] | [ ] |
+| ID | 测试用例 | 步骤 | 预期结果 | 状态 |
+|----|----------|------|----------|------|
+| TC-001 | [描述] | 1. [步骤] 2. [步骤] | [预期] | [ ] |
+| TC-002 | [描述] | 1. [步骤] 2. [步骤] | [预期] | [ ] |
 
-### Functional Tests -- Edge Cases
+### 功能测试 —— 边界情况（Edge Cases）
 
-| ID | Test Case | Steps | Expected Result | Status |
-|----|-----------|-------|----------------|--------|
-| TC-010 | [Boundary value] | 1. [Step] | [Expected] | [ ] |
-| TC-011 | [Zero/null input] | 1. [Step] | [Expected] | [ ] |
-| TC-012 | [Maximum values] | 1. [Step] | [Expected] | [ ] |
+| ID | 测试用例 | 步骤 | 预期结果 | 状态 |
+|----|----------|------|----------|------|
+| TC-010 | [边界值] | 1. [步骤] | [预期] | [ ] |
+| TC-011 | [零值/空值输入] | 1. [步骤] | [预期] | [ ] |
+| TC-012 | [最大值] | 1. [步骤] | [预期] | [ ] |
 
-### Negative Tests
+### 异常测试（Negative Tests）
 
-| ID | Test Case | Steps | Expected Result | Status |
-|----|-----------|-------|----------------|--------|
-| TC-020 | [Invalid input] | 1. [Step] | [Graceful handling] | [ ] |
-| TC-021 | [Interrupted action] | 1. [Step] | [No corruption] | [ ] |
+| ID | 测试用例 | 步骤 | 预期结果 | 状态 |
+|----|----------|------|----------|------|
+| TC-020 | [无效输入] | 1. [步骤] | [优雅处理] | [ ] |
+| TC-021 | [中断操作] | 1. [步骤] | [无数据损坏] | [ ] |
 
-### Integration Tests
+### 集成测试（Integration Tests）
 
-| ID | Test Case | Systems Involved | Steps | Expected Result | Status |
-|----|-----------|-----------------|-------|----------------|--------|
-| TC-030 | [Cross-system interaction] | [System A, System B] | 1. [Step] | [Expected] | [ ] |
+| ID | 测试用例 | 涉及系统 | 步骤 | 预期结果 | 状态 |
+|----|----------|----------|------|----------|------|
+| TC-030 | [跨系统交互] | [系统 A, 系统 B] | 1. [步骤] | [预期] | [ ] |
 
-### Performance Tests
+### 性能测试（Performance Tests）
 
-| ID | Test Case | Metric | Budget | Steps | Status |
-|----|-----------|--------|--------|-------|--------|
-| TC-040 | [Load time] | Seconds | [X]s | 1. [Step] | [ ] |
-| TC-041 | [Frame rate] | FPS | [X] | 1. [Step] | [ ] |
-| TC-042 | [Memory usage] | MB | [X]MB | 1. [Step] | [ ] |
+| ID | 测试用例 | 指标 | 预算 | 步骤 | 状态 |
+|----|----------|------|------|------|------|
+| TC-040 | [加载时间] | 秒 | [X]s | 1. [步骤] | [ ] |
+| TC-041 | [帧率] | FPS | [X] | 1. [步骤] | [ ] |
+| TC-042 | [内存占用] | MB | [X]MB | 1. [步骤] | [ ] |
 
-### Regression Tests
+### 回归测试（Regression Tests）
 
-| ID | Related Bug | Test Case | Steps | Expected Result | Status |
-|----|------------|-----------|-------|----------------|--------|
-| TC-050 | BUG-[XXXX] | [Verify fix holds] | 1. [Step] | [Expected] | [ ] |
+| ID | 关联缺陷 | 测试用例 | 步骤 | 预期结果 | 状态 |
+|----|----------|----------|------|----------|------|
+| TC-050 | BUG-[XXXX] | [验证修复有效] | 1. [步骤] | [预期] | [ ] |
 
-## Test Results Summary
+## 测试结果汇总
 
-| Category | Total | Passed | Failed | Blocked | Skipped |
-|----------|-------|--------|--------|---------|---------|
-| Happy Path | | | | | |
-| Edge Cases | | | | | |
-| Negative | | | | | |
-| Integration | | | | | |
-| Performance | | | | | |
-| Regression | | | | | |
-| **Total** | | | | | |
+| 类别 | 总计 | 通过 | 失败 | 阻塞 | 跳过 |
+|------|------|------|------|------|------|
+| 正常路径 | | | | | |
+| 边界情况 | | | | | |
+| 异常测试 | | | | | |
+| 集成测试 | | | | | |
+| 性能测试 | | | | | |
+| 回归测试 | | | | | |
+| **总计** | | | | | |
 
-## Bugs Found
+## 发现的缺陷
 
-| Bug ID | Severity | Test Case | Description | Status |
-|--------|----------|-----------|-------------|--------|
+| 缺陷 ID | 严重程度 | 测试用例 | 描述 | 状态 |
+|---------|----------|----------|------|------|
 
-## Sign-Off
+## 签署确认
 
-- **QA Tester**: [Name] -- [Date]
-- **QA Lead**: [Name] -- [Date]
-- **Feature Owner**: [Name] -- [Date]
+- **QA 测试员**：[姓名] —— [日期]
+- **QA 负责人**：[姓名] —— [日期]
+- **功能负责人**：[姓名] —— [日期]

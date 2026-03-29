@@ -1,17 +1,14 @@
-# Hook: post-merge-asset-validation
+# Hook: post-merge-asset-validation（合并后资产验证）
 
-## Trigger
+## 触发条件（Trigger）
 
-Runs after any merge to the `develop` or `main` branch that includes changes
-to `assets/`.
+当包含 `assets/` 目录变更的代码合并到 `develop` 或 `main` 分支后运行。
 
-## Purpose
+## 目的（Purpose）
 
-Validates that all assets in the merged branch conform to naming conventions,
-size budgets, and format requirements. Prevents non-compliant assets from
-accumulating on integration branches.
+验证合并分支中的所有资产是否符合命名规范、大小预算（Size Budget）和格式要求。防止不合规资产在集成分支上累积。
 
-## Implementation
+## 实现（Implementation）
 
 ```bash
 #!/bin/bash
@@ -76,9 +73,9 @@ fi
 exit $EXIT_CODE
 ```
 
-## Agent Integration
+## 代理集成（Agent Integration）
 
-When this hook reports issues:
-1. For naming violations: fix manually or invoke `art-director` for guidance
-2. For size violations: invoke `technical-artist` for optimization advice
-3. For a full audit: run `/asset-audit` skill
+当此 Hook 报告问题时：
+1. 命名违规：手动修复，或调用 `art-director` 获取指导
+2. 大小违规：调用 `technical-artist` 获取优化建议
+3. 完整审计：运行 `/asset-audit` 技能

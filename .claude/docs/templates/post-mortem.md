@@ -1,69 +1,69 @@
-# Post-Mortem: [Milestone/Project Name]
+# 事后回顾（Post-Mortem）：[里程碑/项目名称]
 
-## Document Status
-- **Date**: [Date]
-- **Facilitator**: producer
-- **Participants**: [List of agents/people involved]
-- **Period Covered**: [Start date] to [End date]
+## 文档状态
+- **日期**：[日期]
+- **主持者**：producer
+- **参与者**：[参与的代理/人员列表]
+- **覆盖周期**：[开始日期] 至 [结束日期]
 
-## Summary
-[2-3 sentence summary of what this milestone/project accomplished]
+## 总结
+[2-3 句话总结本里程碑/项目完成了什么]
 
-## Goals vs Results
+## 目标与结果
 
-| Goal | Target | Result | Status |
+| 目标 | 目标值 | 实际结果 | 状态 |
 | ---- | ------ | ------ | ------ |
-| [Goal 1] | [Metric] | [Actual] | [Met / Partially / Missed] |
+| [目标 1] | [指标] | [实际值] | [达成 / 部分达成 / 未达成] |
 
-## Timeline
+## 时间线
 
-| Date | Event | Impact |
+| 日期 | 事件 | 影响 |
 | ---- | ----- | ------ |
-| [Date] | [What happened] | [How it affected the project] |
+| [日期] | [发生了什么] | [对项目的影响] |
 
-## What Went Well
+## 做得好的方面
 
-### [Category 1: e.g., Technical Execution]
-**What**: [Description]
-**Why it worked**: [Root cause of success]
-**How to repeat**: [What to keep doing]
+### [类别 1：例如，技术执行]
+**做了什么**：[描述]
+**为什么成功**：[成功的根本原因]
+**如何保持**：[后续继续做的事]
 
-### [Category 2: e.g., Team Coordination]
-**What**: [Description]
-**Why it worked**: [Root cause]
-**How to repeat**: [Action]
+### [类别 2：例如，团队协作]
+**做了什么**：[描述]
+**为什么成功**：[根本原因]
+**如何保持**：[行动]
 
-## What Went Poorly
+## 做得不好的方面
 
-### [Category 1: e.g., Scope Management]
-**What**: [Description]
-**Root cause**: [Why this happened]
-**Impact**: [Time/quality/morale cost]
-**Prevention**: [How to avoid next time]
+### [类别 1：例如，范围管理（Scope Management）]
+**做了什么**：[描述]
+**根本原因**：[为什么发生]
+**影响**：[时间/质量/士气成本]
+**预防措施**：[下次如何避免]
 
-### [Category 2]
-[Same structure]
+### [类别 2]
+[同上结构]
 
-## Key Metrics
+## 关键指标
 
-| Metric | Target | Actual | Notes |
+| 指标 | 目标值 | 实际值 | 备注 |
 | ------ | ------ | ------ | ----- |
-| Tasks completed | [N] | [N] | |
-| Bugs found | — | [N] | |
-| Bugs fixed | — | [N] | |
-| Estimation accuracy | 100% | [N%] | |
-| Scope changes | 0 | [N] | |
+| 已完成任务数 | [N] | [N] | |
+| 发现的 Bug 数 | — | [N] | |
+| 修复的 Bug 数 | — | [N] | |
+| 估算准确率 | 100% | [N%] | |
+| 范围变更次数 | 0 | [N] | |
 
-## Lessons Learned
+## 经验教训
 
-1. **[Lesson]**: [Explanation and how it changes future work]
-2. **[Lesson]**: [Explanation]
+1. **[教训]**：[说明及其对未来工作的影响]
+2. **[教训]**：[说明]
 
-## Action Items
+## 行动项
 
-| # | Action | Owner | Deadline | Status |
+| # | 行动 | 负责人 | 截止日期 | 状态 |
 | - | ------ | ----- | -------- | ------ |
-| 1 | [Action] | [Who] | [When] | [Open/Done] |
+| 1 | [行动] | [谁] | [何时] | [待办/已完成] |
 
-## Acknowledgments
-[Call out exceptional contributions]
+## 致谢
+[表彰杰出贡献]

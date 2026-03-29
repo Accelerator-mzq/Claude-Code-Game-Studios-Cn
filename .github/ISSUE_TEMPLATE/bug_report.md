@@ -6,26 +6,26 @@ labels: bug
 assignees: ''
 ---
 
-## Description
+## Description（问题描述）
 
 A clear description of what the bug is.
 
-## Steps to Reproduce
+## Steps to Reproduce（复现步骤）
 
 1. Open Claude Code in a project using this template
 2. Run `/<skill>` or trigger `<agent>`
 3. ...
 4. See error
 
-## Expected Behavior
+## Expected Behavior（预期行为）
 
 What you expected to happen.
 
-## Actual Behavior
+## Actual Behavior（实际行为）
 
 What actually happened. Include any error messages or unexpected output.
 
-## Environment
+## Environment（环境信息）
 
 - **OS**: (e.g., Windows 10, macOS 14, Ubuntu 24.04)
 - **Shell**: (e.g., Git Bash, zsh, bash)
@@ -34,7 +34,7 @@ What actually happened. Include any error messages or unexpected output.
 - **jq installed?**: Yes / No
 - **Python installed?**: Yes / No
 
-## Affected Component
+## Affected Component（受影响的组件）
 
 - [ ] Agent (which one?):
 - [ ] Skill (which one?):
@@ -44,6 +44,6 @@ What actually happened. Include any error messages or unexpected output.
 - [ ] Documentation
 - [ ] Other:
 
-## Additional Context
+## Additional Context（附加信息）
 
 Any other context — screenshots, terminal output, or the session log if relevant.

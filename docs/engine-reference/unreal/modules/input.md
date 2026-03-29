@@ -1,55 +1,55 @@
-# Unreal Engine 5.7 — Input Module Reference
+# Unreal Engine 5.7 — 输入模块参考
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 uses Enhanced Input as default (legacy input deprecated)
-
----
-
-## Overview
-
-UE 5.7 input systems:
-- **Enhanced Input** (RECOMMENDED, default in UE5): Modular, rebindable, context-based
-- **Legacy Input**: Deprecated, avoid for new projects
+**最后验证：** 2026-02-13
+**知识缺口：** UE 5.7 使用 Enhanced Input 作为默认（旧版输入已弃用）
 
 ---
 
-## Enhanced Input System
+## 概述
 
-### Setup Enhanced Input
-
-1. **Enable Plugin**: `Edit > Plugins > Enhanced Input` (enabled by default in UE5)
-2. **Project Settings**: `Engine > Input > Default Classes > Default Player Input Class = EnhancedPlayerInput`
+UE 5.7 输入系统：
+- **Enhanced Input**（推荐，UE5 默认）：模块化、可重绑定、基于上下文
+- **Legacy Input**（旧版输入）：已弃用，新项目避免使用
 
 ---
 
-### Create Input Actions
+## Enhanced Input 系统
+
+### 设置 Enhanced Input
+
+1. **启用插件**：`Edit > Plugins > Enhanced Input`（UE5 中默认启用）
+2. **项目设置**：`Engine > Input > Default Classes > Default Player Input Class = EnhancedPlayerInput`
+
+---
+
+### 创建 Input Actions
 
 1. Content Browser > Input > Input Action
-2. Name it (e.g., `IA_Jump`, `IA_Move`)
-3. Configure:
-   - **Value Type**: Digital (bool), Axis1D (float), Axis2D (Vector2D), Axis3D (Vector)
+2. 命名（如 `IA_Jump`、`IA_Move`）
+3. 配置：
+   - **Value Type**：Digital（bool）、Axis1D（float）、Axis2D（Vector2D）、Axis3D（Vector）
 
-Example Input Actions:
-- `IA_Jump`: Digital (bool)
-- `IA_Move`: Axis2D (Vector2D)
-- `IA_Look`: Axis2D (Vector2D)
-- `IA_Fire`: Digital (bool)
+Input Action 示例：
+- `IA_Jump`：Digital（bool）
+- `IA_Move`：Axis2D（Vector2D）
+- `IA_Look`：Axis2D（Vector2D）
+- `IA_Fire`：Digital（bool）
 
 ---
 
-### Create Input Mapping Context
+### 创建 Input Mapping Context
 
 1. Content Browser > Input > Input Mapping Context
-2. Name it (e.g., `IMC_Default`)
-3. Add mappings:
-   - `IA_Jump` → Space Bar
-   - `IA_Move` → W/A/S/D keys (combine X/Y)
-   - `IA_Look` → Mouse XY
-   - `IA_Fire` → Left Mouse Button
+2. 命名（如 `IMC_Default`）
+3. 添加映射：
+   - `IA_Jump` → 空格键
+   - `IA_Move` → W/A/S/D 键（组合 X/Y）
+   - `IA_Look` → 鼠标 XY
+   - `IA_Fire` → 鼠标左键
 
 ---
 
-### Bind Input in C++
+### 在 C++ 中绑定输入
 
 ```cpp
 #include "EnhancedInputComponent.h"
@@ -58,7 +58,7 @@ Example Input Actions:
 
 class AMyCharacter : public ACharacter {
 public:
-    // Input Actions (assign in Blueprint)
+    // Input Actions（在蓝图中分配）
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
     TObjectPtr<UInputAction> MoveAction;
 
@@ -75,7 +75,7 @@ protected:
     virtual void BeginPlay() override {
         Super::BeginPlay();
 
-        // Add Input Mapping Context
+        // 添加 Input Mapping Context
         if (APlayerController* PC = Cast<APlayerController>(Controller)) {
             if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
                 ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer())) {
@@ -89,7 +89,7 @@ protected:
 
         UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
         if (EIC) {
-            // Bind actions
+            // 绑定操作
             EIC->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
             EIC->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
@@ -120,56 +120,56 @@ protected:
 
 ---
 
-## Input Triggers
+## 输入触发器 (Input Triggers)
 
-### Trigger Types
+### 触发类型
 
-Input Actions can have triggers to control when they fire:
-- **Pressed**: When input starts
-- **Released**: When input ends
-- **Hold**: Hold for duration
-- **Tap**: Quick press
-- **Pulse**: Repeated firing while held
+Input Action 可以设置触发器来控制何时触发：
+- **Pressed**：输入开始时
+- **Released**：输入结束时
+- **Hold**：按住一段时间
+- **Tap**：快速按下
+- **Pulse**：按住时重复触发
 
-### Add Trigger in Editor
+### 在编辑器中添加触发器
 
-1. Open Input Action asset
-2. Triggers > Add > Select trigger type (e.g., `Hold`)
-3. Configure (e.g., Hold Time = 0.5s)
-
----
-
-## Input Modifiers
-
-### Modifier Types
-
-Modifiers transform input values:
-- **Negate**: Flip sign (-1 ↔ 1)
-- **Dead Zone**: Ignore small inputs
-- **Scalar**: Multiply by value
-- **Smooth**: Smoothing over time
-
-### Add Modifier in Editor
-
-1. Open Input Action asset
-2. Modifiers > Add > Select modifier (e.g., `Negate`)
-3. Configure
+1. 打开 Input Action 资源
+2. Triggers > Add > 选择触发类型（如 `Hold`）
+3. 配置（如 Hold Time = 0.5s）
 
 ---
 
-## Input Mapping Contexts (Context Switching)
+## 输入修饰器 (Input Modifiers)
 
-### Multiple Contexts
+### 修饰器类型
+
+修饰器用于转换输入值：
+- **Negate**：翻转符号（-1 ↔ 1）
+- **Dead Zone**：忽略小幅度输入
+- **Scalar**：乘以值
+- **Smooth**：随时间平滑
+
+### 在编辑器中添加修饰器
+
+1. 打开 Input Action 资源
+2. Modifiers > Add > 选择修饰器（如 `Negate`）
+3. 配置
+
+---
+
+## Input Mapping Contexts（上下文切换）
+
+### 多上下文
 
 ```cpp
-// Define contexts
+// 定义上下文
 UPROPERTY(EditAnywhere, Category = "Input")
 TObjectPtr<UInputMappingContext> DefaultContext;
 
 UPROPERTY(EditAnywhere, Category = "Input")
 TObjectPtr<UInputMappingContext> VehicleContext;
 
-// Switch context
+// 切换上下文
 void EnterVehicle() {
     if (APlayerController* PC = Cast<APlayerController>(Controller)) {
         if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
@@ -183,18 +183,18 @@ void EnterVehicle() {
 
 ---
 
-## Legacy Input (Deprecated)
+## 旧版输入（已弃用）
 
-### Legacy Input Bindings
+### 旧版输入绑定
 
 ```cpp
-// ❌ DEPRECATED: Do not use for new projects
+// ❌ 已弃用：新项目不要使用
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
-    // Legacy action binding
+    // 旧版操作绑定
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
-    // Legacy axis binding
+    // 旧版轴绑定
     PlayerInputComponent->BindAxis("MoveForward", this, &AMyCharacter::MoveForward);
 }
 
@@ -203,86 +203,86 @@ void MoveForward(float Value) {
 }
 ```
 
-**Migration:** Use Enhanced Input instead.
+**迁移：** 请改用 Enhanced Input。
 
 ---
 
-## Gamepad Input
+## 手柄输入
 
-### Gamepad with Enhanced Input
+### Enhanced Input 的手柄支持
 
 ```cpp
-// Input Mapping Context:
-// - IA_Move → Gamepad Left Thumbstick
-// - IA_Look → Gamepad Right Thumbstick
-// - IA_Jump → Gamepad Face Button Bottom (A/Cross)
+// Input Mapping Context：
+// - IA_Move → 手柄左摇杆
+// - IA_Look → 手柄右摇杆
+// - IA_Jump → 手柄底部按钮（A/Cross）
 
-// No code changes needed, just add gamepad mappings to Input Mapping Context
+// 无需代码修改，只需在 Input Mapping Context 中添加手柄映射
 ```
 
 ---
 
-## Touch Input (Mobile)
+## 触控输入（移动端）
 
-### Touch Input with Enhanced Input
+### Enhanced Input 的触控支持
 
 ```cpp
-// Input Mapping Context:
-// - IA_Move → Touch (virtual thumbstick)
-// - IA_Look → Touch (swipe)
+// Input Mapping Context：
+// - IA_Move → 触控（虚拟摇杆）
+// - IA_Look → 触控（滑动）
 
-// Use Touch Interface asset for virtual controls
+// 使用 Touch Interface 资源进行虚拟控制
 ```
 
 ---
 
-## Rebinding Input at Runtime
+## 运行时重新绑定输入
 
-### Change Key Mapping
+### 更改按键映射
 
 ```cpp
 #include "PlayerMappableInputConfig.h"
 
-// Get subsystem
-UEnhancedInputLocalPlayerSubsystem* Subsystem = /* Get subsystem */;
+// 获取子系统
+UEnhancedInputLocalPlayerSubsystem* Subsystem = /* 获取子系统 */;
 
-// Get player mappable keys
+// 获取玩家可映射按键
 FPlayerMappableKeySlot KeySlot = FPlayerMappableKeySlot(/*..*/);
-FKey NewKey = EKeys::F; // Rebind to F key
+FKey NewKey = EKeys::F; // 重新绑定到 F 键
 
-// Apply new mapping
+// 应用新映射
 Subsystem->AddPlayerMappedKey(/*..*/);
 ```
 
 ---
 
-## Input Debugging
+## 输入调试
 
-### Debug Input
+### 调试输入
 
 ```cpp
-// Console commands:
-// showdebug input - Show input debug info
+// 控制台命令：
+// showdebug input - 显示输入调试信息
 
-// Log input values:
+// 日志输出输入值：
 UE_LOG(LogTemp, Warning, TEXT("Move Input: %s"), *MoveVector.ToString());
 ```
 
 ---
 
-## Common Patterns
+## 常用模式
 
-### Check if Key Pressed (Quick & Dirty)
+### 检查按键是否按下（快速方式）
 
 ```cpp
-// For debugging only (not recommended for gameplay)
+// 仅用于调试（不推荐用于实际游戏）
 if (GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::SpaceBar)) {
-    // Space bar is down
+    // 空格键被按下
 }
 ```
 
 ---
 
-## Sources
+## 来源
 - https://docs.unrealengine.com/5.7/en-US/enhanced-input-in-unreal-engine/
 - https://docs.unrealengine.com/5.7/en-US/enhanced-input-action-and-input-mapping-context-in-unreal-engine/

@@ -1,127 +1,125 @@
-# ADR-[NNNN]: [Title]
+# ADR-[NNNN]: [标题]
 
-## Status
+## 状态
 
-[Proposed | Accepted | Deprecated | Superseded by ADR-XXXX]
+[已提议 | 已接受 | 已废弃 | 被 ADR-XXXX 取代]
 
-## Date
+## 日期
 
 [YYYY-MM-DD]
 
-## Decision Makers
+## 决策者
 
-[Who was involved in this decision]
+[参与此决策的人员]
 
-## Context
+## 背景
 
-### Problem Statement
+### 问题描述
 
-[What problem are we solving? Why must this decision be made now? What is the
-cost of not deciding?]
+[我们要解决什么问题？为什么现在必须做出这个决定？不做决定的代价是什么？]
 
-### Current State
+### 当前状态
 
-[How does the system work today? What is wrong with the current approach?]
+[系统目前是如何工作的？当前方法有什么问题？]
 
-### Constraints
+### 约束条件
 
-- [Technical constraints -- engine limitations, platform requirements]
-- [Timeline constraints -- deadline pressures, dependencies]
-- [Resource constraints -- team size, expertise available]
-- [Compatibility requirements -- must work with existing systems]
+- [技术约束 — 引擎限制、平台要求]
+- [时间约束 — 截止日期压力、依赖关系]
+- [资源约束 — 团队规模、可用专业技能]
+- [兼容性要求 — 必须与现有系统协同工作]
 
-### Requirements
+### 需求
 
-- [Functional requirement 1]
-- [Functional requirement 2]
-- [Performance requirement -- specific, measurable]
-- [Scalability requirement]
+- [功能性需求 1]
+- [功能性需求 2]
+- [性能需求 — 具体、可衡量]
+- [可扩展性需求]
 
-## Decision
+## 决策
 
-[The specific technical decision, described in enough detail for someone to
-implement it without further clarification.]
+[具体的技术决策，描述足够详细以便他人无需进一步说明即可实现。]
 
-### Architecture
+### 架构
 
 ```
-[ASCII diagram showing the system architecture this decision creates.
-Show components, data flow direction, and key interfaces.]
+[展示此决策所创建的系统架构的 ASCII 图。
+显示组件、数据流方向和关键接口。]
 ```
 
-### Key Interfaces
+### 关键接口
 
 ```
-[Pseudocode or language-specific interface definitions that this decision
-creates. These become the contracts that implementers must respect.]
+[此决策创建的伪代码或特定语言接口定义。
+这些将成为实现者必须遵守的契约。]
 ```
 
-### Implementation Guidelines
+### 实现指南
 
-[Specific guidance for the programmer implementing this decision.]
+[为实施此决策的程序员提供具体指导。]
 
-## Alternatives Considered
+## 考虑的替代方案
 
-### Alternative 1: [Name]
+### 替代方案 1: [名称]
 
-- **Description**: [How this approach would work]
-- **Pros**: [What is good about this approach]
-- **Cons**: [What is bad about this approach]
-- **Estimated Effort**: [Relative effort compared to chosen approach]
-- **Rejection Reason**: [Why this was not chosen]
+- **描述**: [此方案的工作方式]
+- **优点**: [此方案的好处]
+- **缺点**: [此方案的不利之处]
+- **预估工作量**: [与所选方案相对的工作量]
+- **否决原因**: [为什么没有选择此方案]
 
-### Alternative 2: [Name]
+### 替代方案 2: [名称]
 
-[Same structure as above]
+[同上结构]
 
-## Consequences
+## 后果
 
-### Positive
+### 正面
 
-- [Good outcomes of this decision]
+- [此决策带来的良好结果]
 
-### Negative
+### 负面
 
-- [Trade-offs and costs we are accepting]
+- [我们接受的权衡和代价]
 
-### Neutral
+### 中性
 
-- [Changes that are neither good nor bad, just different]
+- [既不好也不坏的变化，只是不同]
 
-## Risks
+## 风险
 
-| Risk | Probability | Impact | Mitigation |
-|------|------------|--------|-----------|
+| 风险 | 概率 | 影响 | 缓解措施 |
+|------|------|------|----------|
 
-## Performance Implications
+## 性能影响
 
-| Metric | Before | Expected After | Budget |
-|--------|--------|---------------|--------|
-| CPU (frame time) | [X]ms | [Y]ms | [Z]ms |
-| Memory | [X]MB | [Y]MB | [Z]MB |
-| Load Time | [X]s | [Y]s | [Z]s |
-| Network (if applicable) | [X]KB/s | [Y]KB/s | [Z]KB/s |
+| 指标 | 之前 | 预期之后 | 预算 |
+|------|------|----------|------|
+| CPU (帧时间) | [X]ms | [Y]ms | [Z]ms |
+| 内存 | [X]MB | [Y]MB | [Z]MB |
+| 加载时间 | [X]s | [Y]s | [Z]s |
+| 网络 (如适用) | [X]KB/s | [Y]KB/s | [Z]KB/s |
 
-## Migration Plan
+## 迁移计划
 
-[If this changes existing systems, the step-by-step plan to migrate.]
+[如果此决策改变了现有系统，逐步迁移的计划。]
 
-1. [Step 1 -- what changes, what breaks, how to verify]
-2. [Step 2]
-3. [Step 3]
+1. [步骤 1 — 什么会改变，什么会中断，如何验证]
+2. [步骤 2]
+3. [步骤 3]
 
-**Rollback plan**: [How to revert if this decision proves wrong]
+**回滚计划**: [如果此决策被证明是错误的，如何回滚]
 
-## Validation Criteria
+## 验证标准
 
-[How we will know this decision was correct after implementation.]
+[实施后我们如何知道此决策是正确的。]
 
-- [ ] [Measurable criterion 1]
-- [ ] [Measurable criterion 2]
-- [ ] [Performance criterion]
+- [ ] [可衡量的标准 1]
+- [ ] [可衡量的标准 2]
+- [ ] [性能标准]
 
-## Related
+## 相关
 
-- [Link to related ADRs]
-- [Link to related design documents]
-- [Link to relevant code files]
+- [链接到相关 ADR]
+- [链接到相关设计文档]
+- [链接到相关代码文件]

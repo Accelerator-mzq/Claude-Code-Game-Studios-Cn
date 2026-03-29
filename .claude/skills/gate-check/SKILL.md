@@ -1,252 +1,258 @@
+可以将翻译结果写入 `.claude/skills/gate-check/SKILL.md` 吗？
+
+---
+
+```markdown
 ---
 name: gate-check
-description: "Validate readiness to advance between development phases. Produces a PASS/CONCERNS/FAIL verdict with specific blockers and required artifacts."
-argument-hint: "[target-phase: systems-design | technical-setup | pre-production | production | polish | release]"
+description: "验证项目是否准备好进入下一个开发阶段。产出 PASS/CONCERNS/FAIL 判定结果，附带具体的阻碍项和所需工件。"
+argument-hint: "[目标阶段: systems-design | technical-setup | pre-production | production | polish | release]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash, Write
 ---
 
-# Phase Gate Validation
+# 阶段关卡验证
 
-This skill validates whether the project is ready to advance to the next development
-phase. It checks for required artifacts, quality standards, and blockers.
+此技能验证项目是否已准备好进入下一个开发阶段。
+它会检查所需工件、质量标准和阻碍项。
 
-**Distinct from `/project-stage-detect`**: That skill is diagnostic ("where are we?").
-This skill is prescriptive ("are we ready to advance?" with a formal verdict).
+**与 `/project-stage-detect` 的区别**：该技能是诊断性的（"我们在哪？"）。
+本技能是规范性的（"我们准备好推进了吗？"并附带正式判定）。
 
-## Production Stages (7)
+## 生产阶段（7 个）
 
-The project progresses through these stages:
+项目依次经历以下阶段：
 
-1. **Concept** — Brainstorming, game concept document
-2. **Systems Design** — Mapping systems, writing GDDs
-3. **Technical Setup** — Engine config, architecture decisions
-4. **Pre-Production** — Prototyping, vertical slice validation
-5. **Production** — Feature development (Epic/Feature/Task tracking active)
-6. **Polish** — Performance, playtesting, bug fixing
-7. **Release** — Launch prep, certification
+1. **概念** — 头脑风暴、游戏概念文档
+2. **系统设计** — 映射系统、编写 GDD（游戏设计文档）
+3. **技术搭建** — 引擎配置、架构决策
+4. **前期制作** — 原型开发、垂直切片验证
+5. **正式制作** — 功能开发（Epic/Feature/Task 跟踪已激活）
+6. **打磨** — 性能优化、试玩测试、缺陷修复
+7. **发布** — 上线准备、平台认证
 
-**When a gate passes**, write the new stage name to `production/stage.txt`
-(single line, e.g. `Production`). This updates the status line immediately.
-
----
-
-## 1. Parse Arguments
-
-- **With argument**: `/gate-check production` — validate readiness for that specific phase
-- **No argument**: Auto-detect current stage using the same heuristics as
-  `/project-stage-detect`, then validate the NEXT phase transition
+**当关卡通过时**，将新阶段名称写入 `production/stage.txt`
+（单行，例如 `Production`）。这会立即更新状态栏。
 
 ---
 
-## 2. Phase Gate Definitions
+## 1. 解析参数
 
-### Gate: Concept → Systems Design
-
-**Required Artifacts:**
-- [ ] `design/gdd/game-concept.md` exists and has content
-- [ ] Game pillars defined (in concept doc or `design/gdd/game-pillars.md`)
-
-**Quality Checks:**
-- [ ] Game concept has been reviewed (`/design-review` verdict not MAJOR REVISION NEEDED)
-- [ ] Core loop is described and understood
-- [ ] Target audience is identified
+- **带参数**：`/gate-check production` — 验证是否准备好进入指定阶段
+- **无参数**：使用与 `/project-stage-detect` 相同的启发式方法自动检测当前阶段，
+  然后验证下一个阶段转换
 
 ---
 
-### Gate: Systems Design → Technical Setup
+## 2. 阶段关卡定义
 
-**Required Artifacts:**
-- [ ] Systems index exists at `design/gdd/systems-index.md` with at least MVP systems enumerated
-- [ ] At least 1 GDD in `design/gdd/` (beyond game-concept.md and systems-index.md)
+### 关卡：概念 → 系统设计
 
-**Quality Checks:**
-- [ ] GDD(s) pass design review (8 required sections present)
-- [ ] System dependencies are mapped in the systems index
-- [ ] MVP priority tier is defined
+**所需工件：**
+- [ ] `design/gdd/game-concept.md` 存在且有内容
+- [ ] 游戏支柱已定义（在概念文档或 `design/gdd/game-pillars.md` 中）
 
----
-
-### Gate: Technical Setup → Pre-Production
-
-**Required Artifacts:**
-- [ ] Engine chosen (CLAUDE.md Technology Stack is not `[CHOOSE]`)
-- [ ] Technical preferences configured (`.claude/docs/technical-preferences.md` populated)
-- [ ] At least 1 Architecture Decision Record in `docs/architecture/`
-- [ ] Engine reference docs exist in `docs/engine-reference/`
-
-**Quality Checks:**
-- [ ] Architecture decisions cover core systems (rendering, input, state management)
-- [ ] Technical preferences have naming conventions and performance budgets set
+**质量检查：**
+- [ ] 游戏概念已经过评审（`/design-review` 判定结果非"需要重大修订"）
+- [ ] 核心循环已描述且已理解
+- [ ] 目标受众已确定
 
 ---
 
-### Gate: Pre-Production → Production
+### 关卡：系统设计 → 技术搭建
 
-**Required Artifacts:**
-- [ ] At least 1 prototype in `prototypes/` with a README
-- [ ] First sprint plan exists in `production/sprints/`
-- [ ] All MVP-tier GDDs from systems index are complete
+**所需工件：**
+- [ ] 系统索引存在于 `design/gdd/systems-index.md`，至少枚举了 MVP 系统列表
+- [ ] `design/gdd/` 中至少有 1 份 GDD（game-concept.md 和 systems-index.md 之外的）
 
-**Quality Checks:**
-- [ ] Prototype validates the core loop hypothesis
-- [ ] Sprint plan references real work items from GDDs
-- [ ] Vertical slice scope is defined
-
----
-
-### Gate: Production → Polish
-
-**Required Artifacts:**
-- [ ] `src/` has active code organized into subsystems
-- [ ] All core mechanics from GDD are implemented (cross-reference `design/gdd/` with `src/`)
-- [ ] Main gameplay path is playable end-to-end
-- [ ] Test files exist in `tests/`
-- [ ] At least 1 playtest report (or `/playtest-report` has been run)
-
-**Quality Checks:**
-- [ ] Tests are passing (run test suite via Bash)
-- [ ] No critical/blocker bugs in any bug tracker or known issues
-- [ ] Core loop plays as designed (compare to GDD acceptance criteria)
-- [ ] Performance is within budget (check technical-preferences.md targets)
+**质量检查：**
+- [ ] GDD 通过设计评审（8 个必需章节齐全）
+- [ ] 系统依赖关系已在系统索引中映射
+- [ ] MVP 优先级层级已定义
 
 ---
 
-### Gate: Polish → Release
+### 关卡：技术搭建 → 前期制作
 
-**Required Artifacts:**
-- [ ] All features from milestone plan are implemented
-- [ ] Content is complete (all levels, assets, dialogue referenced in design docs exist)
-- [ ] Localization strings are externalized (no hardcoded player-facing text in `src/`)
-- [ ] QA test plan exists
-- [ ] Balance data has been reviewed (`/balance-check` run)
-- [ ] Release checklist completed (`/release-checklist` or `/launch-checklist` run)
-- [ ] Store metadata prepared (if applicable)
-- [ ] Changelog / patch notes drafted
+**所需工件：**
+- [ ] 引擎已选定（CLAUDE.md 中的技术栈不再是 `[CHOOSE]`）
+- [ ] 技术偏好已配置（`.claude/docs/technical-preferences.md` 已填写）
+- [ ] `docs/architecture/` 中至少有 1 份架构决策记录（ADR）
+- [ ] 引擎参考文档存在于 `docs/engine-reference/`
 
-**Quality Checks:**
-- [ ] Full QA pass signed off by `qa-lead`
-- [ ] All tests passing
-- [ ] Performance targets met across all target platforms
-- [ ] No known critical, high, or medium-severity bugs
-- [ ] Accessibility basics covered (remapping, text scaling if applicable)
-- [ ] Localization verified for all target languages
-- [ ] Legal requirements met (EULA, privacy policy, age ratings if applicable)
-- [ ] Build compiles and packages cleanly
+**质量检查：**
+- [ ] 架构决策覆盖核心系统（渲染、输入、状态管理）
+- [ ] 技术偏好已设置命名规范和性能预算
 
 ---
 
-## 3. Run the Gate Check
+### 关卡：前期制作 → 正式制作
 
-For each item in the target gate:
+**所需工件：**
+- [ ] `prototypes/` 中至少有 1 个带 README 的原型
+- [ ] `production/sprints/` 中存在首个 Sprint 计划
+- [ ] 系统索引中所有 MVP 层级的 GDD 均已完成
 
-### Artifact Checks
-- Use `Glob` and `Read` to verify files exist and have meaningful content
-- Don't just check existence — verify the file has real content (not just a template header)
-- For code checks, verify directory structure and file counts
-
-### Quality Checks
-- For test checks: Run the test suite via `Bash` if a test runner is configured
-- For design review checks: `Read` the GDD and check for the 8 required sections
-- For performance checks: `Read` technical-preferences.md and compare against any
-  profiling data in `tests/performance/` or recent `/perf-profile` output
-- For localization checks: `Grep` for hardcoded strings in `src/`
-
-### Cross-Reference Checks
-- Compare `design/gdd/` documents against `src/` implementations
-- Check that every system referenced in architecture docs has corresponding code
-- Verify sprint plans reference real work items
+**质量检查：**
+- [ ] 原型验证了核心循环假设
+- [ ] Sprint 计划引用了 GDD 中的真实工作项
+- [ ] 垂直切片范围已定义
 
 ---
 
-## 4. Collaborative Assessment
+### 关卡：正式制作 → 打磨
 
-For items that can't be automatically verified, **ask the user**:
+**所需工件：**
+- [ ] `src/` 中有按子系统组织的有效代码
+- [ ] GDD 中的所有核心机制已实现（交叉比对 `design/gdd/` 与 `src/`）
+- [ ] 主要游玩路径可从头玩到尾
+- [ ] 测试文件存在于 `tests/`
+- [ ] 至少有 1 份试玩报告（或已运行 `/playtest-report`）
 
-- "I can't automatically verify that the core loop plays well. Has it been playtested?"
-- "No playtest report found. Has informal testing been done?"
-- "Performance profiling data isn't available. Would you like to run `/perf-profile`?"
-
-**Never assume PASS for unverifiable items.** Mark them as MANUAL CHECK NEEDED.
+**质量检查：**
+- [ ] 测试通过（通过 Bash 运行测试套件）
+- [ ] 任何 Bug 跟踪器或已知问题中没有严重/阻断级 Bug
+- [ ] 核心循环游玩效果符合设计（对照 GDD 验收标准）
+- [ ] 性能在预算范围内（检查 technical-preferences.md 中的目标）
 
 ---
 
-## 5. Output the Verdict
+### 关卡：打磨 → 发布
+
+**所需工件：**
+- [ ] 里程碑计划中的所有功能已实现
+- [ ] 内容已完成（设计文档中引用的所有关卡、资源、对话均已存在）
+- [ ] 本地化字符串已外部化（`src/` 中无硬编码的面向玩家的文本）
+- [ ] QA 测试计划已存在
+- [ ] 平衡数据已经过评审（已运行 `/balance-check`）
+- [ ] 发布清单已完成（已运行 `/release-checklist` 或 `/launch-checklist`）
+- [ ] 商店元数据已准备（如适用）
+- [ ] 更新日志/补丁说明已起草
+
+**质量检查：**
+- [ ] 完整的 QA 轮次已由 `qa-lead` 签字确认
+- [ ] 所有测试通过
+- [ ] 性能目标在所有目标平台上均已达成
+- [ ] 无已知的严重、高或中等级别 Bug
+- [ ] 无障碍基础项已覆盖（按键重映射、文本缩放等，如适用）
+- [ ] 所有目标语言的本地化已验证
+- [ ] 法律要求已满足（EULA、隐私政策、年龄评级等，如适用）
+- [ ] 构建编译和打包正常
+
+---
+
+## 3. 执行关卡检查
+
+针对目标关卡中的每一项：
+
+### 工件检查
+- 使用 `Glob` 和 `Read` 验证文件存在且有实质性内容
+- 不要只检查文件是否存在 — 验证文件有真实内容（不仅仅是模板头部）
+- 对于代码检查，验证目录结构和文件数量
+
+### 质量检查
+- 对于测试检查：如果配置了测试运行器，通过 `Bash` 运行测试套件
+- 对于设计评审检查：`Read` GDD 并检查 8 个必需章节
+- 对于性能检查：`Read` technical-preferences.md 并与 `tests/performance/` 中的
+  性能分析数据或最近的 `/perf-profile` 输出进行对比
+- 对于本地化检查：在 `src/` 中使用 `Grep` 搜索硬编码字符串
+
+### 交叉引用检查
+- 将 `design/gdd/` 文档与 `src/` 实现进行对比
+- 检查架构文档中引用的每个系统是否有对应的代码
+- 验证 Sprint 计划引用的是真实的工作项
+
+---
+
+## 4. 协作评估
+
+对于无法自动验证的项目，**询问用户**：
+
+- "我无法自动验证核心循环游玩是否良好。是否已进行试玩测试？"
+- "未找到试玩报告。是否进行了非正式测试？"
+- "性能分析数据不可用。是否要运行 `/perf-profile`？"
+
+**切勿对无法验证的项目假设为 PASS。** 将其标记为"需要人工检查"。
+
+---
+
+## 5. 输出判定结果
 
 ```
-## Gate Check: [Current Phase] → [Target Phase]
+## 关卡检查：[当前阶段] → [目标阶段]
 
-**Date**: [date]
-**Checked by**: gate-check skill
+**日期**：[日期]
+**检查者**：gate-check 技能
 
-### Required Artifacts: [X/Y present]
-- [x] design/gdd/game-concept.md — exists, 2.4KB
-- [ ] docs/architecture/ — MISSING (no ADRs found)
-- [x] production/sprints/ — exists, 1 sprint plan
+### 所需工件：[X/Y 项已就绪]
+- [x] design/gdd/game-concept.md — 已存在，2.4KB
+- [ ] docs/architecture/ — 缺失（未找到 ADR）
+- [x] production/sprints/ — 已存在，1 个 Sprint 计划
 
-### Quality Checks: [X/Y passing]
-- [x] GDD has 8/8 required sections
-- [ ] Tests — FAILED (3 failures in tests/unit/)
-- [?] Core loop playtested — MANUAL CHECK NEEDED
+### 质量检查：[X/Y 项通过]
+- [x] GDD 包含 8/8 个必需章节
+- [ ] 测试 — 失败（tests/unit/ 中有 3 个失败）
+- [?] 核心循环试玩 — 需要人工检查
 
-### Blockers
-1. **No Architecture Decision Records** — Run `/architecture-decision` to create one
-   covering core system architecture before entering production.
-2. **3 test failures** — Fix failing tests in tests/unit/ before advancing.
+### 阻碍项
+1. **无架构决策记录** — 运行 `/architecture-decision` 创建一份
+   覆盖核心系统架构的 ADR，然后再进入正式制作。
+2. **3 个测试失败** — 在 tests/unit/ 中修复失败的测试后再推进。
 
-### Recommendations
-- [Priority actions to resolve blockers]
-- [Optional improvements that aren't blocking]
+### 建议
+- [解决阻碍项的优先操作]
+- [非阻断的可选改进项]
 
-### Verdict: [PASS / CONCERNS / FAIL]
-- **PASS**: All required artifacts present, all quality checks passing
-- **CONCERNS**: Minor gaps exist but can be addressed during the next phase
-- **FAIL**: Critical blockers must be resolved before advancing
+### 判定：[通过 / 有顾虑 / 未通过]
+- **通过**：所有所需工件齐全，所有质量检查通过
+- **有顾虑**：存在少量差距，可在下一阶段中解决
+- **未通过**：必须先解决关键阻碍项才能推进
 ```
 
 ---
 
-## 6. Update Stage on PASS
+## 6. 通过时更新阶段
 
-When the verdict is **PASS** and the user confirms they want to advance:
+当判定为**通过**且用户确认要推进时：
 
-1. Write the new stage name to `production/stage.txt` (single line, no trailing newline)
-2. This immediately updates the status line for all future sessions
+1. 将新阶段名称写入 `production/stage.txt`（单行，无末尾换行符）
+2. 这会立即更新所有未来会话的状态栏
 
-Example: if passing the "Pre-Production → Production" gate:
+示例：如果通过了"前期制作 → 正式制作"关卡：
 ```bash
 echo -n "Production" > production/stage.txt
 ```
 
-**Always ask before writing**: "Gate passed. May I update `production/stage.txt` to 'Production'?"
+**写入前务必询问**："关卡已通过。是否可以将 `production/stage.txt` 更新为 'Production'？"
 
 ---
 
-## 7. Follow-Up Actions
+## 7. 后续行动
 
-Based on the verdict, suggest specific next steps:
+根据判定结果，建议具体的下一步操作：
 
-- **No game concept?** → `/brainstorm` to create one
-- **No systems index?** → `/map-systems` to decompose the concept into systems
-- **Missing design docs?** → `/reverse-document` or delegate to `game-designer`
-- **Missing ADRs?** → `/architecture-decision`
-- **Tests failing?** → delegate to `lead-programmer` or `qa-tester`
-- **No playtest data?** → `/playtest-report`
-- **Performance unknown?** → `/perf-profile`
-- **Not localized?** → `/localize`
-- **Ready for release?** → `/launch-checklist`
+- **没有游戏概念？** → 运行 `/brainstorm` 创建一个
+- **没有系统索引？** → 运行 `/map-systems` 将概念拆解为系统
+- **缺少设计文档？** → 运行 `/reverse-document` 或委托给 `game-designer`
+- **缺少 ADR？** → 运行 `/architecture-decision`
+- **测试失败？** → 委托给 `lead-programmer` 或 `qa-tester`
+- **没有试玩数据？** → 运行 `/playtest-report`
+- **性能未知？** → 运行 `/perf-profile`
+- **未本地化？** → 运行 `/localize`
+- **准备发布？** → 运行 `/launch-checklist`
 
 ---
 
-## Collaborative Protocol
+## 协作协议
 
-This skill follows the collaborative design principle:
+本技能遵循协作设计原则：
 
-1. **Scan first**: Check all artifacts and quality gates
-2. **Ask about unknowns**: Don't assume PASS for things you can't verify
-3. **Present findings**: Show the full checklist with status
-4. **User decides**: The verdict is a recommendation — the user makes the final call
-5. **Get approval**: "May I write this gate check report to production/gate-checks/?"
+1. **先扫描**：检查所有工件和质量关卡
+2. **询问未知项**：不要对你无法验证的事项假设为通过
+3. **展示发现**：显示完整清单及其状态
+4. **用户决定**：判定仅为建议 — 由用户做出最终决定
+5. **获取批准**："是否可以将此关卡检查报告写入 production/gate-checks/？"
 
-**Never** block a user from advancing — the verdict is advisory. Document the risks
-and let the user decide whether to proceed despite concerns.
+**绝不**阻止用户推进 — 判定仅为建议性意见。记录风险，
+让用户自行决定是否在有顾虑的情况下继续推进。
+```

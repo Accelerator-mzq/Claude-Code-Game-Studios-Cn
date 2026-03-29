@@ -1,71 +1,70 @@
 ---
 name: onboard
-description: "Generates a contextual onboarding document for a new contributor or agent joining the project. Summarizes project state, architecture, conventions, and current priorities relevant to the specified role or area."
-argument-hint: "[role|area]"
+description: "为新加入项目的贡献者或代理生成上下文感知的入职文档。总结项目状态、架构、规范以及与指定角色或领域相关的当前优先级。"
+argument-hint: "[角色|领域]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-1. **Read the CLAUDE.md** for project overview and standards.
+1. **读取 CLAUDE.md** 获取项目概述和标准。
 
-2. **Read the relevant agent definition** from `.claude/agents/` if a specific
-   role is specified.
+2. **读取相关代理定义**（如果指定了特定角色），来自 `.claude/agents/`。
 
-3. **Scan the codebase** for the relevant area:
-   - For programmers: scan `src/` for architecture, patterns, key files
-   - For designers: scan `design/` for existing design documents
-   - For narrative: scan `design/narrative/` for world-building and story docs
-   - For QA: scan `tests/` for existing test coverage
-   - For production: scan `production/` for current sprint and milestone
+3. **扫描代码库**的相关领域：
+   - 程序员：扫描 `src/` 的架构、模式、关键文件
+   - 设计师：扫描 `design/` 的现有设计文档
+   - 叙事：扫描 `design/narrative/` 的世界观构建和故事文档
+   - QA：扫描 `tests/` 的现有测试覆盖率
+   - 制作人：扫描 `production/` 的当前 Sprint 和里程碑
 
-4. **Read recent changes** (git log if available) to understand current momentum.
+4. **读取近期变更**（如果可用，通过 git log）以了解当前发展势头。
 
-5. **Generate the onboarding document**:
+5. **生成入职文档**：
 
 ```markdown
-# Onboarding: [Role/Area]
+# 入职指南：[角色/领域]
 
-## Project Summary
-[2-3 sentence summary of what this game is and its current state]
+## 项目概述
+[2-3 句话概述这个游戏是什么以及当前状态]
 
-## Your Role
-[What this role does on this project, key responsibilities, who you report to]
+## 你的角色
+[这个角色在本项目中的职责、关键责任、向谁汇报]
 
-## Project Architecture
-[Relevant architectural overview for this role]
+## 项目架构
+[与该角色相关的架构概述]
 
-### Key Directories
-| Directory | Contents | Your Interaction |
-|-----------|----------|-----------------|
+### 关键目录
+| 目录 | 内容 | 你的交互方式 |
+|------|------|------------|
 
-### Key Files
-| File | Purpose | Read Priority |
-|------|---------|--------------|
+### 关键文件
+| 文件 | 用途 | 阅读优先级 |
+|------|------|-----------|
 
-## Current Standards and Conventions
-[Summary of conventions relevant to this role from CLAUDE.md and agent definition]
+## 当前标准和规范
+[来自 CLAUDE.md 和代理定义中与该角色相关的规范摘要]
 
-## Current State of Your Area
-[What has been built, what is in progress, what is planned next]
+## 你所在领域的当前状态
+[已完成的工作、正在进行的工作、接下来计划的]
 
-## Current Sprint Context
-[What the team is working on now and what is expected of this role]
+## 当前 Sprint 上下文
+[团队现在在做什么，以及对该角色的期望]
 
-## Key Dependencies
-[What other roles/systems this role interacts with most]
+## 关键依赖
+[该角色最常与其他哪些角色/系统交互]
 
-## Common Pitfalls
-[Things that trip up new contributors in this area]
+## 常见陷阱
+[该领域中新贡献者容易踩坑的地方]
 
-## First Tasks
-[Suggested first tasks to get oriented and productive]
+## 首批任务
+[建议的首批任务以快速上手并产出成果]
 
-1. [Read these documents first]
-2. [Review this code/content]
-3. [Start with this small task]
+1. [先阅读这些文档]
+2. [审查此代码/内容]
+3. [从这个小任务开始]
 
-## Questions to Ask
-[Questions the new contributor should ask to get fully oriented]
+## 应该问的问题
+[新贡献者应提出的问题以全面了解情况]
 ```

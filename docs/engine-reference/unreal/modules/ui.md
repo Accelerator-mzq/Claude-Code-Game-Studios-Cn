@@ -1,32 +1,32 @@
-# Unreal Engine 5.7 — UI Module Reference
+# Unreal Engine 5.7 — UI 模块参考
 
-**Last verified:** 2026-02-13
-**Knowledge Gap:** UE 5.7 UMG and CommonUI improvements
+**最后验证：** 2026-02-13
+**知识缺口：** UE 5.7 UMG 和 CommonUI 改进
 
 ---
 
-## Overview
+## 概述
 
-UE 5.7 UI systems:
-- **UMG (Unreal Motion Graphics)**: Visual widget-based UI (RECOMMENDED)
-- **CommonUI**: Cross-platform input-aware UI framework (console/PC)
-- **Slate**: Low-level C++ UI (engine/editor UI)
+UE 5.7 UI 系统：
+- **UMG（Unreal Motion Graphics）**：基于控件的视觉 UI（推荐）
+- **CommonUI**：跨平台输入感知 UI 框架（主机/PC）
+- **Slate**：底层 C++ UI（引擎/编辑器 UI）
 
 ---
 
 ## UMG (Unreal Motion Graphics)
 
-### Create Widget Blueprint
+### 创建控件蓝图
 
 1. Content Browser > User Interface > Widget Blueprint
-2. Open Widget Designer
-3. Drag widgets from Palette: Button, Text, Image, ProgressBar, etc.
+2. 打开控件设计器
+3. 从面板拖拽控件：Button、Text、Image、ProgressBar 等
 
 ---
 
-## Basic UMG Setup in C++
+## C++ 中的基本 UMG 设置
 
-### Create and Display Widget
+### 创建和显示控件
 
 ```cpp
 #include "Blueprint/UserWidget.h"
@@ -37,15 +37,15 @@ TSubclassOf<UUserWidget> HealthBarWidgetClass;
 void AMyCharacter::BeginPlay() {
     Super::BeginPlay();
 
-    // Create widget
+    // 创建控件
     UUserWidget* HealthBarWidget = CreateWidget<UUserWidget>(GetWorld(), HealthBarWidgetClass);
 
-    // Add to viewport
+    // 添加到视口
     HealthBarWidget->AddToViewport();
 }
 ```
 
-### Remove Widget
+### 移除控件
 
 ```cpp
 HealthBarWidget->RemoveFromParent();
@@ -53,9 +53,9 @@ HealthBarWidget->RemoveFromParent();
 
 ---
 
-## Access Widget Elements from C++
+## 从 C++ 访问控件元素
 
-### Bind to Widget Elements
+### 绑定到控件元素
 
 ```cpp
 UCLASS()
@@ -63,7 +63,7 @@ class UMyHealthWidget : public UUserWidget {
     GENERATED_BODY()
 
 public:
-    // ✅ Bind to widget elements (must match names in Widget Blueprint)
+    // ✅ 绑定到控件元素（名称必须与控件蓝图中的名称匹配）
     UPROPERTY(meta = (BindWidget))
     TObjectPtr<UTextBlock> HealthText;
 
@@ -79,19 +79,19 @@ public:
 
 ---
 
-## Common UMG Widgets
+## 常用 UMG 控件
 
-### Text Block
+### Text Block（文本块）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
 TObjectPtr<UTextBlock> ScoreText;
 
-ScoreText->SetText(FText::FromString(TEXT("Score: 100")));
+ScoreText->SetText(FText::FromString(TEXT("分数: 100")));
 ScoreText->SetColorAndOpacity(FLinearColor::Green);
 ```
 
-### Button
+### Button（按钮）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
@@ -100,17 +100,17 @@ TObjectPtr<UButton> PlayButton;
 void NativeConstruct() override {
     Super::NativeConstruct();
 
-    // Bind button click
+    // 绑定按钮点击
     PlayButton->OnClicked.AddDynamic(this, &UMyMenuWidget::OnPlayClicked);
 }
 
 UFUNCTION()
 void OnPlayClicked() {
-    UE_LOG(LogTemp, Warning, TEXT("Play clicked"));
+    UE_LOG(LogTemp, Warning, TEXT("点击了 Play"));
 }
 ```
 
-### Image
+### Image（图片）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
@@ -120,7 +120,7 @@ PlayerAvatar->SetBrushFromTexture(AvatarTexture);
 PlayerAvatar->SetColorAndOpacity(FLinearColor::White);
 ```
 
-### Progress Bar
+### Progress Bar（进度条）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
@@ -130,7 +130,7 @@ HealthBar->SetPercent(0.75f); // 75%
 HealthBar->SetFillColorAndOpacity(FLinearColor::Red);
 ```
 
-### Slider
+### Slider（滑动条）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
@@ -143,12 +143,12 @@ void NativeConstruct() override {
 
 UFUNCTION()
 void OnVolumeChanged(float Value) {
-    // Value is 0.0 - 1.0
-    UE_LOG(LogTemp, Warning, TEXT("Volume: %f"), Value);
+    // Value 范围 0.0 - 1.0
+    UE_LOG(LogTemp, Warning, TEXT("音量: %f"), Value);
 }
 ```
 
-### EditableTextBox (Input Field)
+### EditableTextBox（输入框）
 
 ```cpp
 UPROPERTY(meta = (BindWidget))
@@ -167,9 +167,9 @@ void OnNameChanged(const FText& Text) {
 
 ---
 
-## UMG Animations
+## UMG 动画
 
-### Play Animation
+### 播放动画
 
 ```cpp
 UPROPERTY(Transient, meta = (BindWidgetAnim))
@@ -180,7 +180,7 @@ void ShowUI() {
 }
 ```
 
-### Stop Animation
+### 停止动画
 
 ```cpp
 StopAnimation(FadeInAnimation);
@@ -188,38 +188,38 @@ StopAnimation(FadeInAnimation);
 
 ---
 
-## Canvas Panel (Layout)
+## 布局面板
 
-### Canvas Panel (Absolute Positioning)
+### Canvas Panel（画布面板，绝对定位）
 
 ```cpp
-// Use in Widget Blueprint for absolute positioning
-// Anchor widgets to corners/edges for responsive UI
+// 在控件蓝图中使用绝对定位
+// 将控件锚定到角落/边缘以实现响应式 UI
 ```
 
-### Vertical Box (Stack Vertically)
+### Vertical Box（垂直排列）
 
 ```cpp
-// Auto-stacks children vertically
+// 自动垂直堆叠子元素
 ```
 
-### Horizontal Box (Stack Horizontally)
+### Horizontal Box（水平排列）
 
 ```cpp
-// Auto-stacks children horizontally
+// 自动水平堆叠子元素
 ```
 
-### Grid Panel (Grid Layout)
+### Grid Panel（网格布局）
 
 ```cpp
-// Arranges children in a grid
+// 以网格形式排列子元素
 ```
 
 ---
 
-## World Space UI (3D UI)
+## 世界空间 UI（3D UI）
 
-### Widget Component (3D UI in World)
+### Widget Component（世界空间中的 3D UI）
 
 ```cpp
 #include "Components/WidgetComponent.h"
@@ -227,15 +227,15 @@ StopAnimation(FadeInAnimation);
 UWidgetComponent* HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
 HealthBarWidget->SetupAttachment(RootComponent);
 HealthBarWidget->SetWidgetClass(HealthBarWidgetClass);
-HealthBarWidget->SetWidgetSpace(EWidgetSpace::World); // 3D world space
+HealthBarWidget->SetWidgetSpace(EWidgetSpace::World); // 3D 世界空间
 HealthBarWidget->SetDrawSize(FVector2D(200, 50));
 ```
 
 ---
 
-## Input Handling in UMG
+## UMG 中的输入处理
 
-### Override Keyboard Input
+### 覆盖键盘输入
 
 ```cpp
 UCLASS()
@@ -245,7 +245,7 @@ class UMyWidget : public UUserWidget {
 public:
     virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override {
         if (InKeyEvent.GetKey() == EKeys::Escape) {
-            // Handle Escape key
+            // 处理 Escape 键
             CloseMenu();
             return FReply::Handled();
         }
@@ -256,25 +256,25 @@ public:
 
 ---
 
-## CommonUI (Cross-Platform Input)
+## CommonUI（跨平台输入）
 
-### Enable CommonUI Plugin
-
-```cpp
-// Enable: Edit > Plugins > CommonUI
-// Restart editor
-```
-
-### Use CommonUI Widgets
+### 启用 CommonUI 插件
 
 ```cpp
-// CommonUI widgets:
-// - CommonActivatableWidget: Base for screens/menus
-// - CommonButtonBase: Input-aware button (gamepad + mouse)
-// - CommonTextBlock: Text with styling
+// 启用：Edit > Plugins > CommonUI
+// 重启编辑器
 ```
 
-### CommonActivatableWidget Example
+### 使用 CommonUI 控件
+
+```cpp
+// CommonUI 控件：
+// - CommonActivatableWidget：屏幕/菜单的基类
+// - CommonButtonBase：输入感知按钮（手柄 + 鼠标）
+// - CommonTextBlock：带样式的文本
+```
+
+### CommonActivatableWidget 示例
 
 ```cpp
 UCLASS()
@@ -284,21 +284,21 @@ class UMyMenuWidget : public UCommonActivatableWidget {
 public:
     virtual void NativeOnActivated() override {
         Super::NativeOnActivated();
-        // Menu activated (shown)
+        // 菜单已激活（显示）
     }
 
     virtual void NativeOnDeactivated() override {
         Super::NativeOnDeactivated();
-        // Menu deactivated (hidden)
+        // 菜单已停用（隐藏）
     }
 };
 ```
 
 ---
 
-## HUD Class (Alternative to UMG)
+## HUD 类（UMG 的替代方案）
 
-### Create HUD
+### 创建 HUD
 
 ```cpp
 UCLASS()
@@ -309,10 +309,10 @@ public:
     virtual void DrawHUD() override {
         Super::DrawHUD();
 
-        // Draw text
-        DrawText(TEXT("Score: 100"), FLinearColor::White, 50, 50);
+        // 绘制文本
+        DrawText(TEXT("分数: 100"), FLinearColor::White, 50, 50);
 
-        // Draw texture
+        // 绘制纹理
         DrawTexture(CrosshairTexture, Canvas->SizeX / 2, Canvas->SizeY / 2, 32, 32);
     }
 };
@@ -320,34 +320,34 @@ public:
 
 ---
 
-## Performance Tips
+## 性能提示
 
-### Optimize UMG
+### 优化 UMG
 
 ```cpp
-// Invalidation boxes: Only redraw when content changes
-// Add "Invalidation Box" widget to Widget Blueprint
+// Invalidation Box：仅在内容变化时重绘
+// 在控件蓝图中添加 "Invalidation Box" 控件
 
-// Disable tick if not needed
+// 不需要时禁用 Tick
 bIsFocusable = false;
-SetVisibility(ESlateVisibility::Collapsed); // Collapsed = not rendered
+SetVisibility(ESlateVisibility::Collapsed); // Collapsed = 不渲染
 ```
 
 ---
 
-## Debugging
+## 调试
 
-### UI Debug Commands
+### UI 调试命令
 
 ```cpp
-// Console commands:
-// widget.debug - Show widget hierarchy
-// Slate.ShowDebugOutlines 1 - Show widget bounds
-// stat slate - Show Slate performance
+// 控制台命令：
+// widget.debug - 显示控件层级
+// Slate.ShowDebugOutlines 1 - 显示控件边界
+// stat slate - 显示 Slate 性能
 ```
 
 ---
 
-## Sources
+## 来源
 - https://docs.unrealengine.com/5.7/en-US/umg-ui-designer-for-unreal-engine/
 - https://docs.unrealengine.com/5.7/en-US/commonui-plugin-for-advanced-user-interfaces-in-unreal-engine/

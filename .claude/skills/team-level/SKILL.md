@@ -1,89 +1,83 @@
 ---
 name: team-level
-description: "Orchestrate level design team: level-designer + narrative-director + world-builder + art-director + systems-designer + qa-tester for complete area/level creation."
-argument-hint: "[level name or area to design]"
+description: "编排关卡设计团队：level-designer + narrative-director + world-builder + art-director + systems-designer + qa-tester，完成完整的区域/关卡创建。"
+argument-hint: "[关卡名称或要设计的区域]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Task, AskUserQuestion, TodoWrite
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-**Decision Points:** At each step transition, use `AskUserQuestion` to present
-the user with the subagent's proposals as selectable options. Write the agent's
-full analysis in conversation, then capture the decision with concise labels.
-The user must approve before moving to the next step.
+**决策节点：** 在每个步骤转换时，使用 `AskUserQuestion` 将子代理的方案以可选项的形式呈现给用户。在对话中写出代理的完整分析，然后以简洁的标签记录决策。用户必须批准后才能进入下一步。
 
-1. **Read the argument** for the target level or area (e.g., `tutorial`,
-   `forest dungeon`, `hub town`, `final boss arena`).
+1. **读取参数**以确定目标关卡或区域（例如 `新手教程`、`森林地牢`、`枢纽城镇`、`最终 Boss 竞技场`）。
 
-2. **Gather context**:
-   - Read the game concept at `design/gdd/game-concept.md`
-   - Read game pillars at `design/gdd/game-pillars.md`
-   - Read existing level docs in `design/levels/`
-   - Read relevant narrative docs in `design/narrative/`
-   - Read world-building docs for the area's region/faction
+2. **收集上下文**：
+   - 读取位于 `design/gdd/game-concept.md` 的游戏概念文档
+   - 读取位于 `design/gdd/game-pillars.md` 的游戏支柱文档
+   - 读取 `design/levels/` 中的现有关卡文档
+   - 读取 `design/narrative/` 中的相关叙事文档
+   - 读取该区域所属地区/阵营的世界观设定文档
 
-## How to Delegate
+## 如何委派
 
-Use the Task tool to spawn each team member as a subagent:
-- `subagent_type: narrative-director` — Narrative purpose, characters, emotional arc
-- `subagent_type: world-builder` — Lore context, environmental storytelling, world rules
-- `subagent_type: level-designer` — Spatial layout, pacing, encounters, navigation
-- `subagent_type: systems-designer` — Enemy compositions, loot tables, difficulty balance
-- `subagent_type: art-director` — Visual theme, color palette, lighting, asset requirements
-- `subagent_type: qa-tester` — Test cases, boundary testing, playtest checklist
+使用 Task 工具将每位团队成员生成为子代理：
+- `subagent_type: narrative-director` — 叙事目的、角色、情感弧线
+- `subagent_type: world-builder` — 背景设定上下文、环境叙事、世界规则
+- `subagent_type: level-designer` — 空间布局、节奏、遭遇战、导航
+- `subagent_type: systems-designer` — 敌人组合、战利品表、难度平衡
+- `subagent_type: art-director` — 视觉主题、调色板、光照、资产需求
+- `subagent_type: qa-tester` — 测试用例、边界测试、试玩检查清单
 
-Always provide full context in each agent's prompt (game concept, pillars, existing level docs, narrative docs).
+始终在每个代理的提示中提供完整上下文（游戏概念、支柱、现有关卡文档、叙事文档）。
 
-3. **Orchestrate the level design team** in sequence:
+3. **按顺序编排关卡设计团队**：
 
-### Step 1: Narrative Context (narrative-director + world-builder)
-Spawn the `narrative-director` agent to:
-- Define the narrative purpose of this area (what story beats happen here?)
-- Identify key characters, dialogue triggers, and lore elements
-- Specify emotional arc (how should the player feel entering, during, leaving?)
+### 步骤 1：叙事上下文（narrative-director + world-builder）
+生成 `narrative-director` 代理以：
+- 定义该区域的叙事目的（这里发生哪些故事节拍？）
+- 识别关键角色、对话触发点和背景设定元素
+- 指定情感弧线（玩家进入时、探索中、离开时应有什么感受？）
 
-Spawn the `world-builder` agent to:
-- Provide lore context for the area (history, faction presence, ecology)
-- Define environmental storytelling opportunities
-- Specify any world rules that affect gameplay in this area
+生成 `world-builder` 代理以：
+- 提供该区域的背景设定上下文（历史、阵营势力、生态）
+- 定义环境叙事的机会
+- 指定影响该区域玩法的世界规则
 
-### Step 2: Layout and Encounter Design (level-designer)
-Spawn the `level-designer` agent to:
-- Design the spatial layout (critical path, optional paths, secrets)
-- Define pacing curve (tension peaks, rest areas, exploration zones)
-- Place encounters with difficulty progression
-- Design environmental puzzles or navigation challenges
-- Define points of interest and landmarks for wayfinding
-- Specify entry/exit points and connections to adjacent areas
+### 步骤 2：布局与遭遇战设计（level-designer）
+生成 `level-designer` 代理以：
+- 设计空间布局（关键路径、可选路径、隐藏区域）
+- 定义节奏曲线（紧张高峰、休息区域、探索区域）
+- 放置具有难度递进的遭遇战
+- 设计环境谜题或导航挑战
+- 定义兴趣点和地标以辅助寻路
+- 指定入口/出口点及与相邻区域的连接
 
-### Step 3: Systems Integration (systems-designer)
-Spawn the `systems-designer` agent to:
-- Specify enemy compositions and encounter formulas
-- Define loot tables and reward placement
-- Balance difficulty relative to expected player level/gear
-- Design any area-specific mechanics or environmental hazards
-- Specify resource distribution (health pickups, save points, shops)
+### 步骤 3：系统集成（systems-designer）
+生成 `systems-designer` 代理以：
+- 指定敌人组合和遭遇战公式
+- 定义战利品表和奖励放置
+- 根据玩家预期等级/装备平衡难度
+- 设计区域专属机制或环境危害
+- 指定资源分布（生命恢复道具、存档点、商店）
 
-### Step 4: Visual Direction (art-director)
-Spawn the `art-director` agent to:
-- Define the visual theme and color palette for the area
-- Specify lighting mood and time-of-day settings
-- List required art assets (environment props, unique assets)
-- Define visual landmarks and sight lines
-- Specify any special VFX needs (weather, particles, fog)
+### 步骤 4：视觉方向（art-director）
+生成 `art-director` 代理以：
+- 定义该区域的视觉主题和调色板
+- 指定光照氛围和时间设置
+- 列出所需美术资产（环境道具、专属资产）
+- 定义视觉地标和视线
+- 指定特殊视觉特效需求（天气、粒子、雾气）
 
-### Step 5: QA Planning (qa-tester)
-Spawn the `qa-tester` agent to:
-- Write test cases for the critical path
-- Identify boundary and edge cases (sequence breaks, softlocks)
-- Create a playtest checklist for the area
-- Define acceptance criteria for level completion
+### 步骤 5：QA 规划（qa-tester）
+生成 `qa-tester` 代理以：
+- 编写关键路径的测试用例
+- 识别边界情况和极端情况（顺序越界、软锁定）
+- 创建该区域的试玩检查清单
+- 定义关卡完成的验收标准
 
-4. **Compile the level design document** combining all team outputs into the
-   level design template format.
+4. **编制关卡设计文档**，将所有团队输出整合为关卡设计模板格式。
 
-5. **Save to** `design/levels/[level-name].md`.
+5. **保存至** `design/levels/[关卡名称].md`。
 
-6. **Output a summary** with: area overview, encounter count, estimated asset
-   list, narrative beats, and any cross-team dependencies or open questions.
+6. **输出摘要**，包含：区域概述、遭遇战数量、预估资产列表、叙事节拍，以及跨团队依赖关系或待解决问题。

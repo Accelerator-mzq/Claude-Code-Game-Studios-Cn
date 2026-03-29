@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Claude Code Game Studios — Status Line
-# Receives JSON on stdin, outputs a single-line status.
+# Claude Code Game Studios — 状态栏
+# 从标准输入接收 JSON，输出单行状态信息。
 #
-# Segments: ctx% | model | production stage [| Epic > Feature > Task]
+# 段落: ctx% | 模型 | 生产阶段 [| 史诗 > 功能 > 任务]
 
 input=$(cat)
 
-# --- Parse JSON (jq with grep fallback) ---
+# --- 解析 JSON (jq 搭配 grep 降级方案) ---
 if command -v jq &>/dev/null; then
   model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
   used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
@@ -18,26 +18,26 @@ else
   [ -z "$model" ] && model="Unknown"
 fi
 
-# Normalize Windows paths
+# 标准化 Windows 路径
 cwd=$(echo "$cwd" | sed 's|\\|/|g')
 [ -z "$cwd" ] && cwd="."
 
-# --- Context usage ---
+# --- 上下文使用率 ---
 if [ -n "$used_pct" ]; then
   ctx_label="ctx: ${used_pct}%"
 else
   ctx_label="ctx: --"
 fi
 
-# --- Production stage ---
-# Priority 1: Explicit stage from stage.txt
+# --- 生产阶段 ---
+# 优先级 1: 从 stage.txt 显式获取
 stage_file="$cwd/production/stage.txt"
 stage=""
 if [ -f "$stage_file" ]; then
   stage=$(head -1 "$stage_file" | tr -d '\r\n')
 fi
 
-# Priority 2: Auto-detect from artifacts
+# 优先级 2: 从产出物自动检测
 if [ -z "$stage" ]; then
   concept_file="$cwd/design/gdd/game-concept.md"
   systems_file="$cwd/design/gdd/systems-index.md"
@@ -51,7 +51,7 @@ if [ -z "$stage" ]; then
   [ -f "$concept_file" ] && has_concept=true
   [ -f "$systems_file" ] && has_systems=true
 
-  # Check if engine is configured (not placeholder)
+  # 检查引擎是否已配置 (非占位符)
   if [ -f "$tech_prefs" ]; then
     engine_line=$(grep -m1 '^\*\*Engine\*\*:' "$tech_prefs" 2>/dev/null || true)
     if [ -n "$engine_line" ] && ! echo "$engine_line" | grep -q "TO BE CONFIGURED"; then
@@ -59,12 +59,12 @@ if [ -z "$stage" ]; then
     fi
   fi
 
-  # Count source files (language-agnostic)
+  # 统计源文件 (语言无关)
   if [ -d "$cwd/src" ]; then
     src_count=$(find "$cwd/src" -type f \( -name "*.gd" -o -name "*.cs" -o -name "*.cpp" -o -name "*.h" -o -name "*.py" -o -name "*.rs" -o -name "*.lua" -o -name "*.tscn" -o -name "*.tres" \) 2>/dev/null | wc -l | tr -d ' ')
   fi
 
-  # Determine stage (check from most-advanced backward)
+  # 确定阶段 (从最先进的状态向后检查)
   if [ "$src_count" -ge 10 ] 2>/dev/null; then
     stage="Production"
   elif [ "$engine_configured" = true ]; then
@@ -78,12 +78,12 @@ if [ -z "$stage" ]; then
   fi
 fi
 
-# --- Epic/Feature/Task breadcrumb (Production+ only) ---
+# --- 史诗/功能/任务 面包屑导航 (仅 Production+ 阶段) ---
 breadcrumb=""
 if [ "$stage" = "Production" ] || [ "$stage" = "Polish" ] || [ "$stage" = "Release" ]; then
   state_file="$cwd/production/session-state/active.md"
   if [ -f "$state_file" ]; then
-    # Parse structured STATUS block
+    # 解析结构化的 STATUS 块
     in_block=false
     epic="" feature="" task=""
     while IFS= read -r line; do
@@ -100,7 +100,7 @@ if [ "$stage" = "Production" ] || [ "$stage" = "Polish" ] || [ "$stage" = "Relea
       fi
     done < "$state_file"
 
-    # Build breadcrumb from whatever is set
+    # 根据已设置的内容构建面包屑
     parts=""
     [ -n "$epic" ] && parts="$epic"
     [ -n "$feature" ] && parts="${parts:+$parts > }$feature"
@@ -109,5 +109,5 @@ if [ "$stage" = "Production" ] || [ "$stage" = "Polish" ] || [ "$stage" = "Relea
   fi
 fi
 
-# --- Assemble ---
+# --- 组装 ---
 printf "%s" "${ctx_label} | ${model} | ${stage}${breadcrumb}"

@@ -1,75 +1,75 @@
-# Sprint [N] -- [Start Date] to [End Date]
+# Sprint [N] — [开始日期] 至 [结束日期]
 
-## Sprint Goal
+## Sprint 目标
 
-[One sentence: what does this sprint achieve toward the current milestone?]
+[一句话：本次 Sprint 为当前里程碑达成什么？]
 
-## Milestone Context
+## 里程碑上下文
 
-- **Current Milestone**: [Name]
-- **Milestone Deadline**: [Date]
-- **Sprints Remaining**: [N]
+- **当前里程碑**：[名称]
+- **里程碑截止日期**：[日期]
+- **剩余 Sprint 数**：[N]
 
-## Capacity
+## 容量（Capacity）
 
-| Resource | Available Days | Allocated | Buffer (20%) | Remaining |
-|----------|---------------|-----------|-------------|-----------|
+| 资源 | 可用天数 | 已分配 | 缓冲（20%） | 剩余 |
+|------|---------|--------|-----------|------|
 | Programming | | | | |
 | Design | | | | |
 | Art | | | | |
 | Audio | | | | |
 | QA | | | | |
-| **Total** | | | | |
+| **合计** | | | | |
 
-## Tasks
+## 任务（Tasks）
 
-### Must Have (Critical Path)
+### 必须完成（Must Have / 关键路径）
 
-| ID | Task | Agent/Owner | Est. Days | Dependencies | Acceptance Criteria | Status |
-|----|------|-------------|-----------|-------------|-------------------|--------|
-| S[N]-001 | | | | None | | Not Started |
-| S[N]-002 | | | | S[N]-001 | | Not Started |
+| ID | 任务 | Agent/负责人 | 预估天数 | 依赖项 | 验收标准 | 状态 |
+|----|------|-------------|---------|---------|---------|------|
+| S[N]-001 | | | | None | | 未开始 |
+| S[N]-002 | | | | S[N]-001 | | 未开始 |
 
-### Should Have
+### 应当完成（Should Have）
 
-| ID | Task | Agent/Owner | Est. Days | Dependencies | Acceptance Criteria | Status |
-|----|------|-------------|-----------|-------------|-------------------|--------|
-| S[N]-010 | | | | | | Not Started |
+| ID | 任务 | Agent/负责人 | 预估天数 | 依赖项 | 验收标准 | 状态 |
+|----|------|-------------|---------|---------|---------|------|
+| S[N]-010 | | | | | | 未开始 |
 
-### Nice to Have (Cut First)
+### 可选完成（Nice to Have / 优先裁剪）
 
-| ID | Task | Agent/Owner | Est. Days | Dependencies | Acceptance Criteria | Status |
-|----|------|-------------|-----------|-------------|-------------------|--------|
-| S[N]-020 | | | | | | Not Started |
+| ID | 任务 | Agent/负责人 | 预估天数 | 依赖项 | 验收标准 | 状态 |
+|----|------|-------------|---------|---------|---------|------|
+| S[N]-020 | | | | | | 未开始 |
 
-## Carryover from Sprint [N-1]
+## 从 Sprint [N-1] 遗留（Carryover）
 
-| Original ID | Task | Reason for Carryover | New Estimate | Priority Change |
-|------------|------|---------------------|-------------|----------------|
+| 原始 ID | 任务 | 遗留原因 | 新预估 | 优先级变更 |
+|---------|------|---------|--------|----------|
 
-## Risks to This Sprint
+## 本 Sprint 风险
 
-| Risk | Probability | Impact | Mitigation | Owner |
-|------|------------|--------|-----------|-------|
+| 风险 | 概率 | 影响 | 缓解措施 | 负责人 |
+|------|------|------|---------|--------|
 
-## External Dependencies
+## 外部依赖
 
-| Dependency | Status | Impact if Delayed | Contingency |
-|-----------|--------|------------------|-------------|
+| 依赖项 | 状态 | 延迟影响 | 应急方案 |
+|--------|------|---------|---------|
 
-## Definition of Done
+## 完成定义（Definition of Done）
 
-- [ ] All Must Have tasks completed and passing acceptance criteria
-- [ ] No S1 or S2 bugs in delivered features
-- [ ] Code reviewed and merged to develop
-- [ ] Design documents updated for any deviations from spec
-- [ ] Test cases written and executed for all new features
-- [ ] Asset naming and format standards met
+- [ ] 所有 Must Have 任务已完成并通过验收标准
+- [ ] 交付功能中无 S1 或 S2 级缺陷
+- [ ] 代码已审查并合并到 develop 分支
+- [ ] 偏离规格的设计文档已更新
+- [ ] 所有新功能已编写并执行测试用例
+- [ ] 资产命名和格式标准已满足
 
-## Daily Status Tracking
+## 每日状态跟踪（Daily Status Tracking）
 
-| Day | Tasks Completed | Tasks In Progress | Blockers | Notes |
-|-----|----------------|------------------|----------|-------|
-| Day 1 | | | | |
-| Day 2 | | | | |
-| Day 3 | | | | |
+| 天 | 已完成任务 | 进行中任务 | 阻碍 | 备注 |
+|----|----------|----------|------|------|
+| 第 1 天 | | | | |
+| 第 2 天 | | | | |
+| 第 3 天 | | | | |

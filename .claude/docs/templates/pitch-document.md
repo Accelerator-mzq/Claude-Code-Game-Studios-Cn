@@ -1,140 +1,130 @@
-# Game Pitch: [Title]
+# 游戏提案：[标题]
 
-*Version: [Draft Number]*
-*Date: [Date]*
-
----
-
-## The Hook
-
-> [One powerful sentence. If someone reads nothing else, this should make them
-> curious.]
+*版本：[草稿编号]*
+*日期：[日期]*
 
 ---
 
-## What Is It?
+## 钩子（The Hook）
 
-[2-3 sentences expanding the hook into a clear picture. Genre, setting, core
-mechanic, and what makes it special.]
-
----
-
-## Why Now?
-
-[Why is this the right game at the right time? Market trends, audience gaps,
-technology enablers, cultural relevance.]
+> [一句话打动人心。如果读者只看这一句，应该能引起他们的好奇心。]
 
 ---
 
-## Target Audience
+## 这是什么？
 
-**Primary**: [Who is the core audience? Be specific — not "gamers" but
-"roguelike fans who enjoy build-crafting and short sessions"]
-
-**Secondary**: [Adjacent audience who would also enjoy this]
-
-**Market Size**: [Estimated TAM based on comparable titles]
+[2-3 句话将钩子展开为清晰的画面。类型、设定、核心机制，以及它的独特之处。]
 
 ---
 
-## Comparable Titles
+## 为什么是现在？
 
-| Title | Similarity | Our Differentiation | Commercial Performance |
+[为什么这是对的游戏、对的时机？市场趋势、受众空白、技术赋能、文化相关性。]
+
+---
+
+## 目标受众
+
+**主要受众**：[核心受众是谁？要具体——不是"玩家"，而是"喜欢构筑流派（Build-crafting）和短局体验的 Roguelike 爱好者"]
+
+**次要受众**：[同样会喜欢本作的相邻受众]
+
+**市场规模**：[基于对标作品的估算总可达市场（TAM）]
+
+---
+
+## 对标作品
+
+| 标题 | 相似度 | 我们的差异化 | 商业表现 |
 | ---- | ---- | ---- | ---- |
-| [Game 1] | [What's similar] | [What's different/better] | [Revenue/units if known] |
-| [Game 2] | [What's similar] | [What's different/better] | [Performance] |
-| [Game 3] | [What's similar] | [What's different/better] | [Performance] |
+| [游戏 1] | [相似之处] | [不同/更优之处] | [已知营收/销量] |
+| [游戏 2] | [相似之处] | [不同/更优之处] | [表现] |
+| [游戏 3] | [相似之处] | [不同/更优之处] | [表现] |
 
 ---
 
-## Core Experience
+## 核心体验
 
-### The Player Fantasy
-[What does the player get to BE or DO? The emotional promise.]
+### 玩家幻想（The Player Fantasy）
+[玩家能成为什么或做什么？情感承诺是什么。]
 
-### Core Loop (30 seconds)
-[Describe the primary activity]
+### 核心循环（Core Loop，30 秒）
+[描述主要活动]
 
-### Session Flow (30 minutes)
-[What does a typical session look like start to finish?]
+### 单局流程（Session Flow，30 分钟）
+[一个典型单局从头到尾是什么样的？]
 
-### Progression Hook
-[Why do players come back tomorrow?]
-
----
-
-## Key Features
-
-1. **[Feature Name]**: [1-2 sentence description of what it is and why it
-   matters to the player]
-2. **[Feature Name]**: [Description]
-3. **[Feature Name]**: [Description]
-4. **[Feature Name]**: [Description]
-5. **[Feature Name]**: [Description]
+### 进度钩子（Progression Hook）
+[玩家为什么明天还会回来玩？]
 
 ---
 
-## Visual Identity
+## 关键特性
 
-[Brief description of the art style, mood, and visual tone. Include reference
-images or mood board link if available.]
-
-**Art Style**: [e.g., "Hand-painted 2D with dynamic lighting, inspired by
-Hollow Knight's atmosphere but with warmer colors"]
-
----
-
-## Audio Identity
-
-[Brief description of the sonic palette and musical direction.]
-
-**Music**: [e.g., "Adaptive orchestral with folk instruments, shifting based
-on biome and combat intensity"]
-
-**SFX**: [e.g., "Crunchy, satisfying impact sounds. Tactile feedback on every
-player action."]
+1. **[特性名称]**：[1-2 句描述它是什么，以及为什么对玩家重要]
+2. **[特性名称]**：[描述]
+3. **[特性名称]**：[描述]
+4. **[特性名称]**：[描述]
+5. **[特性名称]**：[描述]
 
 ---
 
-## Business Model
+## 视觉标识
 
-| Aspect | Plan |
+[简述美术风格、氛围和视觉基调。如有参考图或情绪板（Mood Board）链接请附上。]
+
+**美术风格**：[例如："手绘 2D 搭配动态光照，灵感来自 Hollow Knight 的氛围但采用更温暖的色调"]
+
+---
+
+## 音频标识
+
+[简述声音调性和音乐方向。]
+
+**音乐**：[例如："带有民间乐器的自适应管弦乐，根据生物群落和战斗强度切换"]
+
+**音效**：[例如："有力度、令人满足的打击音效。每个玩家操作都有触觉反馈。"]
+
+---
+
+## 商业模式
+
+| 方面 | 计划 |
 | ---- | ---- |
-| **Model** | [Premium $X / F2P / etc.] |
-| **Platforms** | [Steam, Console, Mobile] |
-| **Price Point** | [$X.XX] |
-| **DLC/Expansion Plans** | [Post-launch content strategy] |
-| **Monetization Ethics** | [What we will and won't do] |
+| **模式** | [买断制 $X / 免费游玩（F2P）/ 等] |
+| **平台** | [Steam、主机、移动端] |
+| **定价** | [$X.XX] |
+| **DLC/扩展计划** | [发售后内容策略] |
+| **变现伦理** | [我们会做和不会做的事] |
 
 ---
 
-## Development Plan
+## 开发计划
 
-| Milestone | Duration | Deliverable |
+| 里程碑 | 周期 | 交付物 |
 | ---- | ---- | ---- |
-| Concept & Pre-production | [X weeks] | Game concept, pillars, vertical slice plan |
-| Vertical Slice | [X weeks] | Playable slice demonstrating core loop |
-| Alpha | [X weeks] | All features in, content placeholder |
-| Beta | [X weeks] | Content complete, polish pass |
-| Launch | [Date] | Release build |
+| 概念与前期制作（Concept & Pre-production） | [X 周] | 游戏概念、设计支柱、垂直切片（Vertical Slice）计划 |
+| 垂直切片 | [X 周] | 展示核心循环的可玩切片 |
+| Alpha | [X 周] | 所有功能就位，内容为占位符 |
+| Beta | [X 周] | 内容完成，打磨阶段 |
+| 上线 | [日期] | 发行版本 |
 
-**Team Size**: [X people, roles]
-**Engine**: [Godot / Unity / Unreal]
-**Estimated Budget**: [Range if applicable]
+**团队规模**：[X 人，角色]
+**引擎**：[Godot / Unity / Unreal]
+**预估预算**：[适用时填写范围]
 
 ---
 
-## Risks and Mitigation
+## 风险与应对
 
-| Risk | Likelihood | Impact | Mitigation |
+| 风险 | 可能性 | 影响 | 应对措施 |
 | ---- | ---- | ---- | ---- |
-| [Risk 1] | [H/M/L] | [H/M/L] | [How we handle it] |
-| [Risk 2] | [H/M/L] | [H/M/L] | [Mitigation] |
-| [Risk 3] | [H/M/L] | [H/M/L] | [Mitigation] |
+| [风险 1] | [高/中/低] | [高/中/低] | [如何处理] |
+| [风险 2] | [高/中/低] | [高/中/低] | [应对措施] |
+| [风险 3] | [高/中/低] | [高/中/低] | [应对措施] |
 
 ---
 
-## The Ask
+## 我们的诉求（The Ask）
 
-[What do you need? Funding, publishing deal, team members, feedback? Be
-specific about what you're looking for and what you're offering in return.]
+[你需要什么？资金、发行合作、团队成员、反馈？明确你正在寻找什么，以及作为回报你能提供什么。]

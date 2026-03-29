@@ -1,120 +1,118 @@
 ---
 name: patch-notes
-description: "Generate player-facing patch notes from git history, sprint data, and internal changelogs. Translates developer language into clear, engaging player communication."
-argument-hint: "[version] [--style brief|detailed|full]"
+description: "从 git 历史记录、Sprint 数据和内部更新日志生成面向玩家的补丁说明。将开发者语言转化为清晰、有吸引力的玩家沟通内容。"
+argument-hint: "[版本号] [--style brief|detailed|full]"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, Bash
 ---
 
-When this skill is invoked:
+当此技能被调用时：
 
-1. **Parse the arguments**:
-   - `version`: the release version to generate notes for (e.g., `1.2.0`)
-   - `--style`: output style — `brief` (bullet points), `detailed` (with context),
-     `full` (with developer commentary). Default: `detailed`.
+1. **解析参数**：
+   - `version`：要生成补丁说明的发布版本（例如 `1.2.0`）
+   - `--style`：输出风格 — `brief`（要点列表）、`detailed`（含上下文）、`full`（含开发者评论）。默认：`detailed`。
 
-2. **Gather change data from multiple sources**:
-   - Read the internal changelog at `production/releases/[version]/changelog.md` if it exists
-   - Run `git log` between the previous release tag and current tag/HEAD
-   - Read sprint retrospectives in `production/sprints/` for context
-   - Read any balance change documents in `design/balance/`
-   - Read bug fix records from QA if available
+2. **从多个来源收集变更数据**：
+   - 如果存在，读取内部更新日志 `production/releases/[version]/changelog.md`
+   - 运行 `git log` 查看上一个发布标签与当前标签/HEAD 之间的变更
+   - 读取 `production/sprints/` 中的 Sprint 回顾以获取上下文
+   - 读取 `design/balance/` 中的数值平衡变更文档
+   - 如果可用，读取 QA 的 Bug 修复记录
 
-3. **Categorize all changes** into player-facing categories:
-   - **New Content**: new features, maps, characters, items, modes
-   - **Gameplay Changes**: balance adjustments, mechanic changes, progression changes
-   - **Quality of Life**: UI improvements, convenience features, accessibility
-   - **Bug Fixes**: grouped by system (combat, UI, networking, etc.)
-   - **Performance**: optimization improvements players might notice
-   - **Known Issues**: transparency about unresolved problems
+3. **将所有变更分类**为面向玩家的类别：
+   - **新内容**：新功能、地图、角色、物品、模式
+   - **玩法变更**：数值平衡调整、机制变更、进度变更
+   - **体验优化 (Quality of Life)**：UI 改进、便利功能、无障碍
+   - **Bug 修复**：按系统分组（战斗、UI、联网等）
+   - **性能**：玩家可能注意到的优化改进
+   - **已知问题**：透明地告知未解决的问题
 
-4. **Translate developer language to player language**:
-   - "Refactored damage calculation pipeline" → "Improved hit detection accuracy"
-   - "Fixed null reference in inventory manager" → "Fixed a crash when opening inventory"
-   - "Reduced GC allocations in combat loop" → "Improved combat performance"
-   - Remove purely internal changes that don't affect players
-   - Preserve specific numbers for balance changes (damage: 50 → 45)
+4. **将开发者语言翻译为玩家语言**：
+   - "重构了伤害计算管线" -> "提升了命中检测的准确性"
+   - "修复了背包管理器中的空引用" -> "修复了打开背包时的崩溃问题"
+   - "减少了战斗循环中的 GC 分配" -> "改善了战斗性能"
+   - 移除不影响玩家的纯内部变更
+   - 保留数值平衡变更的具体数字（伤害：50 -> 45）
 
-5. **Generate the patch notes** using the appropriate style:
+5. **使用适当的风格生成补丁说明**：
 
-### Brief Style
+### 简要风格
 ```markdown
-# Patch [Version] — [Title]
+# 补丁 [版本] — [标题]
 
-**New**
-- [Feature 1]
-- [Feature 2]
+**新增**
+- [功能 1]
+- [功能 2]
 
-**Changes**
-- [Balance/mechanic change with before → after values]
+**变更**
+- [数值平衡/机制变更，附变更前 -> 变更后的值]
 
-**Fixes**
-- [Bug fix 1]
-- [Bug fix 2]
+**修复**
+- [Bug 修复 1]
+- [Bug 修复 2]
 
-**Known Issues**
-- [Issue 1]
+**已知问题**
+- [问题 1]
 ```
 
-### Detailed Style
+### 详细风格
 ```markdown
-# Patch [Version] — [Title]
-*[Date]*
+# 补丁 [版本] — [标题]
+*[日期]*
 
-## Highlights
-[1-2 sentence summary of the most exciting changes]
+## 亮点
+[1-2 句话总结最令人兴奋的变更]
 
-## New Content
-### [Feature Name]
-[2-3 sentences describing the feature and why players should be excited]
+## 新内容
+### [功能名称]
+[2-3 句话描述该功能以及玩家应该期待什么]
 
-## Gameplay Changes
-### Balance
-| Change | Before | After | Reason |
+## 玩法变更
+### 数值平衡
+| 变更 | 变更前 | 变更后 | 原因 |
 | ---- | ---- | ---- | ---- |
-| [Item/ability] | [old value] | [new value] | [brief rationale] |
+| [物品/技能] | [旧值] | [新值] | [简要理由] |
 
-### Mechanics
-- **[Change]**: [explanation of what changed and why]
+### 机制
+- **[变更]**：[变更内容及原因的说明]
 
-## Quality of Life
-- [Improvement with context]
+## 体验优化
+- [改进及上下文]
 
-## Bug Fixes
-### Combat
-- Fixed [description of what players experienced]
+## Bug 修复
+### 战斗
+- 修复了 [玩家遇到的问题描述]
 
 ### UI
-- Fixed [description]
+- 修复了 [描述]
 
-### Networking
-- Fixed [description]
+### 联网
+- 修复了 [描述]
 
-## Performance
-- [Improvement players will notice]
+## 性能
+- [玩家会注意到的改进]
 
-## Known Issues
-- [Issue and workaround if available]
+## 已知问题
+- [问题及可用的临时解决方案]
 ```
 
-### Full Style
-Includes everything from Detailed, plus:
+### 完整风格
+包含详细风格的所有内容，加上：
 ```markdown
-## Developer Commentary
-### [Topic]
-> [Developer insight into a major change — why it was made, what was considered,
-> what the team learned. Written in first-person team voice.]
+## 开发者寄语
+### [主题]
+> [开发者对重大变更的洞察 — 为什么这么做、考虑了什么、
+> 团队学到了什么。以团队第一人称撰写。]
 ```
 
-6. **Review the output** for:
-   - No internal jargon (replace technical terms with player-friendly language)
-   - No references to internal systems, tickets, or sprint numbers
-   - Balance changes include before/after values
-   - Bug fixes describe the player experience, not the technical cause
-   - Tone matches the game's voice (adjust formality based on game style)
+6. **审查输出**，确保：
+   - 没有内部术语（用玩家友好的语言替换技术术语）
+   - 没有引用内部系统、工单或 Sprint 编号
+   - 数值平衡变更包含变更前/后的值
+   - Bug 修复描述的是玩家体验，而非技术原因
+   - 语气符合游戏的声音风格（根据游戏风格调整正式程度）
 
-7. **Save the patch notes** to `production/releases/[version]/patch-notes.md`,
-   creating the directory if needed.
+7. **保存补丁说明**到 `production/releases/[version]/patch-notes.md`，
+   如果需要则创建目录。
 
-8. **Output to the user**: the complete patch notes, the file path, a count of
-   changes by category, and any internal changes that were excluded (for review).
+8. **向用户输出**：完整的补丁说明、文件路径、按类别的变更计数，以及被排除的内部变更（供审核）。

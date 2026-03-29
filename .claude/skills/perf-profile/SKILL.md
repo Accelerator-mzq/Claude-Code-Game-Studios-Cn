@@ -1,93 +1,94 @@
 ---
 name: perf-profile
-description: "Structured performance profiling workflow. Identifies bottlenecks, measures against budgets, and generates optimization recommendations with priority rankings."
-argument-hint: "[system-name or 'full']"
+description: "结构化的性能分析工作流。识别瓶颈、与性能预算对比测量，并生成带有优先级排序的优化建议。"
+argument-hint: "[系统名称 或 'full']"
 user-invocable: true
 allowed-tools: Read, Glob, Grep, Bash
 ---
-When this skill is invoked:
 
-1. **Determine scope** from the argument:
-   - If a system name: focus profiling on that specific system
-   - If `full`: run a comprehensive profile across all systems
+当此技能被调用时：
 
-2. **Read performance budgets** — Check for existing performance targets in design docs or CLAUDE.md:
-   - Target FPS (e.g., 60fps = 16.67ms frame budget)
-   - Memory budget (total and per-system)
-   - Load time targets
-   - Draw call budgets
-   - Network bandwidth limits (if multiplayer)
+1. **确定范围**根据参数：
+   - 如果是系统名称：专注于该特定系统的分析
+   - 如果是 `full`：对所有系统进行全面分析
 
-3. **Analyze the codebase** for common performance issues:
+2. **读取性能预算** — 检查设计文档或 CLAUDE.md 中是否有现有性能目标：
+   - 目标 FPS（例如 60fps = 16.67ms 帧预算）
+   - 内存预算（总量和按系统）
+   - 加载时间目标
+   - Draw Call 预算
+   - 网络带宽限制（如果是多人游戏）
 
-   **CPU Profiling Targets**:
-   - `_process()` / `Update()` / `Tick()` functions — list all and estimate cost
-   - Nested loops over large collections
-   - String operations in hot paths
-   - Allocation patterns in per-frame code
-   - Unoptimized search/sort over game entities
-   - Expensive physics queries (raycasts, overlaps) every frame
+3. **分析代码库**中的常见性能问题：
 
-   **Memory Profiling Targets**:
-   - Large data structures and their growth patterns
-   - Texture/asset memory footprint estimates
-   - Object pool vs instantiate/destroy patterns
-   - Leaked references (objects that should be freed but aren't)
-   - Cache sizes and eviction policies
+   **CPU 分析目标**：
+   - `_process()` / `Update()` / `Tick()` 函数 — 列出所有并估算开销
+   - 大集合上的嵌套循环
+   - 热路径中的字符串操作
+   - 每帧代码中的分配模式
+   - 未优化的游戏实体搜索/排序
+   - 每帧执行的昂贵物理查询（射线检测、重叠检测）
 
-   **Rendering Targets** (if applicable):
-   - Draw call estimates
-   - Overdraw from overlapping transparent objects
-   - Shader complexity
-   - Unoptimized particle systems
-   - Missing LODs or occlusion culling
+   **内存分析目标**：
+   - 大型数据结构及其增长模式
+   - 纹理/资源内存占用估算
+   - 对象池 vs 实例化/销毁模式
+   - 泄漏的引用（应该释放但未释放的对象）
+   - 缓存大小和淘汰策略
 
-   **I/O Targets**:
-   - Save/load performance
-   - Asset loading patterns (sync vs async)
-   - Network message frequency and size
+   **渲染目标**（如适用）：
+   - Draw Call 估算
+   - 重叠透明物体导致的过度绘制
+   - 着色器 (Shader) 复杂度
+   - 未优化的粒子系统
+   - 缺失 LOD (Level of Detail) 或遮挡剔除 (Occlusion Culling)
 
-4. **Generate the profiling report**:
+   **I/O 目标**：
+   - 存档/读档性能
+   - 资源加载模式（同步 vs 异步）
+   - 网络消息频率和大小
+
+4. **生成性能分析报告**：
 
    ```markdown
-   ## Performance Profile: [System or Full]
-   Generated: [Date]
+   ## 性能分析：[系统或全面]
+   生成日期：[日期]
 
-   ### Performance Budgets
-   | Metric | Budget | Estimated Current | Status |
-   |--------|--------|-------------------|--------|
-   | Frame time | [16.67ms] | [estimate] | [OK/WARNING/OVER] |
-   | Memory | [target] | [estimate] | [OK/WARNING/OVER] |
-   | Load time | [target] | [estimate] | [OK/WARNING/OVER] |
-   | Draw calls | [target] | [estimate] | [OK/WARNING/OVER] |
+   ### 性能预算
+   | 指标 | 预算 | 估算当前值 | 状态 |
+   |------|------|-----------|------|
+   | 帧时间 | [16.67ms] | [估算值] | [正常/警告/超标] |
+   | 内存 | [目标] | [估算值] | [正常/警告/超标] |
+   | 加载时间 | [目标] | [估算值] | [正常/警告/超标] |
+   | Draw Call | [目标] | [估算值] | [正常/警告/超标] |
 
-   ### Hotspots Identified
-   | # | Location | Issue | Estimated Impact | Fix Effort |
-   |---|----------|-------|------------------|------------|
-   | 1 | [file:line] | [description] | [High/Med/Low] | [S/M/L] |
-   | 2 | [file:line] | [description] | [High/Med/Low] | [S/M/L] |
+   ### 发现的热点
+   | # | 位置 | 问题 | 预估影响 | 修复工作量 |
+   |---|------|------|---------|-----------|
+   | 1 | [文件:行号] | [描述] | [高/中/低] | [小/中/大] |
+   | 2 | [文件:行号] | [描述] | [高/中/低] | [小/中/大] |
 
-   ### Optimization Recommendations (Priority Order)
-   1. **[Title]** — [Description of the optimization]
-      - Location: [file:line]
-      - Expected gain: [estimate]
-      - Risk: [Low/Med/High]
-      - Approach: [How to implement]
+   ### 优化建议（按优先级排序）
+   1. **[标题]** — [优化描述]
+      - 位置：[文件:行号]
+      - 预期收益：[估算值]
+      - 风险：[低/中/高]
+      - 方案：[实现方式]
 
-   ### Quick Wins (< 1 hour each)
-   - [Simple optimization 1]
-   - [Simple optimization 2]
+   ### 快速见效（每个不到 1 小时）
+   - [简单优化 1]
+   - [简单优化 2]
 
-   ### Requires Investigation
-   - [Area that needs actual runtime profiling to determine impact]
+   ### 需要进一步调查
+   - [需要实际运行时分析来确定影响的领域]
    ```
 
-5. **Output the report** with a summary: top 3 hotspots, estimated headroom vs budget, and recommended next action.
+5. **输出报告**并附带摘要：前 3 个热点、相对于预算的估算余量，以及建议的下一步行动。
 
-### Rules
-- Never optimize without measuring first — gut feelings about performance are unreliable
-- Recommendations must include estimated impact — "make it faster" is not actionable
-- Profile on target hardware, not just development machines
-- Distinguish between CPU-bound, GPU-bound, and I/O-bound bottlenecks
-- Consider worst-case scenarios (maximum entities, lowest spec hardware, worst network conditions)
-- Static analysis (this skill) identifies candidates; runtime profiling confirms
+### 规则
+- 不要先测量就优化 — 对性能的直觉是不可靠的
+- 建议必须包含预估影响 — "让它更快"不具有可操作性
+- 在目标硬件上进行分析，而不仅仅是开发机器
+- 区分 CPU 瓶颈、GPU 瓶颈和 I/O 瓶颈
+- 考虑最坏情况（最大实体数、最低配置硬件、最差网络条件）
+- 静态分析（本技能）识别候选；运行时分析确认
