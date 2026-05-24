@@ -2,7 +2,7 @@
 name: sound-designer
 description: "音效设计师为游戏中的每个声音创建详细规格说明，记录音频事件，并定义混音参数。当需要音效规格表、音频事件规划、混音文档或音频类别定义时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit
-model: haiku
+model: inherit
 maxTurns: 10
 disallowedTools: Bash
 ---

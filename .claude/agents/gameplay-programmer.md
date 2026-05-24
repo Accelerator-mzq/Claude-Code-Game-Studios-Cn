@@ -2,7 +2,7 @@
 name: gameplay-programmer
 description: "游戏性程序员负责将游戏机制、玩家系统、战斗和交互功能实现为代码。当你需要将设计好的机制编写为代码、编写游戏系统代码，或将设计文档转化为可运行的游戏功能时，请使用该代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

@@ -2,7 +2,7 @@
 name: performance-analyst
 description: "性能分析师对游戏性能进行分析，识别瓶颈，推荐优化方案，并随时间跟踪性能指标。当需要性能分析、内存分析、帧时间调查或优化策略时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

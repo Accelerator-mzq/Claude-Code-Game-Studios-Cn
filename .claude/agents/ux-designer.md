@@ -2,7 +2,7 @@
 name: ux-designer
 description: "UX 设计师负责用户体验流程、交互设计、无障碍访问（Accessibility）、信息架构（Information Architecture）和输入处理设计。适用于用户流程映射、交互模式设计、无障碍审计或新手引导流程设计。"
 tools: Read, Glob, Grep, Write, Edit, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

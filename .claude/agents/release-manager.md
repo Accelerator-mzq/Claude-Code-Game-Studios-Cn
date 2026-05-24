@@ -2,7 +2,7 @@
 name: release-manager
 description: "负责发布管线：认证清单、商店提交、平台要求、版本编号和发布日协调。当需要发布规划、平台认证、商店页面准备或版本管理时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 skills: [release-checklist, changelog, patch-notes]
 ---

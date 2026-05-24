@@ -2,7 +2,7 @@
 name: security-engineer
 description: "安全工程师保护游戏免受作弊、漏洞利用和数据泄露的威胁。审查代码中的漏洞，设计反作弊措施，保护存档数据和网络通信安全，确保玩家数据隐私合规。"
 tools: Read, Glob, Grep, Write, Edit, Bash, Task
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

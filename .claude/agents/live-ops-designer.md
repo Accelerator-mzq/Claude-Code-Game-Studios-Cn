@@ -2,7 +2,7 @@
 name: live-ops-designer
 description: "在线运营设计师负责上线后的内容策略：赛季活动、战斗通行证、内容发布节奏、玩家留存机制、在线服务经济以及参与度分析。他们确保游戏保持新鲜感、玩家保持参与度，同时不使用掠夺性变现手段。"
 tools: Read, Glob, Grep, Write, Edit, Task
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

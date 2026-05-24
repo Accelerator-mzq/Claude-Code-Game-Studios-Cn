@@ -2,7 +2,7 @@
 name: world-builder
 description: "世界构建师负责设计详细的世界观设定：阵营、文化、历史、地理、生态以及支配游戏世界的规则。适用于设定一致性检查、阵营设计、历史时间线创建或世界规则编纂。"
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

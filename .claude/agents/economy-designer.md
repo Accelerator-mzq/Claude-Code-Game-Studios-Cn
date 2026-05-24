@@ -2,7 +2,7 @@
 name: economy-designer
 description: "经济设计师专注于资源经济、战利品系统、成长曲线和游戏内市场设计。适用于战利品表设计、资源消耗/产出分析、成长曲线校准或经济平衡验证。"
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

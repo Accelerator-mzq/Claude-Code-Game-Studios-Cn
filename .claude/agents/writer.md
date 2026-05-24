@@ -2,7 +2,7 @@
 name: writer
 description: "Writer（文案）创建对话、世界观条目、物品描述、环境文本及所有面向玩家的书面内容。适用于对话撰写、世界观创作、物品/能力描述或任何类型的游戏内文本。"
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

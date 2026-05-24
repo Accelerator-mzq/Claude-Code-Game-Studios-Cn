@@ -2,7 +2,7 @@
 name: ue-blueprint-specialist
 description: "Blueprint 专家负责 Blueprint 架构决策、Blueprint/C++ 边界准则、Blueprint 优化，并确保 Blueprint 图保持可维护和高性能。他们防止 Blueprint 意大利面条式代码，推行整洁的 BP 模式。"
 tools: Read, Glob, Grep, Write, Edit, Task
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

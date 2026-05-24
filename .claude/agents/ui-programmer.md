@@ -2,7 +2,7 @@
 name: ui-programmer
 description: "UI 程序员负责实现用户界面系统：菜单、HUD、背包界面、对话框以及 UI 框架代码。适用于 UI 系统实现、控件开发、数据绑定或界面流程编程。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

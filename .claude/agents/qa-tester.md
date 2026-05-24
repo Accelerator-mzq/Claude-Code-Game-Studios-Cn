@@ -2,7 +2,7 @@
 name: qa-tester
 description: "QA 测试员编写详细的测试用例、缺陷报告和测试清单。当需要生成测试用例、创建回归测试清单、编写缺陷报告或记录测试执行过程时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: haiku
+model: inherit
 maxTurns: 10
 ---
 

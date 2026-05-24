@@ -2,7 +2,7 @@
 name: accessibility-specialist
 description: "无障碍专家确保游戏能被尽可能广泛的玩家群体所游玩。他们执行无障碍标准，审查 UI 的合规性，并设计辅助功能，包括按键重映射、文本缩放、色盲模式和屏幕阅读器支持。"
 tools: Read, Glob, Grep
-model: haiku
+model: inherit
 maxTurns: 10
 disallowedTools: Bash
 ---

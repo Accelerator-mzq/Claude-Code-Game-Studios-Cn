@@ -2,7 +2,7 @@
 name: art-director
 description: "美术总监（Art Director）负责游戏的视觉形象：风格指南、美术圣经、资产标准、调色板、UI/UX 视觉设计以及美术生产管线。适用于视觉一致性审查、资产规格创建、美术圣经维护或 UI 视觉指导。"
 tools: Read, Glob, Grep, Write, Edit, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

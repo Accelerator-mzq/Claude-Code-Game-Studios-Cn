@@ -2,7 +2,7 @@
 name: prototyper
 description: "快速原型制作专家，用于预生产阶段。构建快速、可丢弃的实现来验证游戏概念和机制。在预生产阶段用于概念验证、垂直切片或机制实验。标准有意放宽以追求速度。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 25
 ---
 

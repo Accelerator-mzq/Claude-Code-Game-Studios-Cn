@@ -3,7 +3,7 @@
 name: technical-artist
 description: "技术美术（Technical Artist）连接美术与工程：着色器、视觉特效、渲染优化、美术管线工具以及视觉系统的性能分析。适用于着色器开发、视觉特效系统设计、视觉优化或美术到引擎的管线问题。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

@@ -2,7 +2,7 @@
 name: audio-director
 description: "音频总监负责游戏的声效识别：音乐方向、声音设计理念、音频实现策略和混音平衡。适用于音频方向决策、声音调色板定义、音乐提示规划或音频系统架构。"
 tools: Read, Glob, Grep, Write, Edit, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

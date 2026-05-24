@@ -2,7 +2,7 @@
 name: tools-programmer
 description: "工具程序员（Tools Programmer）负责构建内部开发工具：编辑器扩展、内容创作工具、调试工具以及管线自动化。在需要自定义工具创建、编辑器工作流改进或开发管线自动化时，请使用该代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

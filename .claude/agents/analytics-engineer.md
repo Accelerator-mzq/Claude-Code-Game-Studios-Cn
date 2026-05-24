@@ -2,7 +2,7 @@
 name: analytics-engineer
 description: "数据分析工程师负责设计遥测系统（Telemetry System）、玩家行为追踪、A/B 测试框架以及数据分析管线。适用于事件追踪设计、仪表盘规格定义、A/B 测试设计或玩家行为分析方法论。"
 tools: Read, Glob, Grep, Write, Edit, Bash, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

@@ -2,7 +2,7 @@
 name: community-manager
 description: "社区管理员负责面向玩家的沟通：补丁说明、社交媒体帖子、社区更新、玩家反馈收集、玩家缺陷报告分类，以及危机沟通。他们在开发团队和玩家社区之间充当桥梁。"
 tools: Read, Glob, Grep, Write, Edit, Task
-model: haiku
+model: inherit
 maxTurns: 10
 disallowedTools: Bash
 ---

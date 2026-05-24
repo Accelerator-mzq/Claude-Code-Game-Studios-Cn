@@ -2,7 +2,7 @@
 name: level-designer
 description: "关卡设计师为游戏关卡和区域创建空间设计、遭遇布局、节奏规划和环境叙事指南。当需要关卡布局规划、遭遇设计、难度节奏或空间谜题设计时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

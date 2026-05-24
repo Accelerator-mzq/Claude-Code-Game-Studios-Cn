@@ -5,7 +5,7 @@
 name: systems-designer
 description: "系统设计师为特定游戏子系统创建详细的机制设计——战斗公式、成长曲线、制作配方、状态效果交互。当某个机制需要详细的规则规格说明、数学建模或交互矩阵设计时，使用此代理。"
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

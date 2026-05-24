@@ -2,7 +2,7 @@
 name: engine-programmer
 description: "引擎程序员负责核心引擎系统：渲染管线、物理、内存管理、资源加载、场景管理和核心框架代码。适用于引擎级功能实现、性能关键系统或核心框架修改。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

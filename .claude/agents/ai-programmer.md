@@ -2,7 +2,7 @@
 name: ai-programmer
 description: "AI 程序员负责实现游戏 AI 系统：行为树、状态机、寻路、感知系统、决策机制以及 NPC 行为。适用于 AI 系统实现、寻路优化、敌人行为编程或 AI 调试。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

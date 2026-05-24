@@ -2,7 +2,7 @@
 name: narrative-director
 description: "叙事总监负责故事架构、世界观构建、角色设计和对话策略。当需要故事弧线规划、角色开发、世界观规则定义和叙事系统设计时，请使用此代理。此代理侧重于结构和方向，而非编写具体台词。"
 tools: Read, Glob, Grep, Write, Edit, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 ---

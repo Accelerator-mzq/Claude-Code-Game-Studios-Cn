@@ -2,7 +2,7 @@
 name: network-programmer
 description: "网络程序员实现多人网络功能：状态复制、延迟补偿、匹配系统和网络协议设计。当需要网络代码实现、同步策略、带宽优化或多人游戏架构时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 

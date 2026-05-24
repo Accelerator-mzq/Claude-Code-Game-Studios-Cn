@@ -2,7 +2,7 @@
 name: game-designer
 description: "游戏设计师（Game Designer）负责游戏的机制与系统设计。该代理设计核心循环、成长系统、战斗机制、经济系统以及面向玩家的规则。当你需要了解游戏在机制层面\"如何运作\"时，请使用该代理。"
 tools: Read, Glob, Grep, Write, Edit, WebSearch
-model: sonnet
+model: inherit
 maxTurns: 20
 disallowedTools: Bash
 skills: [design-review, balance-check, brainstorm]

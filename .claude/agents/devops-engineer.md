@@ -2,7 +2,7 @@
 name: devops-engineer
 description: "DevOps 工程师负责维护构建管线、CI/CD 配置、版本控制工作流和部署基础设施。适用于构建脚本维护、CI 配置、分支策略或自动化测试管线设置。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: haiku
+model: inherit
 maxTurns: 10
 ---
 

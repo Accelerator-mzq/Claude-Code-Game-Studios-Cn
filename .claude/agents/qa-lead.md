@@ -2,7 +2,7 @@
 name: qa-lead
 description: "QA 负责人负责测试策略、缺陷分类、发布质量关卡和测试流程设计。当需要创建测试计划、评估缺陷严重程度、规划回归测试或评估发布准备度时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 skills: [bug-report, release-checklist]
 ---

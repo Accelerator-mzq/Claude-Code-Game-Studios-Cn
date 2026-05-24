@@ -2,7 +2,7 @@
 name: lead-programmer
 description: "首席程序员负责代码级架构、编码标准、代码审查以及将编程工作分配给专业程序员。在需要代码审查、API 设计、重构策略，或确定设计如何转化为代码结构时，使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 skills: [code-review, architecture-decision, tech-debt]
 ---

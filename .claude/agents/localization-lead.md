@@ -2,7 +2,7 @@
 name: localization-lead
 description: "负责国际化架构、字符串管理、地区测试和翻译管线。当需要 i18n 系统设计、字符串提取工作流、特定地区问题或翻译质量评审时，请使用此代理。"
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: inherit
 maxTurns: 20
 ---
 
